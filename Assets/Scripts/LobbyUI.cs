@@ -37,6 +37,7 @@ public class LobbyUI : MonoBehaviour
     [SerializeField] private Transform lobbyPlayerContainer;
     [SerializeField] private TextMeshProUGUI lobbyCodeText;
     [SerializeField] private Button copyLobbyCodeButton;
+    [SerializeField] private Button startGameButton;
 
     [Header("Loading UI")]
     [SerializeField] private GameObject loadingUI;
@@ -68,6 +69,7 @@ public class LobbyUI : MonoBehaviour
         leaveLobbyButton.onClick.AddListener(LeaveLobby);
         leaveJoinLobbyUI.onClick.AddListener(LeaveJoinLobbyUI);
         errorCloseButton.onClick.AddListener(CloseError);
+        startGameButton.onClick.AddListener(StartGame);
     }
 
     private void OnDisable()
@@ -80,6 +82,7 @@ public class LobbyUI : MonoBehaviour
         leaveLobbyButton.onClick.RemoveAllListeners();
         leaveJoinLobbyUI.onClick.RemoveAllListeners();
         errorCloseButton.onClick.RemoveAllListeners();
+        startGameButton.onClick.RemoveAllListeners();
     }
 
     private void Start()
@@ -93,6 +96,16 @@ public class LobbyUI : MonoBehaviour
         LobbyManager.Instance.OnKickedFromLobby += LobbyManager_OnKickedFromLobby;
         LobbyManager.Instance.OnJoinedLobbyUpdate += LobbyManager_OnJoinedLobbyUpdate;
         LobbyManager.Instance.OnServiceError += Instance_OnServiceError;
+    }
+
+    private void OnDestroy()
+    {
+        LobbyManager.Instance.OnPublicLobbyListChanged -= LobbyManager_OnPublicLobbyListChanged;
+        LobbyManager.Instance.OnJoinedLobby -= LobbyManager_OnLobbyJoined;
+        LobbyManager.Instance.OnLeftLobby -= LobbyManager_OnLobbyLeft;
+        LobbyManager.Instance.OnKickedFromLobby -= LobbyManager_OnKickedFromLobby;
+        LobbyManager.Instance.OnJoinedLobbyUpdate -= LobbyManager_OnJoinedLobbyUpdate;
+        LobbyManager.Instance.OnServiceError -= Instance_OnServiceError;
     }
 
     private void OpenJoinLobbyUI()
@@ -233,6 +246,20 @@ public class LobbyUI : MonoBehaviour
         joinLobbyUI.SetActive(false);
         createLobbyUI.SetActive(false);
         lobbyDetailsUI.SetActive(true);
+
+        startGameButton.gameObject.SetActive(LobbyManager.Instance.IsLobbyHost());
+    }
+
+    private void StartGame()
+    {
+        if (LobbyManager.Instance.IsLobbyReady())
+        {
+            SceneLoadingManager.Instance.LoadSceneAsync("Game");
+        }
+        else
+        {
+            ShowError("Players are not ready yet.");
+        }
     }
 
     private void ShowLoading(string loadingMessage)
