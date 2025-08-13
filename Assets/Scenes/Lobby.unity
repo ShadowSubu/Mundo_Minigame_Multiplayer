@@ -2993,7 +2993,7 @@ MonoBehaviour:
   NetworkConfig:
     ProtocolVersion: 0
     NetworkTransport: {fileID: 513217741}
-    PlayerPrefab: {fileID: 0}
+    PlayerPrefab: {fileID: 3357877255209881165, guid: b82c7d2d64d5f264aaf9f54e246f96b5, type: 3}
     Prefabs:
       NetworkPrefabsLists:
       - {fileID: 11400000, guid: b329b82efff141d4e8aa1b1dec133339, type: 2}
@@ -7887,7 +7887,7 @@ MonoBehaviour:
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
   ActiveSceneSynchronization: 0
-  SceneMigrationSynchronization: 1
+  SceneMigrationSynchronization: 0
   SpawnWithObservers: 1
   DontDestroyWithOwner: 0
   AutoObjectParentSync: 1
