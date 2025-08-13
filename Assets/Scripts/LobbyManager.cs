@@ -1,11 +1,10 @@
 using System;
 using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
+using Unity.Netcode;
 using Unity.Services.Authentication;
-using Unity.Services.Core;
 using Unity.Services.Lobbies;
 using Unity.Services.Lobbies.Models;
+using Unity.Services.Relay;
 using UnityEngine;
 
 public class LobbyManager : MonoBehaviour
@@ -16,6 +15,7 @@ public class LobbyManager : MonoBehaviour
 
     public const int MAX_PLAYERS = 2;
     public const string KEY_PLAYER_NAME = "PlayerName";
+    public const string KEY_START_GAME = "StartGame_RelayCode";
 
     #endregion
 
@@ -41,9 +41,12 @@ public class LobbyManager : MonoBehaviour
 
     #endregion
 
-    [SerializeField] float lobbyHeartbeatTimeMax = 15f;
-    [SerializeField] float lobbyPollTimerMax = 2f;
-    [SerializeField] float publicLobbyListRefreshTimerMax = 5f;
+    [SerializeField, Tooltip("Interval to sent a heartbeat ping, to keep the lobby alive")] 
+    float lobbyHeartbeatTimeMax = 15f;
+    [SerializeField, Tooltip("Interval to refresh lobby data of the current lobby")] 
+    float lobbyPollTimerMax = 2f;
+    [SerializeField, Tooltip("Interval to refresh the public lobby list")] 
+    float publicLobbyListRefreshTimerMax = 5f;
     private Lobby currentLobby;
 
     private float lobbyHeartbeatTime;
@@ -52,15 +55,13 @@ public class LobbyManager : MonoBehaviour
 
     private void Awake()
     {
-        if (Instance == null)
-        {
-            Instance = this;
-            DontDestroyOnLoad(gameObject);
-        }
-        else
+        if (Instance != null && Instance != this)
         {
             Destroy(gameObject);
+            return;
         }
+        Instance = this;
+        DontDestroyOnLoad(gameObject);
 
         lobbyHeartbeatTime = lobbyHeartbeatTimeMax;
         lobbyPollTimer = lobbyPollTimerMax;
@@ -125,6 +126,14 @@ public class LobbyManager : MonoBehaviour
 
                     currentLobby = null;
                 }
+
+                if (currentLobby.Data[KEY_START_GAME].Value != "0")
+                {
+                    if (!IsLobbyHost() && !NetworkManager.Singleton.IsConnectedClient)
+                    {
+                        RelayManager.Instance.JoinRelayAsync(currentLobby.Data[KEY_START_GAME].Value);
+                    }
+                }
             }
         }
     }
@@ -132,6 +141,15 @@ public class LobbyManager : MonoBehaviour
     public Lobby GetCurrentLobby()
     {
         return currentLobby;
+    }
+
+    public bool IsLobbyReady()
+    {
+        return currentLobby != null && 
+               currentLobby.Players != null && 
+               currentLobby.Players.Count >= 2 && 
+               currentLobby.Data.ContainsKey(KEY_START_GAME) && 
+               currentLobby.Data[KEY_START_GAME].Value != "0";
     }
 
     public bool IsLobbyHost()
@@ -169,13 +187,19 @@ public class LobbyManager : MonoBehaviour
         CreateLobbyOptions options = new CreateLobbyOptions
         {
             Player = player,
-            IsPrivate = isPrivate
+            IsPrivate = isPrivate,
+            Data = new Dictionary<string, DataObject>
+            {
+                { KEY_START_GAME, new DataObject(DataObject.VisibilityOptions.Member, "0") }
+            }
         };
 
         try
         {
             Lobby lobby = await LobbyService.Instance.CreateLobbyAsync(lobbyName, MAX_PLAYERS, options);
             currentLobby = lobby;
+
+            StartConnectingGame();
 
             OnJoinedLobby?.Invoke(this, new LobbyEventArgs { lobby = lobby });
 
@@ -293,4 +317,38 @@ public class LobbyManager : MonoBehaviour
             }
         }
     }
+
+    #region Relay
+
+    public async void StartConnectingGame()
+    {
+        if (IsLobbyHost())
+        {
+            try
+            {
+                Debug.Log("Starting game...");
+                string relayJoinCode = await RelayManager.Instance.CreateRelayAsync(MAX_PLAYERS);
+                if (string.IsNullOrEmpty(relayJoinCode))
+                {
+                    OnServiceError?.Invoke(this, "Failed to create relay.");
+                    return;
+                }
+
+                Lobby lobby = await LobbyService.Instance.UpdateLobbyAsync(currentLobby.Id, new UpdateLobbyOptions
+                {
+                    Data = new Dictionary<string, DataObject>
+                    {
+                        { KEY_START_GAME, new DataObject(DataObject.VisibilityOptions.Member, relayJoinCode) }
+                    }
+                });
+                currentLobby = lobby;
+            }
+            catch (RelayServiceException ex)
+            {
+                OnServiceError?.Invoke(this, ex.Message);
+            }
+        }
+    }
+
+    #endregion
 }
