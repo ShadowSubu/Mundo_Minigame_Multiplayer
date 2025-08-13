@@ -726,6 +726,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   chatWindowOpenedHeight: 500
+  chatWindowPreviewHeight: 85
   chatWindowClosedHeight: 50
   chatInputField: {fileID: 575504748}
   chatMessagePrefab: {fileID: 429055560808807895, guid: 8623c89d21166b045ab6e4068bb64bd7, type: 3}
@@ -1196,7 +1197,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 74353833}
   m_Direction: 0
   m_Value: 1
-  m_Size: 1
+  m_Size: 0.99999994
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:

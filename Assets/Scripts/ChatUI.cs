@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Threading.Tasks;
 using TMPro;
 using Unity.Services.Authentication;
 using UnityEngine;
@@ -9,6 +10,7 @@ using UnityEngine.EventSystems;
 public class ChatUI : MonoBehaviour, IPointerDownHandler
 {
     [SerializeField] private float chatWindowOpenedHeight = 500f;
+    [SerializeField] private float chatWindowPreviewHeight = 100f;
     [SerializeField] private float chatWindowClosedHeight = 50f;
 
     [SerializeField] private TMP_InputField chatInputField;
@@ -81,6 +83,20 @@ public class ChatUI : MonoBehaviour, IPointerDownHandler
             TextMeshProUGUI newMessage = Instantiate(chatMessagePrefab, chatContainer);
             newMessage.text = $"<b>{e.playerName}:</b> {e.message}";
             chatMessages.Enqueue(newMessage);
+        }
+        if (!isChatOpen)
+        {
+            NewChatMessagePreview();
+        }
+    }
+
+    private async void NewChatMessagePreview()
+    {
+        thisRectTransform.sizeDelta = new Vector2(thisRectTransform.sizeDelta.x, chatWindowPreviewHeight);
+        await Task.Delay(3000);
+        if (!isChatOpen)
+        {
+            thisRectTransform.sizeDelta = new Vector2(thisRectTransform.sizeDelta.x, chatWindowClosedHeight);
         }
     }
 
