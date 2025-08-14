@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using System.Threading.Tasks;
 using Unity.Netcode;
 using Unity.Services.Authentication;
 using UnityEngine;
@@ -12,7 +13,12 @@ public class GameManager : NetworkBehaviour
         Instance = this;
     }
 
-    public event EventHandler OnSpawnPlayer;
+    public event EventHandler<SpawnPlayerEventArgs> OnSpawnPlayer;
+    public class SpawnPlayerEventArgs : EventArgs
+    {
+        public Team PlayerTeam;
+        public ulong clientId;
+    }
 
     private Team localPlayerTeam;
 
@@ -28,10 +34,11 @@ public class GameManager : NetworkBehaviour
         RequestSpawnPlayer();
     }
 
-    public void RequestSpawnPlayer()
+    public async void RequestSpawnPlayer()
     {
         if (IsServer)
         {
+            await Task.Delay(1000);
             ShuffleTeam();
         }
     }
@@ -55,7 +62,18 @@ public class GameManager : NetworkBehaviour
         {
             localPlayerTeam = team;
             Debug.Log($"{AuthenticationService.Instance.PlayerName} was Assigned to team: {team}");
-            OnSpawnPlayer?.Invoke(this, EventArgs.Empty);
         }
+        OnSpawnPlayer?.Invoke(this, new SpawnPlayerEventArgs { PlayerTeam = team, clientId = clientId});
+        //TriggerSpawnPlayerRpc(team, clientId);
+    }
+
+    [Rpc(SendTo.Server)]
+    private void TriggerSpawnPlayerRpc(Team team, ulong clientId)
+    {
+    }
+
+    public Team GetLocalPlayerTeam()
+    {
+        return localPlayerTeam;
     }
 }
