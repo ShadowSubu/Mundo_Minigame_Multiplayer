@@ -28,12 +28,12 @@ public class GameAreaBehaviour : MonoBehaviour
                 break;
             case GameManager.Team.A:
                 Debug.Log("Spawning Player in Team A");
-                SpawnNetworkPlayerRpc(teamASpawnPoint, teamACameraPosition, e.clientId);
+                SpawnNetworkPlayerRpc(teamASpawnPoint, teamACameraPosition, e.clientId, e.PlayerTeam);
                 SetCameraRpc(teamACameraPosition.position, teamACameraPosition.rotation, e.clientId);
                 break;
             case GameManager.Team.B:
                 Debug.Log("Spawning Player in Team B");
-                SpawnNetworkPlayerRpc(teamBSpawnPoint, teamBCameraPosition, e.clientId);
+                SpawnNetworkPlayerRpc(teamBSpawnPoint, teamBCameraPosition, e.clientId, e.PlayerTeam);
                 SetCameraRpc(teamBCameraPosition.position, teamBCameraPosition.rotation, e.clientId);
                 break;
             default:
@@ -42,12 +42,12 @@ public class GameAreaBehaviour : MonoBehaviour
     }
 
     [Rpc(SendTo.Server)]
-    private void SpawnNetworkPlayerRpc(Transform playerPosition, Transform cameraPostion, ulong clientId)
+    private void SpawnNetworkPlayerRpc(Transform playerPosition, Transform cameraPostion, ulong clientId, GameManager.Team team)
     {
         if (!NetworkManager.Singleton.IsServer) return;
         PlayerController playerController = Instantiate(playerControllerPrefab, playerPosition.position , playerPosition.rotation);
-        
         playerController.GetComponent<NetworkObject>().SpawnAsPlayerObject(clientId, true);
+        playerController.InitializeRpc(team);
     }
 
     [Rpc(SendTo.ClientsAndHost)]
