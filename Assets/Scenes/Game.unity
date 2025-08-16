@@ -206,7 +206,6 @@ GameObject:
   - component: {fileID: 9577315}
   - component: {fileID: 9577318}
   - component: {fileID: 9577317}
-  - component: {fileID: 9577316}
   m_Layer: 0
   m_Name: Divider (4)
   m_TagString: Untagged
@@ -229,27 +228,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 145656654}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!65 &9577316
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9577314}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!23 &9577317
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -1938,7 +1916,6 @@ GameObject:
   - component: {fileID: 1056833415}
   - component: {fileID: 1056833418}
   - component: {fileID: 1056833417}
-  - component: {fileID: 1056833416}
   m_Layer: 0
   m_Name: Divider (3)
   m_TagString: Untagged
@@ -1961,27 +1938,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 145656654}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!65 &1056833416
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1056833414}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!23 &1056833417
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -2496,7 +2452,6 @@ GameObject:
   - component: {fileID: 1303442889}
   - component: {fileID: 1303442892}
   - component: {fileID: 1303442891}
-  - component: {fileID: 1303442890}
   m_Layer: 0
   m_Name: Divider (1)
   m_TagString: Untagged
@@ -2519,27 +2474,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 145656654}
   m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
---- !u!65 &1303442890
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1303442888}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!23 &1303442891
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -2819,7 +2753,6 @@ GameObject:
   - component: {fileID: 1916430618}
   - component: {fileID: 1916430621}
   - component: {fileID: 1916430620}
-  - component: {fileID: 1916430619}
   m_Layer: 0
   m_Name: Divider (2)
   m_TagString: Untagged
@@ -2842,27 +2775,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 145656654}
   m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
---- !u!65 &1916430619
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1916430617}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!23 &1916430620
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -3281,7 +3193,6 @@ GameObject:
   - component: {fileID: 2055972184}
   - component: {fileID: 2055972187}
   - component: {fileID: 2055972186}
-  - component: {fileID: 2055972185}
   m_Layer: 0
   m_Name: Divider
   m_TagString: Untagged
@@ -3304,27 +3215,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 145656654}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!65 &2055972185
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2055972183}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!23 &2055972186
 MeshRenderer:
   m_ObjectHideFlags: 0
