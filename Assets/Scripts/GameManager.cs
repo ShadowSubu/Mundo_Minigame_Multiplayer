@@ -20,6 +20,8 @@ public class GameManager : NetworkBehaviour
         public ulong clientId;
     }
 
+    public event EventHandler OnGameOver;
+
     private Team localPlayerTeam;
 
     public enum Team
@@ -67,9 +69,14 @@ public class GameManager : NetworkBehaviour
         //TriggerSpawnPlayerRpc(team, clientId);
     }
 
-    [Rpc(SendTo.Server)]
-    private void TriggerSpawnPlayerRpc(Team team, ulong clientId)
+    public void GameOver()
     {
+        OnGameOver?.Invoke(this, EventArgs.Empty);
+    }
+
+    public void RestartGame()
+    {
+        SceneLoadingManager.Instance.LoadSceneAsync("Game");
     }
 
     public Team GetLocalPlayerTeam()
