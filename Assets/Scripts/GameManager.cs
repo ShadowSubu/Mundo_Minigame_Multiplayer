@@ -24,6 +24,12 @@ public class GameManager : NetworkBehaviour
 
     private Team localPlayerTeam;
 
+    #region Testing
+
+    public event EventHandler OnSpawnPlayerTesting;
+
+    #endregion
+
     public enum Team
     {
         None,
@@ -31,9 +37,23 @@ public class GameManager : NetworkBehaviour
         B
     }
 
-    private void Start()
+    private async void Start()
     {
-        RequestSpawnPlayer();
+        if (NetworkManager.Singleton != null && NetworkManager.Singleton.IsConnectedClient)
+        {
+            RequestSpawnPlayer();
+        }
+        else
+        {
+            bool started = NetworkManager.Singleton.StartHost();
+
+            // Wait until we're actually connected
+            while (NetworkManager.Singleton.IsHost && !NetworkManager.Singleton.IsConnectedClient)
+            {
+                await Task.Yield(); // Wait one frame
+            }
+            SpawnTestSetup();
+        }
     }
 
     public async void RequestSpawnPlayer()
@@ -83,4 +103,14 @@ public class GameManager : NetworkBehaviour
     {
         return localPlayerTeam;
     }
+
+    #region Testing
+
+    private void SpawnTestSetup()
+    {
+        localPlayerTeam = Team.A;
+        OnSpawnPlayerTesting?.Invoke(this, EventArgs.Empty);
+    }
+
+    #endregion
 }
