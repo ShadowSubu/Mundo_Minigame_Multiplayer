@@ -20,7 +20,15 @@ public class GameManager : NetworkBehaviour
         public ulong clientId;
     }
 
+    public event EventHandler OnGameOver;
+
     private Team localPlayerTeam;
+
+    #region Testing
+
+    public event EventHandler OnSpawnPlayerTesting;
+
+    #endregion
 
     public enum Team
     {
@@ -29,9 +37,23 @@ public class GameManager : NetworkBehaviour
         B
     }
 
-    private void Start()
+    private async void Start()
     {
-        RequestSpawnPlayer();
+        if (NetworkManager.Singleton != null && NetworkManager.Singleton.IsConnectedClient)
+        {
+            RequestSpawnPlayer();
+        }
+        else
+        {
+            bool started = NetworkManager.Singleton.StartHost();
+
+            // Wait until we're actually connected
+            while (NetworkManager.Singleton.IsHost && !NetworkManager.Singleton.IsConnectedClient)
+            {
+                await Task.Yield(); // Wait one frame
+            }
+            SpawnTestSetup();
+        }
     }
 
     public async void RequestSpawnPlayer()
@@ -67,13 +89,28 @@ public class GameManager : NetworkBehaviour
         //TriggerSpawnPlayerRpc(team, clientId);
     }
 
-    [Rpc(SendTo.Server)]
-    private void TriggerSpawnPlayerRpc(Team team, ulong clientId)
+    public void GameOver()
     {
+        OnGameOver?.Invoke(this, EventArgs.Empty);
+    }
+
+    public void RestartGame()
+    {
+        SceneLoadingManager.Instance.LoadSceneAsync("Game");
     }
 
     public Team GetLocalPlayerTeam()
     {
         return localPlayerTeam;
     }
+
+    #region Testing
+
+    private void SpawnTestSetup()
+    {
+        localPlayerTeam = Team.A;
+        OnSpawnPlayerTesting?.Invoke(this, EventArgs.Empty);
+    }
+
+    #endregion
 }
