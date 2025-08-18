@@ -1,8 +1,6 @@
 using System;
 using Unity.Netcode;
-using UnityEditor.PackageManager;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 public class GameAreaBehaviour : MonoBehaviour
 {
