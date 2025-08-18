@@ -72,6 +72,11 @@ public class GameManager : NetworkBehaviour
         var shuffled = teams.OrderBy(_ => UnityEngine.Random.value).ToArray();
 
         ulong[] clientIds = NetworkManager.Singleton.ConnectedClientsIds.ToArray();
+        for (int i = 0; i < clientIds.Length; i++)
+        {
+            // print clients
+            Debug.Log($"Client {i}: {clientIds[i]}");
+        }
 
         AssignTeamRpc(clientIds[0], teams[0]);
         AssignTeamRpc(clientIds[1], teams[1]);
