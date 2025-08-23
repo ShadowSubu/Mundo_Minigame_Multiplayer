@@ -6,6 +6,7 @@ public class Shooter : NetworkBehaviour
 {
     [SerializeField] private Projectile projectilePrefab;
     [SerializeField] private Transform firePoint;
+    [SerializeField] LayerMask shootingLayer;
     [SerializeField] private float bulletSpeed = 20f;
     [SerializeField] private float maxDistance = 50f;
     [SerializeField] private float maxCooldown = 5f;
@@ -59,7 +60,7 @@ public class Shooter : NetworkBehaviour
         Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
 
-        if (Physics.Raycast(ray, out hit, Mathf.Infinity))
+        if (Physics.Raycast(ray, out hit, Mathf.Infinity, shootingLayer))
         {
             // Calculate direction from fire point to mouse click
             Vector3 direction = (hit.point - firePoint.position).normalized;
@@ -67,10 +68,10 @@ public class Shooter : NetworkBehaviour
 
             // Send to server to spawn bullet
             SpawnBulletServerRpc(firePoint.position, direction);
+            cooldownTime = maxCooldown;
+            InvokeRepeating(nameof(UpdateCooldownUI), 0f, 0.1f);
         }
 
-        cooldownTime = maxCooldown;
-        InvokeRepeating(nameof(UpdateCooldownUI), 0f, 0.1f);
     }
 
     [Rpc(SendTo.Server)]

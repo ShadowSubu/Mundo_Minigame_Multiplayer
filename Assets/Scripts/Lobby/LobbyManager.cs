@@ -148,6 +148,7 @@ public class LobbyManager : MonoBehaviour
         return currentLobby != null && 
                currentLobby.Players != null && 
                currentLobby.Players.Count >= 2 && 
+               NetworkManager.Singleton.ConnectedClients.Count >= 2 &&
                currentLobby.Data.ContainsKey(KEY_START_GAME) && 
                currentLobby.Data[KEY_START_GAME].Value != "0";
     }

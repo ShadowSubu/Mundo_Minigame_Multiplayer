@@ -711,7 +711,7 @@ NavMeshAgent:
   m_Enabled: 0
   m_AgentTypeID: 0
   m_Radius: 0.3
-  m_Speed: 30
+  m_Speed: 25
   m_Acceleration: 9999999
   avoidancePriority: 50
   m_AngularSpeed: 9999999
@@ -738,9 +738,12 @@ MonoBehaviour:
   ShowTopMostFoldoutHeaderGroup: 1
   projectilePrefab: {fileID: 4229414518809431635, guid: 40e2683d1bc7aa341be032fdbc5e657e, type: 3}
   firePoint: {fileID: 6795318565604733180}
+  shootingLayer:
+    serializedVersion: 2
+    m_Bits: 64
   bulletSpeed: 80
   maxDistance: 50
-  maxCooldown: 5
+  maxCooldown: 4
 --- !u!114 &7531929404773095252
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -202,6 +202,7 @@ public class LobbyUI : MonoBehaviour
             GUIUtility.systemCopyBuffer = lobby.LobbyCode;
             Debug.Log("Lobby code copied to clipboard: " + lobby.LobbyCode);
         });
+        ChangeStartGameButtonState();
     }
 
     private void ClearLobby()
@@ -233,12 +234,14 @@ public class LobbyUI : MonoBehaviour
     {
         joinLobbyUI.SetActive(true);
         lobbyDetailsUI.SetActive(false);
+        ChangeStartGameButtonState();
     }
 
     private void LobbyManager_OnLobbyLeft(object sender, EventArgs e)
     {
         joinLobbyUI.SetActive(true);
         lobbyDetailsUI.SetActive(false);
+        ChangeStartGameButtonState();
     }
 
     private void LobbyManager_OnLobbyJoined(object sender, LobbyManager.LobbyEventArgs e)
@@ -248,18 +251,17 @@ public class LobbyUI : MonoBehaviour
         lobbyDetailsUI.SetActive(true);
 
         startGameButton.gameObject.SetActive(LobbyManager.Instance.IsLobbyHost());
+        ChangeStartGameButtonState();
     }
 
     private void StartGame()
     {
-        if (LobbyManager.Instance.IsLobbyReady())
-        {
-            SceneLoadingManager.Instance.LoadSceneAsync("Game");
-        }
-        else
-        {
-            ShowError("Players are not ready yet.");
-        }
+        SceneLoadingManager.Instance.LoadSceneAsync("Game");
+    }
+
+    private void ChangeStartGameButtonState()
+    {
+        startGameButton.interactable = LobbyManager.Instance.IsLobbyReady();
     }
 
     private void ShowLoading(string loadingMessage)
