@@ -1,4 +1,3 @@
-using NUnit.Framework.Interfaces;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.UI;
@@ -33,9 +32,14 @@ public class PlayerUI : NetworkBehaviour
         }
     }
 
-    private void Update()
+    private void LateUpdate()
     {
-        healthbarTransform.rotation = Quaternion.LookRotation(healthbarTransform.position - mainCamera.transform.position);
+        RotateHealthUIToFaceCamera();
+    }
+
+    private void RotateHealthUIToFaceCamera()
+    {
+        healthbarTransform.LookAt(healthbarTransform.position + mainCamera.transform.rotation * Vector3.forward, mainCamera.transform.rotation * Vector3.up);
     }
 
     private void UpdateCooldownBar(object sender, float e)

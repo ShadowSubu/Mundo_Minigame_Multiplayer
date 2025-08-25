@@ -1,6 +1,5 @@
 using System;
 using Unity.Netcode;
-using UnityEngine;
 
 public class ChatSystem : NetworkBehaviour
 {
@@ -11,29 +10,46 @@ public class ChatSystem : NetworkBehaviour
         Instance = this;
     }
 
-    public event EventHandler<ChatMessageEventArgs> OnChatMessageEntered;
+    public event EventHandler<ChatMessageEventArgs> OnChatInputRecieved;
 
     public class ChatMessageEventArgs : EventArgs
     {
-        public string playerName;
+        public ulong senderCliendId;
         public string message;
     }
 
     [Rpc(SendTo.Server)]
-    public void RequestToSendChatMessageRpc(string playerName, string message)
+    public void RequestToSendChatInputRpc(string message, ulong clientId)
     {
         if (!IsServer) return;
-
-        SendChatMessageRpc(playerName, message);
+        SendChatInputRpc(message, clientId);
     }
 
     [Rpc(SendTo.ClientsAndHost)]
-    private void SendChatMessageRpc(string playerName, string message)
+    public void SendChatInputRpc(string message, ulong clientId)
     {
-        OnChatMessageEntered?.Invoke(this, new ChatMessageEventArgs
+        OnChatInputRecieved?.Invoke(this, new ChatMessageEventArgs
         {
-            playerName = playerName,
+            senderCliendId = clientId,
             message = message
         });
     }
+
+    //[Rpc(SendTo.Server)]
+    //public void RequestToSendChatMessageRpc(string playerName, string message)
+    //{
+    //    if (!IsServer) return;
+
+    //    SendChatMessageRpc(playerName, message);
+    //}
+
+    //[Rpc(SendTo.ClientsAndHost)]
+    //private void SendChatMessageRpc(string playerName, string message)
+    //{
+    //    OnChatMessageEntered?.Invoke(this, new ChatMessageEventArgs
+    //    {
+    //        playerName = playerName,
+    //        message = message
+    //    });
+    //}
 }
