@@ -8,9 +8,11 @@ using UnityEngine;
 [RequireComponent(typeof(NetworkTransform))]
 public abstract class ProjectileBase : NetworkBehaviour
 {
-    [SerializeField] private GameObject projectileGO;
+    [SerializeField] private ProjectileType projectileType;
+
     [SerializeField] protected float projectileSpeed = 20f;
     [SerializeField] protected byte projectileDamage = 10;
+    [SerializeField] protected float maxCooldown = 4f;
 
     protected NetworkObject shooterObject;
     protected Vector3 startPosition;
@@ -49,4 +51,6 @@ public abstract class ProjectileBase : NetworkBehaviour
     }
 
     public ulong GetShooterClientId() => shooterObject.OwnerClientId;
+    public ProjectileType ProjectileType => projectileType;
+    public float MaxCooldown => maxCooldown;
 }

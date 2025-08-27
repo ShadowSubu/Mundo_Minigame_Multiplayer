@@ -57,4 +57,28 @@ public class PlayerUI : NetworkBehaviour
     {
         healthBar.fillAmount = (float)e / (float)playerController.GetMaxHealth();
     }
+
+    #region Testing
+
+    public Image normalBulletButton;
+    public Image boomerangBulletButton;
+    public Color selectionColor;
+
+    [Rpc(SendTo.ClientsAndHost)]
+    public void SelectNormalProjectileRpc()
+    {
+        GetComponent<Shooter>().SelectProjectile(ProjectileType.Normal);
+        normalBulletButton.color = selectionColor;
+        boomerangBulletButton.color = Color.white;
+    }
+
+    [Rpc(SendTo.ClientsAndHost)]
+    public void SelectBoomerangProjectileRpc()
+    {
+        GetComponent<Shooter>().SelectProjectile(ProjectileType.Boomerang);
+        boomerangBulletButton.color = selectionColor;
+        normalBulletButton.color = Color.white;
+    }
+
+    #endregion
 }

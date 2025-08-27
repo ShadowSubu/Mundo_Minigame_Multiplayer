@@ -1,15 +1,16 @@
 using System;
+using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
 
 public class Shooter : NetworkBehaviour
 {
-    [SerializeField] private ProjectileBoomerang projectilePrefab;
+    [SerializeField] private ProjectileType selectedProjectile;
+    [SerializeField] private List<ProjectileBase> projectilesDatabase;
+    private Dictionary<ProjectileType, ProjectileBase> projectilesDictionary;
+
     [SerializeField] private Transform firePoint;
     [SerializeField] LayerMask shootingLayer;
-    [SerializeField] private float bulletSpeed = 20f;
-    [SerializeField] private float maxDistance = 50f;
-    [SerializeField] private float maxCooldown = 5f;
 
     private float cooldownTime = 0f;
 
@@ -20,6 +21,19 @@ public class Shooter : NetworkBehaviour
     private void Awake()
     {
         mainCamera = Camera.main;
+        InitializeProjectileDictionary();
+    }
+
+    private void InitializeProjectileDictionary()
+    {
+        projectilesDictionary = new();
+        foreach (ProjectileBase projectile in projectilesDatabase)
+        {
+            if (!projectilesDictionary.ContainsKey(projectile.ProjectileType))
+            {
+                projectilesDictionary.Add(projectile.ProjectileType, projectile);
+            }
+        }
     }
 
     private void Update()
@@ -68,7 +82,7 @@ public class Shooter : NetworkBehaviour
 
             // Send to server to spawn bullet
             SpawnBulletServerRpc(firePoint.position, direction);
-            cooldownTime = maxCooldown;
+            cooldownTime = projectilesDictionary[selectedProjectile].MaxCooldown;
             InvokeRepeating(nameof(UpdateCooldownUI), 0f, 0.1f);
         }
     }
@@ -76,7 +90,7 @@ public class Shooter : NetworkBehaviour
     [Rpc(SendTo.Server)]
     void SpawnBulletServerRpc(Vector3 spawnPos, Vector3 direction)
     {
-        ProjectileBoomerang projectile = Instantiate(projectilePrefab, spawnPos, Quaternion.LookRotation(direction));
+        ProjectileBase projectile = Instantiate(projectilesDictionary[selectedProjectile], spawnPos, Quaternion.LookRotation(direction));
 
         if (projectile != null)
         {
@@ -86,7 +100,8 @@ public class Shooter : NetworkBehaviour
         projectile.GetComponent<NetworkObject>().Spawn(true);
     }
 
-    public void ReduceCooldown(float amount)
+    [Rpc(SendTo.Owner)]
+    public void ReduceCooldownRpc(float amount)
     {
         cooldownTime -= amount;
         UpdateCooldownUI();
@@ -94,6 +109,22 @@ public class Shooter : NetworkBehaviour
 
     public float GetMaxCooldown()
     {
-        return maxCooldown;
+        return projectilesDictionary[selectedProjectile].MaxCooldown;
     }
+
+    #region Testing
+
+    public void SelectProjectile(ProjectileType type)
+    {
+        selectedProjectile = type;
+    }
+
+    #endregion
+}
+
+[Serializable]
+public enum ProjectileType
+{
+    Normal,
+    Boomerang
 }

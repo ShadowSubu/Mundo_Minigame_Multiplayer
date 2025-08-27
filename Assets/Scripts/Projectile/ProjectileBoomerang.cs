@@ -1,4 +1,5 @@
 using System;
+using Unity.Netcode;
 using UnityEngine;
 
 public class ProjectileBoomerang : ProjectileBase
@@ -18,32 +19,29 @@ public class ProjectileBoomerang : ProjectileBase
     {
         if (!IsServer) return;
 
-        if (!isReturning && !hasHitTargetForward)
+        other.TryGetComponent(out NetworkObject hit);
+        // Enemy
+        if (hit != null && hit.OwnerClientId != shooterObject.OwnerClientId)
         {
-            other.TryGetComponent(out TargetBase hit);
-            if (hit != null && hit.OwnerClientId != shooterObject.OwnerClientId)
+            if (!isReturning && !hasHitTargetForward)
             {
-                // Hit an opponent - destroy bullet
-                hit.ReceiveHitpointsRpc(projectileDamage, OwnerClientId);
+                hit.TryGetComponent(out TargetBase enemy);
+                enemy.ReceiveHitpointsRpc(projectileDamage, OwnerClientId);
+            }
+            else if (isReturning && !hasHitTargetReturn)
+            {
+                hit.TryGetComponent(out TargetBase enemy);
+                enemy.ReceiveHitpointsRpc(projectileDamage, OwnerClientId);
             }
         }
-        else if (isReturning)
+        // Self
+        else if (hit != null && hit.OwnerClientId == shooterObject.OwnerClientId)
         {
-            other.TryGetComponent(out Shooter hit);
-            if (hit != null && hit.OwnerClientId == shooterObject.OwnerClientId)
+            if (isReturning)
             {
-                // Hit an opponent - destroy bullet
-                hit.ReduceCooldown(cooldownReduction);
+                hit.TryGetComponent(out Shooter shooter);
+                shooter.ReduceCooldownRpc(cooldownReduction);
                 DestroyBullet();
-            }
-        }
-        else if (isReturning && !hasHitTargetReturn)
-        {
-            other.TryGetComponent(out TargetBase hit);
-            if (hit != null && hit.OwnerClientId != shooterObject.OwnerClientId)
-            {
-                // Hit an opponent - destroy bullet
-                hit.ReceiveHitpointsRpc(projectileDamage, OwnerClientId);
             }
         }
     }
