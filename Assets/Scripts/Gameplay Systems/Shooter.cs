@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Shooter : NetworkBehaviour
 {
-    [SerializeField] private Projectile projectilePrefab;
+    [SerializeField] private Projectile_Old projectilePrefab;
     [SerializeField] private Transform firePoint;
     [SerializeField] LayerMask shootingLayer;
     [SerializeField] private float bulletSpeed = 20f;
@@ -77,7 +77,7 @@ public class Shooter : NetworkBehaviour
     [Rpc(SendTo.Server)]
     void SpawnBulletServerRpc(Vector3 spawnPos, Vector3 direction)
     {
-        Projectile projectile = Instantiate(projectilePrefab, spawnPos, Quaternion.LookRotation(direction));
+        Projectile_Old projectile = Instantiate(projectilePrefab, spawnPos, Quaternion.LookRotation(direction));
 
         if (projectile != null)
         {

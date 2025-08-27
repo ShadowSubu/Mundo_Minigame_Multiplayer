@@ -1,7 +1,7 @@
 using Unity.Netcode;
 using UnityEngine;
 
-public class Projectile : NetworkBehaviour
+public class Projectile_Old : NetworkBehaviour
 {
     private Vector3 moveDirection;
     private float speed;
