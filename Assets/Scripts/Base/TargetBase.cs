@@ -39,8 +39,13 @@ public abstract class TargetBase : NetworkBehaviour
     internal abstract void OnTriggerEnterBehaviour(Collider other);
     internal abstract void OnHitpointsDepletedBehaviour();
 
+    /// <summary>
+    /// Change the Health Value of this target
+    /// </summary>
+    /// <param name="hitpoints">Amount to change (-ve to reduce / +ve to increase)</param>
+    /// <param name="invokerClientId"></param>
     [Rpc(SendTo.Server)]
-    internal void RecieveHitpoints(byte hitpoints, ulong invokerClientId)
+    public void ReceiveHitpointsRpc(byte hitpoints, ulong invokerClientId)
     {
         if (!IsServer) return;
         currentHealth.Value = (byte)Mathf.Max(0, currentHealth.Value - hitpoints);

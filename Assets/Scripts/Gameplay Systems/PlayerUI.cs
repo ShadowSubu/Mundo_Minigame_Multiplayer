@@ -9,13 +9,13 @@ public class PlayerUI : NetworkBehaviour
     [SerializeField] private Canvas playerCanvas;
     [SerializeField] private Transform healthbarTransform;
 
-    private PlayerController playerController;
+    private TargetPlayer playerController;
     private Shooter shooter;
     private Camera mainCamera;
 
     private void Awake()
     {
-        playerController = GetComponent<PlayerController>();
+        playerController = GetComponent<TargetPlayer>();
         shooter = GetComponent<Shooter>();
 
         mainCamera = Camera.main;

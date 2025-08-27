@@ -10,23 +10,8 @@ public class PlayerController : NetworkBehaviour
     private LayerMask allowedLayer;
     private NavMeshAgent navMeshAgent;
     private int allowedNavmeshArea;
-    [SerializeField] private byte maxHealth = 100;
 
-    public event EventHandler<byte> OnHealthChanged;
     public event EventHandler OnCooldownChanged;
-
-    public NetworkVariable<byte> playerHealth = new NetworkVariable<byte>(100, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
-
-    public override void OnNetworkSpawn()
-    {
-        playerHealth.OnValueChanged += HandleHealthChanged;
-        playerHealth.Value = maxHealth;
-    }
-
-    private void HandleHealthChanged(byte previousValue, byte newValue)
-    {
-        OnHealthChanged?.Invoke(this, newValue);
-    }
 
     private void Awake()
     {
@@ -110,25 +95,5 @@ public class PlayerController : NetworkBehaviour
     {
         navMeshAgent.ResetPath();
         navMeshAgent.SetDestination(targetPosition);
-    }
-
-    [Rpc(SendTo.Server)]
-    public void TakeDamageRpc(byte damage)
-    {
-        if (!IsServer) return;
-        playerHealth.Value -= damage;
-        Debug.Log($"Player took {damage} damage. Current health: {playerHealth.Value}");
-        if (playerHealth.Value <= 0)
-        {
-            Debug.Log("Player has died.");
-            GetComponent<NetworkObject>().Despawn();
-            Destroy(gameObject);
-            GameManager.Instance.GameOver();
-        }
-    }
-
-    public byte GetMaxHealth()
-    {
-        return maxHealth;
     }
 }

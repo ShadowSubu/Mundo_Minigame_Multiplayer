@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Shooter : NetworkBehaviour
 {
-    [SerializeField] private Projectile_Old projectilePrefab;
+    [SerializeField] private ProjectileBoomerang projectilePrefab;
     [SerializeField] private Transform firePoint;
     [SerializeField] LayerMask shootingLayer;
     [SerializeField] private float bulletSpeed = 20f;
@@ -71,20 +71,25 @@ public class Shooter : NetworkBehaviour
             cooldownTime = maxCooldown;
             InvokeRepeating(nameof(UpdateCooldownUI), 0f, 0.1f);
         }
-
     }
 
     [Rpc(SendTo.Server)]
     void SpawnBulletServerRpc(Vector3 spawnPos, Vector3 direction)
     {
-        Projectile_Old projectile = Instantiate(projectilePrefab, spawnPos, Quaternion.LookRotation(direction));
+        ProjectileBoomerang projectile = Instantiate(projectilePrefab, spawnPos, Quaternion.LookRotation(direction));
 
         if (projectile != null)
         {
-            projectile.Initialize(direction, bulletSpeed, maxDistance, OwnerClientId);
+            projectile.Initialize(direction, this.NetworkObject);
         }
 
         projectile.GetComponent<NetworkObject>().Spawn(true);
+    }
+
+    public void ReduceCooldown(float amount)
+    {
+        cooldownTime -= amount;
+        UpdateCooldownUI();
     }
 
     public float GetMaxCooldown()

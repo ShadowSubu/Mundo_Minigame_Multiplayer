@@ -2,21 +2,24 @@ using Unity.Netcode;
 using Unity.Netcode.Components;
 using UnityEngine;
 
+/// <summary>
+/// This is a networked base class for any projectile
+/// </summary>
 [RequireComponent(typeof(NetworkTransform))]
 public abstract class ProjectileBase : NetworkBehaviour
 {
     [SerializeField] private GameObject projectileGO;
     [SerializeField] protected float projectileSpeed = 20f;
-    [SerializeField] protected float projectileDamage = 10f;
+    [SerializeField] protected byte projectileDamage = 10;
 
-    protected ulong shooterClientId;
+    protected NetworkObject shooterObject;
     protected Vector3 startPosition;
     protected Vector3 moveDirection;
 
-    internal void Initialize(Vector3 direction, ulong shooterClientId)
+    internal void Initialize(Vector3 direction, NetworkObject shooter)
     {
         moveDirection = direction.normalized;
-        this.shooterClientId = shooterClientId;
+        shooterObject = shooter;
         startPosition = transform.position;
     }
 
@@ -32,6 +35,9 @@ public abstract class ProjectileBase : NetworkBehaviour
     }
 
     internal abstract void OnTriggerEnterBehaviour(Collider other);
+    /// <summary>
+    /// This method is called in the Update function, Call any logic that you want to run every frame
+    /// </summary>
     internal abstract void ProjectileBehaviour();
 
     internal void DestroyBullet()
@@ -42,5 +48,5 @@ public abstract class ProjectileBase : NetworkBehaviour
         }
     }
 
-    public ulong GetShooterClientId() => shooterClientId;
+    public ulong GetShooterClientId() => shooterObject.OwnerClientId;
 }
