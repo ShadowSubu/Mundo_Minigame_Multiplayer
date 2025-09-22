@@ -6,8 +6,6 @@ public class ProjectileNormal : ProjectileBase
 
     internal override void OnTriggerEnterBehaviour(Collider other)
     {
-        if (!IsServer) return;
-
         TargetBase hit = other.GetComponent<TargetBase>();
         Debug.Log($"Projectile hit: {other.name}, OwnerClientId: {hit?.OwnerClientId}");
         if (hit != null && hit.OwnerClientId != shooterObject.OwnerClientId)

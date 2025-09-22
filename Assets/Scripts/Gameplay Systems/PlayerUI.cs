@@ -5,18 +5,21 @@ using UnityEngine.UI;
 public class PlayerUI : NetworkBehaviour
 {
     [SerializeField] private Image healthBar;
-    [SerializeField] private Image cooldownBar;
+    [SerializeField] private Image projectileCooldownBar;
+    [SerializeField] private Image abilityCooldownBar;
     [SerializeField] private Canvas playerCanvas;
     [SerializeField] private Transform healthbarTransform;
 
     private TargetPlayer playerController;
     private Shooter shooter;
+    private Caster caster;
     private Camera mainCamera;
 
     private void Awake()
     {
         playerController = GetComponent<TargetPlayer>();
         shooter = GetComponent<Shooter>();
+        caster = GetComponent<Caster>();
 
         mainCamera = Camera.main;
     }
@@ -24,7 +27,8 @@ public class PlayerUI : NetworkBehaviour
     private void Start()
     {
         playerController.OnHealthChanged += UpdateHealthBar;
-        shooter.OnCooldownChanged += UpdateCooldownBar;
+        shooter.OnCooldownChanged += UpdateProjectileCooldownBar;
+        caster.OnCooldownChanged += UpdateAbilityCooldownBar;
 
         if (!IsOwner)
         {
@@ -42,9 +46,14 @@ public class PlayerUI : NetworkBehaviour
         healthbarTransform.LookAt(healthbarTransform.position + mainCamera.transform.rotation * Vector3.forward, mainCamera.transform.rotation * Vector3.up);
     }
 
-    private void UpdateCooldownBar(object sender, float e)
+    private void UpdateProjectileCooldownBar(object sender, float e)
     {
-        cooldownBar.fillAmount = e / shooter.GetMaxCooldown();
+        projectileCooldownBar.fillAmount = e / shooter.GetMaxCooldown();
+    }
+
+    private void UpdateAbilityCooldownBar(object sender, float e)
+    {
+        abilityCooldownBar.fillAmount = e / caster.GetMaxCooldown();
     }
 
     private void UpdateHealthBar(object sender, byte e)
