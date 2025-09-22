@@ -107,10 +107,21 @@ public class Shooter : NetworkBehaviour
         UpdateCooldownUI();
     }
 
+    [Rpc(SendTo.Owner)]
+    public void ResetCooldownRpc()
+    {
+        cooldownTime = 0f;
+        UpdateCooldownUI();
+    }
+
     public float GetMaxCooldown()
     {
         return projectilesDictionary[selectedProjectile].MaxCooldown;
     }
+
+    public LayerMask ShootingLayer => shootingLayer;
+    public Transform FirePoint => firePoint;
+    public ProjectileBase SelectedProjectile => projectilesDictionary[selectedProjectile];
 
     #region Testing
 
@@ -120,11 +131,4 @@ public class Shooter : NetworkBehaviour
     }
 
     #endregion
-}
-
-[Serializable]
-public enum ProjectileType
-{
-    Normal,
-    Boomerang
 }

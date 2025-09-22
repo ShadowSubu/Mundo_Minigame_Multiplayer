@@ -69,7 +69,7 @@ public class PlayerController : NetworkBehaviour
     private bool IsCorrectNavmeshArea(Vector3 position)
     {
         NavMeshHit navHit;
-        if (NavMesh.SamplePosition(position, out navHit, 1.0f, allowedNavmeshArea))
+        if (NavMesh.SamplePosition(position, out navHit, 1.0f, AllowedNavmeshArea))
         {
             return true;
         }
@@ -96,4 +96,6 @@ public class PlayerController : NetworkBehaviour
         navMeshAgent.ResetPath();
         navMeshAgent.SetDestination(targetPosition);
     }
+
+    public int AllowedNavmeshArea => allowedNavmeshArea;
 }

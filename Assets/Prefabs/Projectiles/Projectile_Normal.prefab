@@ -17,7 +17,7 @@ GameObject:
   - component: {fileID: -7522262536494060318}
   - component: {fileID: 6835288002042263518}
   m_Layer: 0
-  m_Name: Projectile Normal
+  m_Name: Projectile_Normal
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -223,7 +223,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
-  projectileGO: {fileID: 0}
-  projectileSpeed: 40
+  projectileType: 0
+  projectileSpeed: 10
   projectileDamage: 10
+  maxCooldown: 4
   maxDistance: 30

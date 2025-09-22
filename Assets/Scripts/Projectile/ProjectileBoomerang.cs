@@ -1,4 +1,3 @@
-using System;
 using Unity.Netcode;
 using UnityEngine;
 
@@ -17,8 +16,6 @@ public class ProjectileBoomerang : ProjectileBase
 
     internal override void OnTriggerEnterBehaviour(Collider other)
     {
-        if (!IsServer) return;
-
         other.TryGetComponent(out NetworkObject hit);
         // Enemy
         if (hit != null && hit.OwnerClientId != shooterObject.OwnerClientId)
@@ -26,12 +23,18 @@ public class ProjectileBoomerang : ProjectileBase
             if (!isReturning && !hasHitTargetForward)
             {
                 hit.TryGetComponent(out TargetBase enemy);
-                enemy.ReceiveHitpointsRpc(projectileDamage, OwnerClientId);
+                if (enemy != null)
+                {
+                    enemy.ReceiveHitpointsRpc(projectileDamage, OwnerClientId);
+                }
             }
             else if (isReturning && !hasHitTargetReturn)
             {
                 hit.TryGetComponent(out TargetBase enemy);
-                enemy.ReceiveHitpointsRpc(projectileDamage, OwnerClientId);
+                if (enemy != null)
+                {
+                    enemy.ReceiveHitpointsRpc(projectileDamage, OwnerClientId);
+                }
             }
         }
         // Self
@@ -40,7 +43,10 @@ public class ProjectileBoomerang : ProjectileBase
             if (isReturning)
             {
                 hit.TryGetComponent(out Shooter shooter);
-                shooter.ReduceCooldownRpc(cooldownReduction);
+                if (shooter != null)
+                {
+                    shooter.ReduceCooldownRpc(cooldownReduction);
+                }
                 DestroyBullet();
             }
         }

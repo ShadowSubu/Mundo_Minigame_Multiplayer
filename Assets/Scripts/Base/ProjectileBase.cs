@@ -1,3 +1,4 @@
+using System;
 using Unity.Netcode;
 using Unity.Netcode.Components;
 using UnityEngine;
@@ -33,10 +34,24 @@ public abstract class ProjectileBase : NetworkBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        if (!IsServer) return;
+
+        // Condition to check if projectile hits another projectile, if so, destroy them and immediately refund cooldown to all shooters
+        if (other.TryGetComponent(out ProjectileBase projectile))
+        {
+            DestroyBullet();
+            projectile.ShooterObject.TryGetComponent(out Shooter shooter);
+            if (shooter != null)
+            {
+                shooter.ResetCooldownRpc();
+            }
+        }
+
         OnTriggerEnterBehaviour(other);
     }
 
     internal abstract void OnTriggerEnterBehaviour(Collider other);
+
     /// <summary>
     /// This method is called in the Update function, Call any logic that you want to run every frame
     /// </summary>
@@ -50,7 +65,14 @@ public abstract class ProjectileBase : NetworkBehaviour
         }
     }
 
-    public ulong GetShooterClientId() => shooterObject.OwnerClientId;
+    public NetworkObject ShooterObject => shooterObject;
     public ProjectileType ProjectileType => projectileType;
     public float MaxCooldown => maxCooldown;
+}
+
+[Serializable]
+public enum ProjectileType
+{
+    Normal,
+    Boomerang
 }

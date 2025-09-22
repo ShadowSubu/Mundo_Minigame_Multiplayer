@@ -17,7 +17,7 @@ GameObject:
   - component: {fileID: 9212491155661513853}
   - component: {fileID: 1720307071514249388}
   m_Layer: 0
-  m_Name: Projectile Boomerang
+  m_Name: Projectile_Boomerang
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -226,8 +226,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
   projectileType: 1
-  projectileGO: {fileID: 0}
-  projectileSpeed: 20
+  projectileSpeed: 10
   projectileDamage: 10
   maxCooldown: 8
   maxDistance: 30
