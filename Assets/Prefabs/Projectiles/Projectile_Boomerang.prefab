@@ -226,7 +226,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
   projectileType: 1
-  projectileSpeed: 10
+  projectileSpeed: 20
   projectileDamage: 10
   maxCooldown: 8
   maxDistance: 30
