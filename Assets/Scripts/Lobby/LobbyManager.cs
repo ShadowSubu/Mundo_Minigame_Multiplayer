@@ -31,6 +31,7 @@ public class LobbyManager : NetworkBehaviour
     public event EventHandler<LobbyEventArgs> OnJoinedLobby;
     public event EventHandler<LobbyEventArgs> OnJoinedLobbyUpdate;
     public event EventHandler<LobbyEventArgs> OnKickedFromLobby;
+    public event EventHandler<LobbyEventArgs> OnPlayerLoadoutSelection;
     public event EventHandler<string> OnServiceError;
 
     public class LobbyEventArgs : EventArgs
@@ -173,7 +174,45 @@ public class LobbyManager : NetworkBehaviour
                currentLobby.Players.Count >= 2 && 
                NetworkManager.Singleton.ConnectedClients.Count >= 2 &&
                currentLobby.Data.ContainsKey(KEY_START_GAME) && 
-               currentLobby.Data[KEY_START_GAME].Value != "0";
+               currentLobby.Data[KEY_START_GAME].Value != "0" &&
+               AllClientsMapped() &&
+               AllPlayersHaveSelections();
+    }
+
+    private bool AllClientsMapped()
+    {
+        foreach (var client in NetworkManager.Singleton.ConnectedClientsList)
+        {
+            if (!GetCurrentLobby().Data.ContainsKey(CLIENT_ID_PREFIX + client.ClientId))
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private bool AllPlayersHaveSelections()
+    {
+        var lobby = GetCurrentLobby();
+        if (lobby == null || lobby.Players == null) return false;
+
+        foreach (var player in lobby.Players)
+        {
+            // Skip disconnected / null data players just in case
+            if (player == null || player.Data == null)
+                return false;
+
+            string projKey = PROJECTILE_SELECTION_KEY_PREFIX + player.Id;
+            string abilKey = ABILITY_SELECTION_KEY_PREFIX + player.Id;
+
+            if (!player.Data.ContainsKey(projKey) || string.IsNullOrEmpty(player.Data[projKey].Value))
+                return false;
+
+            if (!player.Data.ContainsKey(abilKey) || string.IsNullOrEmpty(player.Data[abilKey].Value))
+                return false;
+        }
+
+        return true;
     }
 
     public bool IsLobbyHost()
@@ -428,6 +467,7 @@ public class LobbyManager : NetworkBehaviour
                         { selectionKey, new PlayerDataObject(PlayerDataObject.VisibilityOptions.Member, selection.ToJson()) }
                     }
                 });
+            OnPlayerLoadoutSelection?.Invoke(this, new LobbyEventArgs { lobby = currentLobby });
             Debug.Log($"Saved selection: {selection.ToJson()}");
         }
         catch (LobbyServiceException ex)
@@ -461,6 +501,7 @@ public class LobbyManager : NetworkBehaviour
                         { selectionKey, new PlayerDataObject(PlayerDataObject.VisibilityOptions.Member, selection.ToJson()) }
                     }
                 });
+            OnPlayerLoadoutSelection?.Invoke(this, new LobbyEventArgs { lobby = currentLobby });
             Debug.Log($"Saved selection: {selection.ToJson()}");
         }
         catch (LobbyServiceException ex)

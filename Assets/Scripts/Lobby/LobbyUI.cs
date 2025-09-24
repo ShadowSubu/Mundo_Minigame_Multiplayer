@@ -19,6 +19,7 @@ public class LobbyUI : MonoBehaviour
     [SerializeField] private TMP_InputField createLobbyNameInputField;
     [SerializeField] private Toggle createLobbyPrivateToggle;
     [SerializeField] private Button createLobbyConfirmButton;
+    [SerializeField] private Button leaveCreateLobbyButton;
 
     [Header("Join Lobby UI")]
     [SerializeField] private GameObject joinLobbyUI;
@@ -70,6 +71,7 @@ public class LobbyUI : MonoBehaviour
         createLobbyButton.onClick.AddListener(OpenCreateLobbyUI);
         joinLobbyButton.onClick.AddListener(OpenJoinLobbyUI);
         createLobbyConfirmButton.onClick.AddListener(CreateLobby);
+        leaveCreateLobbyButton.onClick.AddListener(LeaveCreateLobby);
         refreshPublicLobbiesButton.onClick.AddListener(RefreshPublicLobbies);
         joinPrivateLobbyButton.onClick.AddListener(JoinPrivateLobby);
         leaveLobbyButton.onClick.AddListener(LeaveLobby);
@@ -83,6 +85,7 @@ public class LobbyUI : MonoBehaviour
         createLobbyButton.onClick.RemoveAllListeners();
         joinLobbyButton.onClick.RemoveAllListeners();
         createLobbyConfirmButton.onClick.RemoveAllListeners();
+        leaveCreateLobbyButton.onClick.RemoveAllListeners();
         refreshPublicLobbiesButton.onClick.RemoveAllListeners();
         joinPrivateLobbyButton.onClick.RemoveAllListeners();
         leaveLobbyButton.onClick.RemoveAllListeners();
@@ -102,6 +105,7 @@ public class LobbyUI : MonoBehaviour
         LobbyManager.Instance.OnKickedFromLobby += LobbyManager_OnKickedFromLobby;
         LobbyManager.Instance.OnJoinedLobbyUpdate += LobbyManager_OnJoinedLobbyUpdate;
         LobbyManager.Instance.OnServiceError += Instance_OnServiceError;
+        LobbyManager.Instance.OnPlayerLoadoutSelection += Instance_OnPlayerLoadoutSelection;
 
         InitializeProjectileSelectionButtons();
         InitializeAbilitySelectionButtons();
@@ -115,6 +119,7 @@ public class LobbyUI : MonoBehaviour
         LobbyManager.Instance.OnKickedFromLobby -= LobbyManager_OnKickedFromLobby;
         LobbyManager.Instance.OnJoinedLobbyUpdate -= LobbyManager_OnJoinedLobbyUpdate;
         LobbyManager.Instance.OnServiceError -= Instance_OnServiceError;
+        LobbyManager.Instance.OnPlayerLoadoutSelection -= Instance_OnPlayerLoadoutSelection;
     }
 
     private void OpenJoinLobbyUI()
@@ -143,6 +148,12 @@ public class LobbyUI : MonoBehaviour
         }
     }
 
+    private void LeaveCreateLobby()
+    {
+        createLobbyUI.SetActive(false);
+        lobbyOptionsPanel.SetActive(true);
+    }
+
     private void JoinPrivateLobby()
     {
         if (!string.IsNullOrEmpty(privateLobbyCodeInputField.text))
@@ -160,6 +171,11 @@ public class LobbyUI : MonoBehaviour
     private void LobbyManager_OnPublicLobbyListChanged(object sender, LobbyManager.PublicLobbyListChangedEventArgs e)
     {
         UpdateLobbyList(e.Lobbies);
+    }
+
+    private void Instance_OnPlayerLoadoutSelection(object sender, LobbyManager.LobbyEventArgs e)
+    {
+        UpdateLobby(e.lobby);
     }
 
     private void UpdateLobbyList(List<Lobby> lobbyList)
@@ -270,10 +286,6 @@ public class LobbyUI : MonoBehaviour
             projectileSelectionButtons[i].OnProjectileSelected += OnProjectileSelected;
             projectileSelectionButtons[i].GetComponent<Image>().color = defaultColor;
         }
-        if (projectileSelectionButtons.Count > 0)
-        {
-            projectileSelectionButtons[0].SelectProjectile();
-        }
     }
 
     private void OnProjectileSelected(object sender, GameObject selectedButton)
@@ -291,10 +303,6 @@ public class LobbyUI : MonoBehaviour
         {
             abilitySelectionButtons[i].OnAbilitySelected += OnAbilitySelected;
             abilitySelectionButtons[i].GetComponent<Image>().color = defaultColor;
-        }
-        if (abilitySelectionButtons.Count > 0)
-        {
-            abilitySelectionButtons[0].SelectAbility();
         }
     }
 
