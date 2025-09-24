@@ -9,6 +9,12 @@ public class Shooter : NetworkBehaviour
     [SerializeField] private List<ProjectileBase> projectilesDatabase;
     private Dictionary<ProjectileType, ProjectileBase> projectilesDictionary;
 
+    private Dictionary<string, ProjectileType> projectileTypeMapping = new()
+    {
+        { "Bullet", ProjectileType.Normal },
+        { "Boomerang", ProjectileType.Boomerang }
+    };
+
     [SerializeField] private Transform firePoint;
     [SerializeField] LayerMask shootingLayer;
 
@@ -128,6 +134,11 @@ public class Shooter : NetworkBehaviour
     public void SelectProjectile(ProjectileType type)
     {
         selectedProjectile = type;
+    }
+
+    public void SelectProjectile(string type)
+    {
+        selectedProjectile = projectileTypeMapping[type];
     }
 
     #endregion

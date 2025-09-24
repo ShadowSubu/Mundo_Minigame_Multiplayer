@@ -39,6 +39,12 @@ public class LobbyUI : MonoBehaviour
     [SerializeField] private Button copyLobbyCodeButton;
     [SerializeField] private Button startGameButton;
 
+    [Header("Loadout UI")]
+    [SerializeField] private List<ProjectileSelectionButton> projectileSelectionButtons;
+    [SerializeField] private List<AbilitySelectionButton> abilitySelectionButtons;
+    [SerializeField] private Color selectedColor;
+    [SerializeField] private Color defaultColor;
+
     [Header("Loading UI")]
     [SerializeField] private GameObject loadingUI;
     [SerializeField] private TextMeshProUGUI loadingText;
@@ -96,6 +102,9 @@ public class LobbyUI : MonoBehaviour
         LobbyManager.Instance.OnKickedFromLobby += LobbyManager_OnKickedFromLobby;
         LobbyManager.Instance.OnJoinedLobbyUpdate += LobbyManager_OnJoinedLobbyUpdate;
         LobbyManager.Instance.OnServiceError += Instance_OnServiceError;
+
+        InitializeProjectileSelectionButtons();
+        InitializeAbilitySelectionButtons();
     }
 
     private void OnDestroy()
@@ -252,6 +261,50 @@ public class LobbyUI : MonoBehaviour
 
         startGameButton.gameObject.SetActive(LobbyManager.Instance.IsLobbyHost());
         ChangeStartGameButtonState();
+    }
+
+    private void InitializeProjectileSelectionButtons()
+    {
+        for (int i = 0; i < projectileSelectionButtons.Count; i++)
+        {
+            projectileSelectionButtons[i].OnProjectileSelected += OnProjectileSelected;
+            projectileSelectionButtons[i].GetComponent<Image>().color = defaultColor;
+        }
+        if (projectileSelectionButtons.Count > 0)
+        {
+            projectileSelectionButtons[0].SelectProjectile();
+        }
+    }
+
+    private void OnProjectileSelected(object sender, GameObject selectedButton)
+    {
+        foreach (var button in projectileSelectionButtons)
+        {
+            button.GetComponent<Image>().color = defaultColor;
+        }
+        selectedButton.GetComponent<Image>().color = selectedColor;
+    }
+
+    private void InitializeAbilitySelectionButtons()
+    {
+        for (int i = 0; i < abilitySelectionButtons.Count; i++)
+        {
+            abilitySelectionButtons[i].OnAbilitySelected += OnAbilitySelected;
+            abilitySelectionButtons[i].GetComponent<Image>().color = defaultColor;
+        }
+        if (abilitySelectionButtons.Count > 0)
+        {
+            abilitySelectionButtons[0].SelectAbility();
+        }
+    }
+
+    private void OnAbilitySelected(object sender, GameObject selectedButton)
+    {
+        foreach (var button in abilitySelectionButtons)
+        {
+            button.GetComponent<Image>().color = defaultColor;
+        }
+        selectedButton.GetComponent<Image>().color = selectedColor;
     }
 
     private void StartGame()

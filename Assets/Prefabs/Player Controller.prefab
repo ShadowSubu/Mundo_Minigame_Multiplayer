@@ -2053,7 +2053,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
-  selectedAbility: 3
+  selectedAbility: 2
   abilityDatabase:
   - {fileID: 5822959551496583459}
   - {fileID: 4999069061404131673}

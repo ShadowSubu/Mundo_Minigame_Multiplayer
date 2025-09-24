@@ -1,5 +1,7 @@
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Unity.Netcode;
 using Unity.Services.Authentication;
 using Unity.Services.Lobbies;
@@ -7,7 +9,7 @@ using Unity.Services.Lobbies.Models;
 using Unity.Services.Relay;
 using UnityEngine;
 
-public class LobbyManager : MonoBehaviour
+public class LobbyManager : NetworkBehaviour
 {
     public static LobbyManager Instance { get; private set; }
 
@@ -16,6 +18,9 @@ public class LobbyManager : MonoBehaviour
     public const int MAX_PLAYERS = 2;
     public const string KEY_PLAYER_NAME = "PlayerName";
     public const string KEY_START_GAME = "StartGame_RelayCode";
+    private const string PROJECTILE_SELECTION_KEY_PREFIX = "PlayerProjectileSelection_";
+    private const string ABILITY_SELECTION_KEY_PREFIX = "PlayerAbilitySelection_";
+    private const string CLIENT_ID_PREFIX = "ClientId_";
 
     #endregion
 
@@ -68,10 +73,28 @@ public class LobbyManager : MonoBehaviour
         publicLobbyListRefreshTimer = publicLobbyListRefreshTimerMax;
     }
 
+    private void OnEnable()
+    {
+        NetworkManager.Singleton.OnClientConnectedCallback += OnClientConnected;
+    }
+
+    private void OnDisable()
+    {
+        NetworkManager.Singleton.OnClientConnectedCallback -= OnClientConnected;
+    }
+
     private void Update()
     {
         HandleLobbyHeartbeat();
         HandleLobbyPolling();
+    }
+
+    private void OnClientConnected(ulong clientId)
+    {
+        if (NetworkManager.Singleton.LocalClientId == clientId)
+        {
+            SaveClientIdMapping(clientId);
+        }
     }
 
     private async void HandleLobbyHeartbeat()
@@ -319,6 +342,189 @@ public class LobbyManager : MonoBehaviour
         }
     }
 
+    #region ClientId Mapping
+
+    public void SaveClientIdMapping(ulong clientId)
+    {
+        RequestSaveClientMappingRpc(clientId, AuthenticationService.Instance.PlayerId);
+    }
+
+    [Rpc(SendTo.Server, RequireOwnership = false)]
+    private void RequestSaveClientMappingRpc(ulong clientId, string playerId)
+    {
+        SaveClientIdMappingHost(clientId, playerId);
+    }
+
+    private async void SaveClientIdMappingHost(ulong clientId, string playerId)
+    {
+        if (!NetworkManager.Singleton.IsServer) return;
+
+        var lobby = GetCurrentLobby();
+        if (lobby == null) return;
+
+        string key = CLIENT_ID_PREFIX + clientId;
+
+        try
+        {
+            await LobbyService.Instance.UpdateLobbyAsync(lobby.Id, new UpdateLobbyOptions
+            {
+                Data = new Dictionary<string, DataObject>
+            {
+                { key, new DataObject(DataObject.VisibilityOptions.Member, playerId) }
+            }
+            });
+
+            Debug.Log($"Saved mapping: {key} -> {playerId}");
+        }
+        catch (LobbyServiceException ex)
+        {
+            Debug.LogError($"Failed to save clientId mapping: {ex.Message}");
+        }
+    }
+
+    public string GetPlayerIdFromClientId(ulong clientId)
+    {
+        var lobby = GetCurrentLobby();
+        if (lobby == null || lobby.Data == null) return null;
+
+        string key = CLIENT_ID_PREFIX + clientId;
+        if (lobby.Data.ContainsKey(key))
+        {
+            Debug.Log($"Found mapping: {key} -> {lobby.Data[key].Value}");
+            return lobby.Data[key].Value;
+        }
+
+        Debug.LogWarning($"No mapping found for clientId: {clientId}");
+
+        return null;
+    }
+
+    #endregion
+
+    #region Loadout
+
+    public async Task SavePlayerProjectileSelection(string projectileType)
+    {
+        var currentLobby = GetCurrentLobby();
+        if (currentLobby == null) return;
+
+        var selection = new PlayerProjectileSelectionData
+        {
+            playerId = AuthenticationService.Instance.PlayerId,
+            projectileType = projectileType,
+        };
+
+        string selectionKey = PROJECTILE_SELECTION_KEY_PREFIX + AuthenticationService.Instance.PlayerId;
+
+        try
+        {
+            await LobbyService.Instance.UpdatePlayerAsync(
+                currentLobby.Id,
+                AuthenticationService.Instance.PlayerId,
+                new UpdatePlayerOptions
+                {
+                    Data = new Dictionary<string, PlayerDataObject>
+                    {
+                        { selectionKey, new PlayerDataObject(PlayerDataObject.VisibilityOptions.Member, selection.ToJson()) }
+                    }
+                });
+            Debug.Log($"Saved selection: {selection.ToJson()}");
+        }
+        catch (LobbyServiceException ex)
+        {
+            Debug.LogError($"Failed to save selection: {ex.Message}");
+        }
+    }
+
+    public async Task SavePlayerAbilitySelection(string abilityType)
+    {
+        var currentLobby = GetCurrentLobby();
+        if (currentLobby == null) return;
+
+        var selection = new PlayerAbilitySelectionData
+        {
+            playerId = AuthenticationService.Instance.PlayerId,
+            abilityType = abilityType,
+        };
+
+        string selectionKey = ABILITY_SELECTION_KEY_PREFIX + AuthenticationService.Instance.PlayerId;
+
+        try
+        {
+            await LobbyService.Instance.UpdatePlayerAsync(
+                currentLobby.Id,
+                AuthenticationService.Instance.PlayerId,
+                new UpdatePlayerOptions
+                {
+                    Data = new Dictionary<string, PlayerDataObject>
+                    {
+                        { selectionKey, new PlayerDataObject(PlayerDataObject.VisibilityOptions.Member, selection.ToJson()) }
+                    }
+                });
+            Debug.Log($"Saved selection: {selection.ToJson()}");
+        }
+        catch (LobbyServiceException ex)
+        {
+            Debug.LogError($"Failed to save selection: {ex.Message}");
+        }
+    }
+
+    public PlayerProjectileSelectionData GetPlayerProjectileSelections(string playerId)
+    {
+        if (GetCurrentLobby()?.Players == null) return null;
+
+        foreach (var player in GetCurrentLobby().Players)
+        {
+            if (player.Id == playerId && player.Data != null)
+            {
+                string selectionKey = PROJECTILE_SELECTION_KEY_PREFIX + playerId;
+                if (player.Data.ContainsKey(selectionKey))
+                {
+                    try
+                    {
+                        return PlayerProjectileSelectionData.FromJson(player.Data[selectionKey].Value);
+                    }
+                    catch (Exception ex)
+                    {
+                        Debug.LogError($"Failed to parse selection: {ex.Message}");
+                        return null;
+                    }
+                }
+            }
+        }
+
+        return null;
+    }
+
+    public PlayerAbilitySelectionData GetPlayerAbilitySelections(string playerId)
+    {
+        if (GetCurrentLobby()?.Players == null) return null;
+
+        foreach (var player in GetCurrentLobby().Players)
+        {
+            if (player.Id == playerId && player.Data != null)
+            {
+                string selectionKey = ABILITY_SELECTION_KEY_PREFIX + playerId;
+                if (player.Data.ContainsKey(selectionKey))
+                {
+                    try
+                    {
+                        return PlayerAbilitySelectionData.FromJson(player.Data[selectionKey].Value);
+                    }
+                    catch (Exception ex)
+                    {
+                        Debug.LogError($"Failed to parse selection: {ex.Message}");
+                        return null;
+                    }
+                }
+            }
+        }
+
+        return null;
+    }
+
+    #endregion
+
     #region Relay
 
     public async void StartConnectingGame()
@@ -352,4 +558,23 @@ public class LobbyManager : MonoBehaviour
     }
 
     #endregion
+}
+
+[Serializable]
+public class PlayerProjectileSelectionData
+{
+    public string playerId;
+    public string projectileType;
+
+    public string ToJson() => JsonConvert.SerializeObject(this);
+    public static PlayerProjectileSelectionData FromJson(string json) => JsonConvert.DeserializeObject<PlayerProjectileSelectionData>(json);
+}
+
+[Serializable]
+public class PlayerAbilitySelectionData
+{
+    public string playerId;
+    public string abilityType;
+    public string ToJson() => JsonConvert.SerializeObject(this);
+    public static PlayerAbilitySelectionData FromJson(string json) => JsonConvert.DeserializeObject<PlayerAbilitySelectionData>(json);
 }
