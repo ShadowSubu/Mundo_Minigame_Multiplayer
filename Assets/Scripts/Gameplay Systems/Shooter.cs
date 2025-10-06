@@ -46,7 +46,17 @@ public class Shooter : NetworkBehaviour
     {
         if (IsOwner && Input.GetMouseButton(0))
         {
-            Shoot();
+            Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
+            RaycastHit hit;
+
+            if (Physics.Raycast(ray, out hit, Mathf.Infinity, shootingLayer))
+            {
+                // Calculate direction from fire point to mouse click
+                Vector3 direction = (hit.point - firePoint.position).normalized;
+                direction.y = 0;
+
+                Shoot(direction);
+            }
         }
         UpdateCoolDown();
     }
@@ -70,27 +80,17 @@ public class Shooter : NetworkBehaviour
         OnCooldownChanged?.Invoke(this, cooldownTime);
     }
 
-    private void Shoot()
+    public void Shoot(Vector3 direction)
     {
         if (cooldownTime > 0f)
         {
             return; // Exit if still in cooldown
         }
 
-        Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
-        RaycastHit hit;
-
-        if (Physics.Raycast(ray, out hit, Mathf.Infinity, shootingLayer))
-        {
-            // Calculate direction from fire point to mouse click
-            Vector3 direction = (hit.point - firePoint.position).normalized;
-            direction.y = 0;
-
-            // Send to server to spawn bullet
-            SpawnBulletServerRpc(firePoint.position, direction);
-            cooldownTime = projectilesDictionary[selectedProjectile].MaxCooldown;
-            InvokeRepeating(nameof(UpdateCooldownUI), 0f, 0.1f);
-        }
+        // Send to server to spawn bullet
+        SpawnBulletServerRpc(firePoint.position, direction);
+        cooldownTime = projectilesDictionary[selectedProjectile].MaxCooldown;
+        InvokeRepeating(nameof(UpdateCooldownUI), 0f, 0.1f);
     }
 
     [Rpc(SendTo.Server)]
@@ -128,6 +128,7 @@ public class Shooter : NetworkBehaviour
     public LayerMask ShootingLayer => shootingLayer;
     public Transform FirePoint => firePoint;
     public ProjectileBase SelectedProjectile => projectilesDictionary[selectedProjectile];
+    public ProjectileType SelectedProjectileType => selectedProjectile;
 
     #region Testing
 

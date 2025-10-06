@@ -2053,12 +2053,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
-  selectedAbility: 2
+  selectedAbility: 1
   abilityDatabase:
   - {fileID: 5822959551496583459}
   - {fileID: 4999069061404131673}
   - {fileID: 1065661502832898408}
-  activeAbility: {fileID: 0}
 --- !u!114 &7531929404773095252
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2123,7 +2122,7 @@ GameObject:
   - component: {fileID: 24540278716641353}
   - component: {fileID: 883768387522395498}
   m_Layer: 0
-  m_Name: Cylinder
+  m_Name: Body
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2522,7 +2521,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2678246326564569810, guid: a897a6053f7adc049b05f4b9f1426f16, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3039540977628462895, guid: a897a6053f7adc049b05f4b9f1426f16, type: 3}
       propertyPath: GlobalObjectIdHash
@@ -2659,7 +2658,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8678802345989201432, guid: 9e6023030dd79b74a89213a20bc81919, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -2690,13 +2689,9 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 7597619810347296108}
     m_Modifications:
-    - target: {fileID: 2523906937710113338, guid: e429069233dfd784a8dc6894978c6483, type: 3}
-      propertyPath: GlobalObjectIdHash
-      value: 4233223581
-      objectReference: {fileID: 0}
-    - target: {fileID: 2523906937710113338, guid: e429069233dfd784a8dc6894978c6483, type: 3}
-      propertyPath: InScenePlacedSourceGlobalObjectIdHash
-      value: 1929143904
+    - target: {fileID: 3477776000211042590, guid: e429069233dfd784a8dc6894978c6483, type: 3}
+      propertyPath: parryDuration
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 5375798485830179548, guid: e429069233dfd784a8dc6894978c6483, type: 3}
       propertyPath: m_Name
@@ -2704,7 +2699,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5375798485830179548, guid: e429069233dfd784a8dc6894978c6483, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6583198765338856368, guid: e429069233dfd784a8dc6894978c6483, type: 3}
+      propertyPath: m_Enabled
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8467382986187349785, guid: e429069233dfd784a8dc6894978c6483, type: 3}
       propertyPath: m_LocalPosition.x

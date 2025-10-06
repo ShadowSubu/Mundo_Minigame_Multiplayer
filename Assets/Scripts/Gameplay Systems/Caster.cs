@@ -9,10 +9,12 @@ public class Caster : NetworkBehaviour
     [SerializeField] private List<AbilityBase> abilityDatabase;
     private Dictionary<AbilityType, AbilityBase> abilityDictionary;
 
+    // TODO : Make this configurable from outside the script
     private Dictionary<string, AbilityType> abilityTypeMapping = new()
     {
         { "Blink", AbilityType.Blink },
-        { "FakeShot", AbilityType.FakeShot }
+        { "FakeShot", AbilityType.FakeShot },
+        { "Parry", AbilityType.Parry }
     };
 
     private AbilityBase activeAbility;

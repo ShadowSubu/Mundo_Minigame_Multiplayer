@@ -18,7 +18,7 @@ public class ProjectileBoomerang : ProjectileBase
     {
         other.TryGetComponent(out NetworkObject hit);
         // Enemy
-        if (hit != null && hit.OwnerClientId != shooterObject.OwnerClientId)
+        if (hit != null && hit.OwnerClientId != ShooterObject.OwnerClientId)
         {
             if (!isReturning && !hasHitTargetForward)
             {
@@ -38,7 +38,7 @@ public class ProjectileBoomerang : ProjectileBase
             }
         }
         // Self
-        else if (hit != null && hit.OwnerClientId == shooterObject.OwnerClientId)
+        else if (hit != null && hit.OwnerClientId == ShooterObject.OwnerClientId)
         {
             if (isReturning)
             {
@@ -83,7 +83,7 @@ public class ProjectileBoomerang : ProjectileBase
         {
             isReturning = true;
             returnStartPosition = transform.position;
-            returnDirection = (shooterObject.transform.position - transform.position).normalized;
+            returnDirection = (ShooterObject.transform.position - transform.position).normalized;
         }
     }
 

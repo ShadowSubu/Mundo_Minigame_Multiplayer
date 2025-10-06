@@ -5,7 +5,7 @@ using UnityEngine;
 /// <summary>
 /// This is a networked base class for any Ability
 /// </summary>
-public abstract class AbilityBase : MonoBehaviour
+public abstract class AbilityBase : NetworkBehaviour
 {
     [SerializeField] private AbilityType abilityType;
 
