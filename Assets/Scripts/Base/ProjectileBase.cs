@@ -62,6 +62,7 @@ public abstract class ProjectileBase : NetworkBehaviour
     {
         if (IsServer)
         {
+            Debug.Log("Bullet Destroyed");
             GetComponent<NetworkObject>().Despawn();
         }
     }

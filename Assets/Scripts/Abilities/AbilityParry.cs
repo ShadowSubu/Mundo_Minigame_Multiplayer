@@ -48,8 +48,8 @@ public class AbilityParry : AbilityBase
 
     private void OnTriggerEnter(Collider other)
     {
-        // if the other projectile collides with this parry collider, destroy the projectile
         other.TryGetComponent(out NetworkObject hit);
+        Debug.Log($"Hit: {hit.name}, hit client ID : {hit.OwnerClientId}, Caster Client ID : {casterObject.OwnerClientId}");
         if (hit != null && hit.OwnerClientId != casterObject.OwnerClientId)
         {
             hit.TryGetComponent(out ProjectileBase projectile);
@@ -76,19 +76,14 @@ public class AbilityParry : AbilityBase
 
         if (shooter != null && shooter.IsOwner)
         {
-            Debug.Log("Parry Successful - Deflecting Projectile");
+            Debug.Log($"Parry Successful - Deflecting Projectile, My type :{shooter.SelectedProjectileType}, opponent type : {opponentProjectileType}");
             ProjectileType myProjectileType = shooter.SelectedProjectileType;
-
-            // Switch to opponent's projectile type and shoot
-            shooter.SelectProjectile(opponentProjectileType);
 
             Vector3 shootDirection = (shooterPosition - casterObject.transform.position).normalized;
             shootDirection.y = 0;
 
-            shooter.Shoot(shootDirection);
-
-            // Switch back to original projectile type
-            shooter.SelectProjectile(myProjectileType);
+            shooter.Shoot(opponentProjectileType, shootDirection, casterObject.OwnerClientId);
+            shooter.ResetCooldownRpc();
         }
     }
 }

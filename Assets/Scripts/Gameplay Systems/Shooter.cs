@@ -55,7 +55,7 @@ public class Shooter : NetworkBehaviour
                 Vector3 direction = (hit.point - firePoint.position).normalized;
                 direction.y = 0;
 
-                Shoot(direction);
+                Shoot(selectedProjectile, direction, OwnerClientId);
             }
         }
         UpdateCoolDown();
@@ -80,7 +80,7 @@ public class Shooter : NetworkBehaviour
         OnCooldownChanged?.Invoke(this, cooldownTime);
     }
 
-    public void Shoot(Vector3 direction)
+    public void Shoot(ProjectileType projectileType, Vector3 direction, ulong ownerClientId)
     {
         if (cooldownTime > 0f)
         {
@@ -88,22 +88,23 @@ public class Shooter : NetworkBehaviour
         }
 
         // Send to server to spawn bullet
-        SpawnBulletServerRpc(firePoint.position, direction);
+        SpawnBulletServerRpc(projectileType, firePoint.position, direction, ownerClientId);
         cooldownTime = projectilesDictionary[selectedProjectile].MaxCooldown;
         InvokeRepeating(nameof(UpdateCooldownUI), 0f, 0.1f);
     }
 
     [Rpc(SendTo.Server)]
-    void SpawnBulletServerRpc(Vector3 spawnPos, Vector3 direction)
+    void SpawnBulletServerRpc(ProjectileType projectileType, Vector3 spawnPos, Vector3 direction, ulong ownerClientId)
     {
-        ProjectileBase projectile = Instantiate(projectilesDictionary[selectedProjectile], spawnPos, Quaternion.LookRotation(direction));
+        Debug.Log("Selected projectile : " + selectedProjectile);
+        ProjectileBase projectile = Instantiate(projectilesDictionary[projectileType], spawnPos, Quaternion.LookRotation(direction));
 
         if (projectile != null)
         {
             projectile.Initialize(direction, this.NetworkObject);
         }
 
-        projectile.GetComponent<NetworkObject>().Spawn(true);
+        projectile.GetComponent<NetworkObject>().SpawnWithOwnership(ownerClientId, true);
     }
 
     [Rpc(SendTo.Owner)]

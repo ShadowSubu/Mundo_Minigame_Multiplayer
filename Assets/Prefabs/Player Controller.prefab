@@ -2076,6 +2076,7 @@ MonoBehaviour:
   abilityCooldownBar: {fileID: 3716069600122444035}
   playerCanvas: {fileID: 3142873893778232840}
   healthbarTransform: {fileID: 2231835607545353581}
+  enableProjectileSelectionInGame: 0
   normalBulletButton: {fileID: 8889393940804468659}
   boomerangBulletButton: {fileID: 1413715765254655534}
   selectionColor: {r: 0.5613208, g: 1, b: 0.97115535, a: 1}
@@ -2745,7 +2746,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 4127490960527326853, guid: e429069233dfd784a8dc6894978c6483, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
