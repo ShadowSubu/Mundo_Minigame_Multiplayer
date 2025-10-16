@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: b2514fc8f69e57b449a0281f37d0803a
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 290681
+  packageName: KayKit - Free Sample Pack (for Unity)
+  packageVersion: 1.0
+  assetPath: Assets/KayKit/Characters/KayKit - Free Sample (for Unity)/Materials/URP/Character_Material_Green.mat
+  uploadId: 678577

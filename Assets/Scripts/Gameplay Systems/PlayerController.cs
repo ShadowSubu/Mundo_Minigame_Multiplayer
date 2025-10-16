@@ -12,6 +12,7 @@ public class PlayerController : NetworkBehaviour
     private int allowedNavmeshArea;
 
     public event EventHandler OnCooldownChanged;
+    public event EventHandler<float> OnPlayerMove;
 
     private void Awake()
     {
@@ -22,6 +23,7 @@ public class PlayerController : NetworkBehaviour
     private void Update()
     {
         HandleMovement();
+        OnPlayerMove?.Invoke(this, navMeshAgent.velocity.sqrMagnitude);
     }
 
     [Rpc(SendTo.ClientsAndHost)]

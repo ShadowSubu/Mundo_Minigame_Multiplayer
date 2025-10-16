@@ -69,28 +69,25 @@ public class PlayerUI : NetworkBehaviour
 
     #region Testing
 
-    [SerializeField] private bool enableProjectileSelectionInGame = false;
-    public Image normalBulletButton;
-    public Image boomerangBulletButton;
-    public Color selectionColor;
+    //public Image normalBulletButton;
+    //public Image boomerangBulletButton;
+    //public Color selectionColor;
 
-    [Rpc(SendTo.ClientsAndHost)]
-    public void SelectNormalProjectileRpc()
-    {
-        if (!enableProjectileSelectionInGame) return;
-        GetComponent<Shooter>().SelectProjectile(ProjectileType.Normal);
-        normalBulletButton.color = selectionColor;
-        boomerangBulletButton.color = Color.white;
-    }
+    //[Rpc(SendTo.ClientsAndHost)]
+    //public void SelectNormalProjectileRpc()
+    //{
+    //    GetComponent<Shooter>().SelectProjectile(ProjectileType.Normal);
+    //    normalBulletButton.color = selectionColor;
+    //    boomerangBulletButton.color = Color.white;
+    //}
 
-    [Rpc(SendTo.ClientsAndHost)]
-    public void SelectBoomerangProjectileRpc()
-    {
-        if (!enableProjectileSelectionInGame) return;
-        GetComponent<Shooter>().SelectProjectile(ProjectileType.Boomerang);
-        boomerangBulletButton.color = selectionColor;
-        normalBulletButton.color = Color.white;
-    }
+    //[Rpc(SendTo.ClientsAndHost)]
+    //public void SelectBoomerangProjectileRpc()
+    //{
+    //    GetComponent<Shooter>().SelectProjectile(ProjectileType.Boomerang);
+    //    boomerangBulletButton.color = selectionColor;
+    //    normalBulletButton.color = Color.white;
+    //}
 
     #endregion
 }

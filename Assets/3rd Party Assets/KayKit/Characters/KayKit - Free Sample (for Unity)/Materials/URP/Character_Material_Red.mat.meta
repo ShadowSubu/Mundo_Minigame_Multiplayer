@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 63cb0801b3789ff42b5e4d87024e4cbc
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 290681
+  packageName: KayKit - Free Sample Pack (for Unity)
+  packageVersion: 1.0
+  assetPath: Assets/KayKit/Characters/KayKit - Free Sample (for Unity)/Materials/URP/Character_Material_Red.mat
+  uploadId: 678577

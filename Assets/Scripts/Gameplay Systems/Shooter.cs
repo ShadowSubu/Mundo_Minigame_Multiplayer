@@ -23,6 +23,7 @@ public class Shooter : NetworkBehaviour
     private Camera mainCamera;
 
     public event EventHandler<float> OnCooldownChanged;
+    public event EventHandler OnShoot;
 
     private void Awake()
     {
@@ -91,6 +92,7 @@ public class Shooter : NetworkBehaviour
         SpawnBulletServerRpc(projectileType, firePoint.position, direction, ownerClientId);
         cooldownTime = projectilesDictionary[selectedProjectile].MaxCooldown;
         InvokeRepeating(nameof(UpdateCooldownUI), 0f, 0.1f);
+        OnShoot?.Invoke(this, EventArgs.Empty);
     }
 
     [Rpc(SendTo.Server)]
