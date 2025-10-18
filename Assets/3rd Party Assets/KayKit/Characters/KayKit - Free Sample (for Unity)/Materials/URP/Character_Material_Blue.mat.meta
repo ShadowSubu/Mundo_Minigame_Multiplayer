@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 0e57f69e894df0549bb0b4d0c1fb390e
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 290681
+  packageName: KayKit - Free Sample Pack (for Unity)
+  packageVersion: 1.0
+  assetPath: Assets/KayKit/Characters/KayKit - Free Sample (for Unity)/Materials/URP/Character_Material_Blue.mat
+  uploadId: 678577

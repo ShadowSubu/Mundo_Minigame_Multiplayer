@@ -9,6 +9,12 @@ public class Shooter : NetworkBehaviour
     [SerializeField] private List<ProjectileBase> projectilesDatabase;
     private Dictionary<ProjectileType, ProjectileBase> projectilesDictionary;
 
+    private Dictionary<string, ProjectileType> projectileTypeMapping = new()
+    {
+        { "Bullet", ProjectileType.Normal },
+        { "Boomerang", ProjectileType.Boomerang }
+    };
+
     [SerializeField] private Transform firePoint;
     [SerializeField] LayerMask shootingLayer;
 
@@ -17,6 +23,7 @@ public class Shooter : NetworkBehaviour
     private Camera mainCamera;
 
     public event EventHandler<float> OnCooldownChanged;
+    public event EventHandler OnShoot;
 
     private void Awake()
     {
@@ -40,7 +47,17 @@ public class Shooter : NetworkBehaviour
     {
         if (IsOwner && Input.GetMouseButton(0))
         {
-            Shoot();
+            Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
+            RaycastHit hit;
+
+            if (Physics.Raycast(ray, out hit, Mathf.Infinity, shootingLayer))
+            {
+                // Calculate direction from fire point to mouse click
+                Vector3 direction = (hit.point - firePoint.position).normalized;
+                direction.y = 0;
+
+                Shoot(selectedProjectile, direction, OwnerClientId);
+            }
         }
         UpdateCoolDown();
     }
@@ -64,40 +81,32 @@ public class Shooter : NetworkBehaviour
         OnCooldownChanged?.Invoke(this, cooldownTime);
     }
 
-    private void Shoot()
+    public void Shoot(ProjectileType projectileType, Vector3 direction, ulong ownerClientId)
     {
         if (cooldownTime > 0f)
         {
             return; // Exit if still in cooldown
         }
 
-        Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
-        RaycastHit hit;
-
-        if (Physics.Raycast(ray, out hit, Mathf.Infinity, shootingLayer))
-        {
-            // Calculate direction from fire point to mouse click
-            Vector3 direction = (hit.point - firePoint.position).normalized;
-            direction.y = 0;
-
-            // Send to server to spawn bullet
-            SpawnBulletServerRpc(firePoint.position, direction);
-            cooldownTime = projectilesDictionary[selectedProjectile].MaxCooldown;
-            InvokeRepeating(nameof(UpdateCooldownUI), 0f, 0.1f);
-        }
+        // Send to server to spawn bullet
+        SpawnBulletServerRpc(projectileType, firePoint.position, direction, ownerClientId);
+        cooldownTime = projectilesDictionary[selectedProjectile].MaxCooldown;
+        InvokeRepeating(nameof(UpdateCooldownUI), 0f, 0.1f);
+        OnShoot?.Invoke(this, EventArgs.Empty);
     }
 
     [Rpc(SendTo.Server)]
-    void SpawnBulletServerRpc(Vector3 spawnPos, Vector3 direction)
+    void SpawnBulletServerRpc(ProjectileType projectileType, Vector3 spawnPos, Vector3 direction, ulong ownerClientId)
     {
-        ProjectileBase projectile = Instantiate(projectilesDictionary[selectedProjectile], spawnPos, Quaternion.LookRotation(direction));
+        Debug.Log("Selected projectile : " + selectedProjectile);
+        ProjectileBase projectile = Instantiate(projectilesDictionary[projectileType], spawnPos, Quaternion.LookRotation(direction));
 
         if (projectile != null)
         {
             projectile.Initialize(direction, this.NetworkObject);
         }
 
-        projectile.GetComponent<NetworkObject>().Spawn(true);
+        projectile.GetComponent<NetworkObject>().SpawnWithOwnership(ownerClientId, true);
     }
 
     [Rpc(SendTo.Owner)]
@@ -122,12 +131,18 @@ public class Shooter : NetworkBehaviour
     public LayerMask ShootingLayer => shootingLayer;
     public Transform FirePoint => firePoint;
     public ProjectileBase SelectedProjectile => projectilesDictionary[selectedProjectile];
+    public ProjectileType SelectedProjectileType => selectedProjectile;
 
     #region Testing
 
     public void SelectProjectile(ProjectileType type)
     {
         selectedProjectile = type;
+    }
+
+    public void SelectProjectile(string type)
+    {
+        selectedProjectile = projectileTypeMapping[type];
     }
 
     #endregion

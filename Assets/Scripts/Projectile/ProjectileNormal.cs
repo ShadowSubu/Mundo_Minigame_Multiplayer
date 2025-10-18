@@ -8,7 +8,7 @@ public class ProjectileNormal : ProjectileBase
     {
         TargetBase hit = other.GetComponent<TargetBase>();
         Debug.Log($"Projectile hit: {other.name}, OwnerClientId: {hit?.OwnerClientId}");
-        if (hit != null && hit.OwnerClientId != shooterObject.OwnerClientId)
+        if (hit != null && hit.OwnerClientId != ShooterObject.OwnerClientId)
         {
             // Hit an opponent - destroy bullet
             hit.ReceiveHitpointsRpc(projectileDamage, OwnerClientId);

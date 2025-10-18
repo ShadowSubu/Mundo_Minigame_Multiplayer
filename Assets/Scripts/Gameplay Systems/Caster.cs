@@ -8,7 +8,16 @@ public class Caster : NetworkBehaviour
     [SerializeField] private AbilityType selectedAbility;
     [SerializeField] private List<AbilityBase> abilityDatabase;
     private Dictionary<AbilityType, AbilityBase> abilityDictionary;
-    [SerializeField] private AbilityBase activeAbility; // TODO : Remove serialize field later
+
+    // TODO : Make this configurable from outside the script
+    private Dictionary<string, AbilityType> abilityTypeMapping = new()
+    {
+        { "Blink", AbilityType.Blink },
+        { "FakeShot", AbilityType.FakeShot },
+        { "Parry", AbilityType.Parry }
+    };
+
+    private AbilityBase activeAbility;
 
     private float cooldownTime = 0f;
 
@@ -142,6 +151,11 @@ public class Caster : NetworkBehaviour
     public float GetMaxCooldown()
     {
         return abilityDictionary[selectedAbility].MaxCooldown;
+    }
+
+    internal void SelectAbility(string abilityType)
+    {
+        selectedAbility = abilityTypeMapping[abilityType];
     }
 
     public Camera MainCamera => mainCamera;

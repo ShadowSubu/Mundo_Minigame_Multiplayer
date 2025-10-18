@@ -27,7 +27,7 @@ public class GameAreaBehaviour : MonoBehaviour
 
     private void GameManager_OnSpawnPlayer(object sender, GameManager.SpawnPlayerEventArgs e)
     {
-        Debug.Log($"GameManager_OnSpawnPlayer: Player Team = {e.PlayerTeam}, Client ID = {e.clientId}");
+        Debug.Log($"GameManager_OnSpawnPlayer: Player Team = {e.PlayerTeam}, Client ID = {e.clientId}, Selected Projectile = {e.projectileType}, Selected Ability = {e.abilityType}");
 
         //if (NetworkManager.Singleton.LocalClientId != e.clientId) return;
 
@@ -37,12 +37,12 @@ public class GameAreaBehaviour : MonoBehaviour
                 break;
             case GameManager.Team.A:
                 Debug.Log("Spawning Player in Team A");
-                SpawnNetworkPlayerRpc(teamASpawnPoint, teamACameraLocation, e.clientId, e.PlayerTeam);
+                SpawnNetworkPlayerRpc(teamASpawnPoint, teamACameraLocation, e.clientId, e.PlayerTeam, e.projectileType, e.abilityType);
                 SetCameraRpc(teamACameraLocation.position, teamACameraLocation.rotation, e.clientId);
                 break;
             case GameManager.Team.B:
                 Debug.Log("Spawning Player in Team B");
-                SpawnNetworkPlayerRpc(teamBSpawnPoint, teamBCameraLocation, e.clientId, e.PlayerTeam);
+                SpawnNetworkPlayerRpc(teamBSpawnPoint, teamBCameraLocation, e.clientId, e.PlayerTeam, e.projectileType, e.abilityType);
                 SetCameraRpc(teamBCameraLocation.position, teamBCameraLocation.rotation, e.clientId);
                 break;
             default:
@@ -51,12 +51,12 @@ public class GameAreaBehaviour : MonoBehaviour
     }
 
     [Rpc(SendTo.Server)]
-    private void SpawnNetworkPlayerRpc(Transform playerPosition, Transform cameraPostion, ulong clientId, GameManager.Team team)
+    private void SpawnNetworkPlayerRpc(Transform playerPosition, Transform cameraPostion, ulong clientId, GameManager.Team team, string projectileType, string abilityType)
     {
         if (!NetworkManager.Singleton.IsServer) return;
         PlayerController playerController = Instantiate(playerControllerPrefab, playerPosition.position , playerPosition.rotation);
         playerController.GetComponent<NetworkObject>().SpawnAsPlayerObject(clientId, true);
-        playerController.InitializeRpc(team);
+        playerController.InitializeRpc(team, projectileType, abilityType);
     }
 
     [Rpc(SendTo.ClientsAndHost)]

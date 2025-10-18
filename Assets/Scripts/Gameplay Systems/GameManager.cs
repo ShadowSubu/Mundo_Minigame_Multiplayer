@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using Unity.Netcode;
 using Unity.Services.Authentication;
@@ -18,6 +19,8 @@ public class GameManager : NetworkBehaviour
     {
         public Team PlayerTeam;
         public ulong clientId;
+        public string projectileType;
+        public string abilityType;
     }
 
     public event EventHandler OnGameOver;
@@ -90,7 +93,31 @@ public class GameManager : NetworkBehaviour
             localPlayerTeam = team;
             Debug.Log($"{AuthenticationService.Instance.PlayerName} was Assigned to team: {team}");
         }
-        OnSpawnPlayer?.Invoke(this, new SpawnPlayerEventArgs { PlayerTeam = team, clientId = clientId});
+        
+        var projectileData = LobbyManager.Instance.GetPlayerProjectileSelections(LobbyManager.Instance.GetPlayerIdFromClientId(clientId));
+        Debug.Log($"Projectile Data for Client {clientId}: {(projectileData != null ? projectileData.projectileType : "null")}");
+        string projectileType;
+        if (projectileData != null)
+        {
+            projectileType = projectileData.projectileType;
+        }
+        else
+        {
+            projectileType = "Bullet";
+        }
+        var abilityData = LobbyManager.Instance.GetPlayerAbilitySelections(LobbyManager.Instance.GetPlayerIdFromClientId(clientId));
+        Debug.Log($"Ability Data for Client {clientId}: {(abilityData != null ? abilityData.abilityType : "null")}");
+        string abilityType;
+        if (abilityData != null)
+        {
+            abilityType = abilityData.abilityType;
+        }
+        else
+        {
+            abilityType = "Blink";
+        }
+
+        OnSpawnPlayer?.Invoke(this, new SpawnPlayerEventArgs { PlayerTeam = team, clientId = clientId, projectileType = projectileType, abilityType = abilityType });
         //TriggerSpawnPlayerRpc(team, clientId);
     }
 

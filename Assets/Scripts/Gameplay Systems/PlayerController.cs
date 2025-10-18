@@ -12,6 +12,7 @@ public class PlayerController : NetworkBehaviour
     private int allowedNavmeshArea;
 
     public event EventHandler OnCooldownChanged;
+    public event EventHandler<float> OnPlayerMove;
 
     private void Awake()
     {
@@ -22,6 +23,34 @@ public class PlayerController : NetworkBehaviour
     private void Update()
     {
         HandleMovement();
+        OnPlayerMove?.Invoke(this, navMeshAgent.velocity.sqrMagnitude);
+    }
+
+    [Rpc(SendTo.ClientsAndHost)]
+    public void InitializeRpc(GameManager.Team team, string projectileType, string abilityType)
+    {
+        Debug.Log($"Initializing PlayerController for team: {team}, Projectile: {projectileType}, Ability: {abilityType}");
+        switch (team)
+        {
+            case GameManager.Team.None:
+                break;
+            case GameManager.Team.A:
+                playerAreaTag = "Team A";
+                break;
+            case GameManager.Team.B:
+                playerAreaTag = "Team B";
+                break;
+            default:
+                break;
+        }
+
+        SetProjectile(projectileType);
+        SetAbility(abilityType);
+
+        allowedLayer = LayerMask.GetMask(playerAreaTag);
+        navMeshAgent.enabled = true;
+
+        allowedNavmeshArea = GetNavmeshArea(playerAreaTag);
     }
 
     [Rpc(SendTo.ClientsAndHost)]
@@ -46,6 +75,18 @@ public class PlayerController : NetworkBehaviour
         navMeshAgent.enabled = true;
 
         allowedNavmeshArea = GetNavmeshArea(playerAreaTag);
+    }
+
+    private void SetProjectile(string projectileType)
+    {
+        Shooter shooter = GetComponent<Shooter>();
+        shooter.SelectProjectile(projectileType);
+    }
+
+    private void SetAbility(string abilityType)
+    {
+        Caster caster = GetComponent<Caster>();
+        caster.SelectAbility(abilityType);
     }
 
     private void HandleMovement()

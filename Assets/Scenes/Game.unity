@@ -1116,13 +1116,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f83afb38450e0142a048ee8be5a49c1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  chatWindowOpenedHeight: 500
-  chatWindowPreviewHeight: 85
-  chatWindowClosedHeight: 50
-  chatInputField: {fileID: 575504748}
-  chatMessagePrefab: {fileID: 429055560808807895, guid: 8623c89d21166b045ab6e4068bb64bd7, type: 3}
-  chatContainer: {fileID: 2014223383}
-  maxChatMessages: 20
 --- !u!114 &525278114
 MonoBehaviour:
   m_ObjectHideFlags: 0

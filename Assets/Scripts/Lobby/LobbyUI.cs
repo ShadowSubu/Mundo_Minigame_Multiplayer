@@ -19,6 +19,7 @@ public class LobbyUI : MonoBehaviour
     [SerializeField] private TMP_InputField createLobbyNameInputField;
     [SerializeField] private Toggle createLobbyPrivateToggle;
     [SerializeField] private Button createLobbyConfirmButton;
+    [SerializeField] private Button leaveCreateLobbyButton;
 
     [Header("Join Lobby UI")]
     [SerializeField] private GameObject joinLobbyUI;
@@ -38,6 +39,12 @@ public class LobbyUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI lobbyCodeText;
     [SerializeField] private Button copyLobbyCodeButton;
     [SerializeField] private Button startGameButton;
+
+    [Header("Loadout UI")]
+    [SerializeField] private List<ProjectileSelectionButton> projectileSelectionButtons;
+    [SerializeField] private List<AbilitySelectionButton> abilitySelectionButtons;
+    [SerializeField] private Color selectedColor;
+    [SerializeField] private Color defaultColor;
 
     [Header("Loading UI")]
     [SerializeField] private GameObject loadingUI;
@@ -64,6 +71,7 @@ public class LobbyUI : MonoBehaviour
         createLobbyButton.onClick.AddListener(OpenCreateLobbyUI);
         joinLobbyButton.onClick.AddListener(OpenJoinLobbyUI);
         createLobbyConfirmButton.onClick.AddListener(CreateLobby);
+        leaveCreateLobbyButton.onClick.AddListener(LeaveCreateLobby);
         refreshPublicLobbiesButton.onClick.AddListener(RefreshPublicLobbies);
         joinPrivateLobbyButton.onClick.AddListener(JoinPrivateLobby);
         leaveLobbyButton.onClick.AddListener(LeaveLobby);
@@ -77,6 +85,7 @@ public class LobbyUI : MonoBehaviour
         createLobbyButton.onClick.RemoveAllListeners();
         joinLobbyButton.onClick.RemoveAllListeners();
         createLobbyConfirmButton.onClick.RemoveAllListeners();
+        leaveCreateLobbyButton.onClick.RemoveAllListeners();
         refreshPublicLobbiesButton.onClick.RemoveAllListeners();
         joinPrivateLobbyButton.onClick.RemoveAllListeners();
         leaveLobbyButton.onClick.RemoveAllListeners();
@@ -96,6 +105,10 @@ public class LobbyUI : MonoBehaviour
         LobbyManager.Instance.OnKickedFromLobby += LobbyManager_OnKickedFromLobby;
         LobbyManager.Instance.OnJoinedLobbyUpdate += LobbyManager_OnJoinedLobbyUpdate;
         LobbyManager.Instance.OnServiceError += Instance_OnServiceError;
+        LobbyManager.Instance.OnPlayerLoadoutSelection += Instance_OnPlayerLoadoutSelection;
+
+        InitializeProjectileSelectionButtons();
+        InitializeAbilitySelectionButtons();
     }
 
     private void OnDestroy()
@@ -106,6 +119,7 @@ public class LobbyUI : MonoBehaviour
         LobbyManager.Instance.OnKickedFromLobby -= LobbyManager_OnKickedFromLobby;
         LobbyManager.Instance.OnJoinedLobbyUpdate -= LobbyManager_OnJoinedLobbyUpdate;
         LobbyManager.Instance.OnServiceError -= Instance_OnServiceError;
+        LobbyManager.Instance.OnPlayerLoadoutSelection -= Instance_OnPlayerLoadoutSelection;
     }
 
     private void OpenJoinLobbyUI()
@@ -134,6 +148,12 @@ public class LobbyUI : MonoBehaviour
         }
     }
 
+    private void LeaveCreateLobby()
+    {
+        createLobbyUI.SetActive(false);
+        lobbyOptionsPanel.SetActive(true);
+    }
+
     private void JoinPrivateLobby()
     {
         if (!string.IsNullOrEmpty(privateLobbyCodeInputField.text))
@@ -151,6 +171,11 @@ public class LobbyUI : MonoBehaviour
     private void LobbyManager_OnPublicLobbyListChanged(object sender, LobbyManager.PublicLobbyListChangedEventArgs e)
     {
         UpdateLobbyList(e.Lobbies);
+    }
+
+    private void Instance_OnPlayerLoadoutSelection(object sender, LobbyManager.LobbyEventArgs e)
+    {
+        UpdateLobby(e.lobby);
     }
 
     private void UpdateLobbyList(List<Lobby> lobbyList)
@@ -252,6 +277,42 @@ public class LobbyUI : MonoBehaviour
 
         startGameButton.gameObject.SetActive(LobbyManager.Instance.IsLobbyHost());
         ChangeStartGameButtonState();
+    }
+
+    private void InitializeProjectileSelectionButtons()
+    {
+        for (int i = 0; i < projectileSelectionButtons.Count; i++)
+        {
+            projectileSelectionButtons[i].OnProjectileSelected += OnProjectileSelected;
+            projectileSelectionButtons[i].GetComponent<Image>().color = defaultColor;
+        }
+    }
+
+    private void OnProjectileSelected(object sender, GameObject selectedButton)
+    {
+        foreach (var button in projectileSelectionButtons)
+        {
+            button.GetComponent<Image>().color = defaultColor;
+        }
+        selectedButton.GetComponent<Image>().color = selectedColor;
+    }
+
+    private void InitializeAbilitySelectionButtons()
+    {
+        for (int i = 0; i < abilitySelectionButtons.Count; i++)
+        {
+            abilitySelectionButtons[i].OnAbilitySelected += OnAbilitySelected;
+            abilitySelectionButtons[i].GetComponent<Image>().color = defaultColor;
+        }
+    }
+
+    private void OnAbilitySelected(object sender, GameObject selectedButton)
+    {
+        foreach (var button in abilitySelectionButtons)
+        {
+            button.GetComponent<Image>().color = defaultColor;
+        }
+        selectedButton.GetComponent<Image>().color = selectedColor;
     }
 
     private void StartGame()

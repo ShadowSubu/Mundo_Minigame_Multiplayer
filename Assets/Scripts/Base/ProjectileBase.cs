@@ -15,14 +15,15 @@ public abstract class ProjectileBase : NetworkBehaviour
     [SerializeField] protected byte projectileDamage = 10;
     [SerializeField] protected float maxCooldown = 4f;
 
-    protected NetworkObject shooterObject;
+    protected NetworkVariable<NetworkObjectReference> shooterObject = new NetworkVariable<NetworkObjectReference>(default, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
+    
     protected Vector3 startPosition;
     protected Vector3 moveDirection;
 
-    internal void Initialize(Vector3 direction, NetworkObject shooter)
+    internal void Initialize(Vector3 direction, NetworkObject shooterObject)
     {
+        this.shooterObject.Value = shooterObject;
         moveDirection = direction.normalized;
-        shooterObject = shooter;
         startPosition = transform.position;
     }
 
@@ -61,13 +62,19 @@ public abstract class ProjectileBase : NetworkBehaviour
     {
         if (IsServer)
         {
+            Debug.Log("Bullet Destroyed");
             GetComponent<NetworkObject>().Despawn();
         }
     }
 
-    public NetworkObject ShooterObject => shooterObject;
+    public NetworkObject ShooterObject => shooterObject.Value;
     public ProjectileType ProjectileType => projectileType;
     public float MaxCooldown => maxCooldown;
+
+    public NetworkObject GetOwnerNetworkObject()
+    {
+        return shooterObject.Value;
+    }
 }
 
 [Serializable]
