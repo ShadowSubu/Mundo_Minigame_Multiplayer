@@ -69,6 +69,8 @@ public abstract class ProjectileBase : NetworkBehaviour
 
     public NetworkObject ShooterObject => shooterObject.Value;
     public ProjectileType ProjectileType => projectileType;
+    public byte ProjectileDamage => projectileDamage;
+    public float ProjectileSpeed => projectileSpeed;
     public float MaxCooldown => maxCooldown;
 
     public NetworkObject GetOwnerNetworkObject()

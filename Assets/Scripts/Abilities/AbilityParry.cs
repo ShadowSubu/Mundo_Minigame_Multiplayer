@@ -86,4 +86,6 @@ public class AbilityParry : AbilityBase
             shooter.ResetCooldownRpc();
         }
     }
+
+    public float ParryDuration => parryDuration;
 }

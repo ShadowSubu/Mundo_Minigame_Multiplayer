@@ -65,4 +65,6 @@ public class AbilityBlink : AbilityBase
         Debug.Log("No valid blink position found!");
         return Vector3.zero;
     }
+
+    public float BlinkRadius => blinkRadius;
 }

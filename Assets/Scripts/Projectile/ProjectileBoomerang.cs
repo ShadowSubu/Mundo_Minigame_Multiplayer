@@ -96,4 +96,8 @@ public class ProjectileBoomerang : ProjectileBase
             DestroyBullet();
         }
     }
+
+    public float MaxDistance => maxDistance;
+    public float ReturnMaxDistance => returnMaxDistance;
+    public float CooldownReduction => cooldownReduction;
 }
