@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.AI;
@@ -14,10 +15,13 @@ public class PlayerController : NetworkBehaviour
     public event EventHandler OnCooldownChanged;
     public event EventHandler<float> OnPlayerMove;
 
+    private Shooter shooter;
+
     private void Awake()
     {
         playerCamera = Camera.main;
         navMeshAgent = GetComponent<NavMeshAgent>();
+        shooter = GetComponent<Shooter>();
     }
 
     private void Update()
@@ -92,6 +96,7 @@ public class PlayerController : NetworkBehaviour
     private void HandleMovement()
     {
         if (!IsOwner) return;
+        if (shooter.IsShooting) return;
         if (Input.GetMouseButtonDown(1))
         {
             Ray ray = playerCamera.ScreenPointToRay(Input.mousePosition);
@@ -115,6 +120,20 @@ public class PlayerController : NetworkBehaviour
             return true;
         }
         return false;
+    }
+
+    [Rpc(SendTo.Server)]
+    public void RotateToDirectionRpc(Vector3 direction)
+    {
+        if (direction == Vector3.zero) return;
+
+        navMeshAgent.updateRotation = false;
+        direction.y = 0;
+
+        Quaternion targetRotation = Quaternion.LookRotation(direction);
+
+        transform.rotation = targetRotation;
+        navMeshAgent.updateRotation = true;
     }
 
     private int GetNavmeshArea(string areaName)

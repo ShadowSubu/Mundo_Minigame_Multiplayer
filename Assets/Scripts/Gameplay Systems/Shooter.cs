@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Unity.Netcode;
 using UnityEngine;
 
@@ -19,6 +20,7 @@ public class Shooter : NetworkBehaviour
     [SerializeField] LayerMask shootingLayer;
 
     private float cooldownTime = 0f;
+    private bool isShooting = false;
 
     private Camera mainCamera;
 
@@ -47,6 +49,7 @@ public class Shooter : NetworkBehaviour
     {
         if (IsOwner && Input.GetMouseButton(0))
         {
+            if (isShooting) return;
             Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
 
@@ -81,18 +84,23 @@ public class Shooter : NetworkBehaviour
         OnCooldownChanged?.Invoke(this, cooldownTime);
     }
 
-    public void Shoot(ProjectileType projectileType, Vector3 direction, ulong ownerClientId)
+    public async void Shoot(ProjectileType projectileType, Vector3 direction, ulong ownerClientId)
     {
         if (cooldownTime > 0f)
         {
-            return; // Exit if still in cooldown
+            return; 
         }
+        isShooting = true;
+
+        GetComponent<PlayerController>().RotateToDirectionRpc(direction);
+        await Task.Delay(300);
 
         // Send to server to spawn bullet
         SpawnBulletServerRpc(projectileType, firePoint.position, direction, ownerClientId);
         cooldownTime = projectilesDictionary[selectedProjectile].MaxCooldown;
         InvokeRepeating(nameof(UpdateCooldownUI), 0f, 0.1f);
         OnShoot?.Invoke(this, EventArgs.Empty);
+        isShooting = false;
     }
 
     [Rpc(SendTo.Server)]
@@ -132,6 +140,7 @@ public class Shooter : NetworkBehaviour
     public Transform FirePoint => firePoint;
     public ProjectileBase SelectedProjectile => projectilesDictionary[selectedProjectile];
     public ProjectileType SelectedProjectileType => selectedProjectile;
+    public bool IsShooting => isShooting;
 
     #region Testing
 
