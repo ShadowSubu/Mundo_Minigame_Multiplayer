@@ -12,6 +12,15 @@ public class AbilityBlink : AbilityBase
         Blink(ray);
     }
 
+    private void Start()
+    {
+        if (DeveloperDashboard.Instance.OverrideValues)
+        {
+            maxCooldown = DeveloperDashboard.Instance.GetBlinkCooldown();
+            blinkRadius = DeveloperDashboard.Instance.GetBlinkRadius();
+        }
+    }
+
     private void Blink(Ray ray)
     {
         Vector3 targetPosition;

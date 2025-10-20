@@ -18,6 +18,7 @@ public class Shooter : NetworkBehaviour
 
     [SerializeField] private Transform firePoint;
     [SerializeField] LayerMask shootingLayer;
+    [SerializeField, Tooltip("in ms")] private int channelDuration;
 
     private float cooldownTime = 0f;
     private bool isShooting = false;
@@ -93,7 +94,7 @@ public class Shooter : NetworkBehaviour
         isShooting = true;
 
         GetComponent<PlayerController>().RotateToDirectionRpc(direction);
-        await Task.Delay(300);
+        await Task.Delay(channelDuration);
 
         // Send to server to spawn bullet
         SpawnBulletServerRpc(projectileType, firePoint.position, direction, ownerClientId);
@@ -152,6 +153,11 @@ public class Shooter : NetworkBehaviour
     public void SelectProjectile(string type)
     {
         selectedProjectile = projectileTypeMapping[type];
+    }
+
+    public void SetChannelDuration(int value)
+    {
+        channelDuration = value;
     }
 
     #endregion

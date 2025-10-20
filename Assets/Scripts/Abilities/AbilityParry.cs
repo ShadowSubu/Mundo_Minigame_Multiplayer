@@ -15,6 +15,15 @@ public class AbilityParry : AbilityBase
         parryCollider.enabled = false;
     }
 
+    private void Start()
+    {
+        if (DeveloperDashboard.Instance.OverrideValues)
+        {
+            maxCooldown = DeveloperDashboard.Instance.GetParryCooldown();
+            parryDuration = DeveloperDashboard.Instance.GetParryDuration();
+        }
+    }
+
     internal override void OnAbilityUse(Ray ray)
     {
         Debug.Log("Parry Ability Used");

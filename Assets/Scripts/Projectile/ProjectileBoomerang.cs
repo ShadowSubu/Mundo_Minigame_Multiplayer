@@ -14,6 +14,19 @@ public class ProjectileBoomerang : ProjectileBase
     private bool hasHitTargetForward = false;
     private bool hasHitTargetReturn = false;
 
+    private void Start()
+    {
+        if (DeveloperDashboard.Instance.OverrideValues)
+        {
+            projectileDamage = DeveloperDashboard.Instance.GetBoomerangDamage();
+            projectileSpeed = DeveloperDashboard.Instance.GetBoomerangProjectileSpeed();
+            maxCooldown = DeveloperDashboard.Instance.GetBoomerangMaxCooldown();
+            maxDistance = DeveloperDashboard.Instance.GetBoomerangMaxDistance();
+            returnMaxDistance = DeveloperDashboard.Instance.GetBoomerangReturnMaxDistance();
+            cooldownReduction = DeveloperDashboard.Instance.GetBoomerangCooldownReduction();
+        }
+    }
+
     internal override void OnTriggerEnterBehaviour(Collider other)
     {
         other.TryGetComponent(out NetworkObject hit);

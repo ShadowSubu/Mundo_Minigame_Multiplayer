@@ -8046,8 +8046,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
+  overrideValues: 1
   dashboardUI: {fileID: 160413185}
   toggleKey: 282
+  confirmButton: {fileID: 1300957091}
   playerPrefab: {fileID: 4014160347200438750, guid: b82c7d2d64d5f264aaf9f54e246f96b5, type: 3}
   playerMovementSpeedInput: {fileID: 273469691}
   playerChannelTimeInput: {fileID: 953370715}

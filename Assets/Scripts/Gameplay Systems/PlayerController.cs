@@ -158,4 +158,18 @@ public class PlayerController : NetworkBehaviour
     }
 
     public int AllowedNavmeshArea => allowedNavmeshArea;
+
+    #region Developer Dashboard values
+
+    public void SetPlayerMovementSpeed(float value)
+    {
+        navMeshAgent.speed = value;
+    }
+
+    public void SetPlayerChannelDuration(int value)
+    {
+        shooter.SetChannelDuration(value);
+    }
+
+    #endregion
 }

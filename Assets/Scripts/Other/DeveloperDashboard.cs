@@ -1,14 +1,19 @@
+using System;
+using System.Collections.Generic;
 using TMPro;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.UI;
 
 public class DeveloperDashboard : NetworkBehaviour
 {
     public static DeveloperDashboard Instance { get; private set; }
 
+    [SerializeField] private bool overrideValues = true;
     [SerializeField] private GameObject dashboardUI;
     [SerializeField] private KeyCode toggleKey = KeyCode.F1;
+    [SerializeField] private Button confirmButton;
     private bool dashboardOpen = false;
 
     [Header("Player Character Section")]
@@ -58,6 +63,28 @@ public class DeveloperDashboard : NetworkBehaviour
 
         Instance = this;
         DontDestroyOnLoad(gameObject);
+    }
+
+    private void OnEnable()
+    {
+        confirmButton.onClick.AddListener(ConfirmValues);
+    }
+
+    private void OnDisable()
+    {
+        confirmButton.onClick.AddListener(ConfirmValues);
+    }
+
+    private void ConfirmValues()
+    {
+        PlayerController[] players = FindObjectsByType<PlayerController>(FindObjectsSortMode.None);
+        for (int i = 0; i < players.Length; i++)
+        {
+            players[i].SetPlayerMovementSpeed(GetPlayerMovementSpeed());
+            players[i].SetPlayerChannelDuration(GetPlayerChannelTime());
+        }
+
+        ToggleDashboard();
     }
 
     private void Start()
@@ -170,4 +197,35 @@ public class DeveloperDashboard : NetworkBehaviour
         if (!IsHost)
             this.enabled = false;
     }
+
+    // Player Character Getters
+    public float GetPlayerMovementSpeed() => float.TryParse(playerMovementSpeedInput.text, out float result) ? result : 0f;
+    public int GetPlayerChannelTime() => int.TryParse(playerChannelTimeInput.text, out int result) ? result : 0;
+
+    // Bullet Getters
+    public byte GetBulletDamage() => byte.TryParse(bulletDamageInput.text, out byte result) ? result : (byte)0;
+    public float GetBulletProjectileSpeed() => float.TryParse(bulletProjectileSpeedInput.text, out float result) ? result : 0f;
+    public float GetBulletCooldown() => float.TryParse(bulletCooldownInput.text, out float result) ? result : 0f;
+    public float GetBulletMaxDistance() => float.TryParse(bulletMaxDistanceInput.text, out float result) ? result : 0f;
+
+    // Boomerang Getters
+    public byte GetBoomerangDamage() => byte.TryParse(boomerangDamageInput.text, out byte result) ? result : (byte)0;
+    public float GetBoomerangProjectileSpeed() => float.TryParse(boomerangProjectileSpeedInput.text, out float result) ? result : 0f;
+    public float GetBoomerangMaxCooldown() => float.TryParse(boomerangMaxCooldownInput.text, out float result) ? result : 0f;
+    public float GetBoomerangMaxDistance() => float.TryParse(boomerangMaxDistanceInput.text, out float result) ? result : 0f;
+    public float GetBoomerangReturnMaxDistance() => float.TryParse(boomerangReturnMaxDistanceInput.text, out float result) ? result : 0f;
+    public float GetBoomerangCooldownReduction() => float.TryParse(boomerangCooldownReductionInput.text, out float result) ? result : 0f;
+
+    // Blink Getters
+    public float GetBlinkCooldown() => float.TryParse(blinkCooldownInput.text, out float result) ? result : 0f;
+    public float GetBlinkRadius() => float.TryParse(blinkRadiusInput.text, out float result) ? result : 0f;
+
+    // Fakeshot Getters
+    public float GetFakeshotCooldown() => float.TryParse(fakeshotCooldownInput.text, out float result) ? result : 0f;
+
+    // Parry Getters
+    public float GetParryCooldown() => float.TryParse(parryCooldownInput.text, out float result) ? result : 0f;
+    public float GetParryDuration() => float.TryParse(parryDurationInput.text, out float result) ? result : 0f;
+
+    public bool OverrideValues => overrideValues;
 }
