@@ -40,11 +40,14 @@ public abstract class ProjectileBase : NetworkBehaviour
         // Condition to check if projectile hits another projectile, if so, destroy them and immediately refund cooldown to all shooters
         if (other.TryGetComponent(out ProjectileBase projectile))
         {
-            DestroyBullet();
-            projectile.ShooterObject.TryGetComponent(out Shooter shooter);
-            if (shooter != null)
+            if (projectile.OwnerClientId != ShooterObject.OwnerClientId)
             {
-                shooter.ResetCooldownRpc();
+                DestroyBullet();
+                projectile.ShooterObject.TryGetComponent(out Shooter shooter);
+                if (shooter != null)
+                {
+                    shooter.ResetCooldownRpc();
+                }
             }
         }
 
@@ -69,6 +72,8 @@ public abstract class ProjectileBase : NetworkBehaviour
 
     public NetworkObject ShooterObject => shooterObject.Value;
     public ProjectileType ProjectileType => projectileType;
+    public byte ProjectileDamage => projectileDamage;
+    public float ProjectileSpeed => projectileSpeed;
     public float MaxCooldown => maxCooldown;
 
     public NetworkObject GetOwnerNetworkObject()

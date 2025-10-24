@@ -4,6 +4,17 @@ public class ProjectileNormal : ProjectileBase
 {
     [SerializeField] private float maxDistance = 20f;
 
+    private void Start()
+    {
+        if (DeveloperDashboard.Instance.OverrideValues)
+        {
+            projectileDamage = DeveloperDashboard.Instance.GetBulletDamage();
+            projectileSpeed = DeveloperDashboard.Instance.GetBulletProjectileSpeed();
+            maxCooldown = DeveloperDashboard.Instance.GetBulletCooldown();
+            maxDistance = DeveloperDashboard.Instance.GetBulletMaxDistance();
+        }
+    }
+
     internal override void OnTriggerEnterBehaviour(Collider other)
     {
         TargetBase hit = other.GetComponent<TargetBase>();
@@ -28,4 +39,6 @@ public class ProjectileNormal : ProjectileBase
             DestroyBullet();
         }
     }
+
+    public float MaxDistance => maxDistance;
 }

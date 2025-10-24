@@ -8,6 +8,14 @@ public class AbilityFakeShot : AbilityBase
         Shoot(ray);
     }
 
+    private void Start()
+    {
+        if (DeveloperDashboard.Instance.OverrideValues)
+        {
+            maxCooldown = DeveloperDashboard.Instance.GetFakeshotCooldown();
+        }
+    }
+
     private void Shoot(Ray ray)
     {
         Shooter shooter = casterObject.GetComponent<Shooter>();
