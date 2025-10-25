@@ -1,5 +1,3 @@
-using System;
-using System.Collections.Generic;
 using TMPro;
 using Unity.Netcode;
 using UnityEngine;
@@ -53,6 +51,35 @@ public class DeveloperDashboard : NetworkBehaviour
 
     private NetworkVariable<bool> isPaused = new NetworkVariable<bool>(false);
 
+    // Network Variables for Player Character
+    private NetworkVariable<float> netPlayerMovementSpeed = new NetworkVariable<float>(0f, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
+    private NetworkVariable<int> netPlayerChannelTime = new NetworkVariable<int>(0, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
+
+    // Network Variables for Bullet
+    private NetworkVariable<byte> netBulletDamage = new NetworkVariable<byte>(0, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
+    private NetworkVariable<float> netBulletProjectileSpeed = new NetworkVariable<float>(0f, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
+    private NetworkVariable<float> netBulletCooldown = new NetworkVariable<float>(0f, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
+    private NetworkVariable<float> netBulletMaxDistance = new NetworkVariable<float>(0f, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
+
+    // Network Variables for Boomerang
+    private NetworkVariable<byte> netBoomerangDamage = new NetworkVariable<byte>(0, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
+    private NetworkVariable<float> netBoomerangProjectileSpeed = new NetworkVariable<float>(0f, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
+    private NetworkVariable<float> netBoomerangMaxCooldown = new NetworkVariable<float>(0f, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
+    private NetworkVariable<float> netBoomerangMaxDistance = new NetworkVariable<float>(0f, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
+    private NetworkVariable<float> netBoomerangReturnMaxDistance = new NetworkVariable<float>(0f, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
+    private NetworkVariable<float> netBoomerangCooldownReduction = new NetworkVariable<float>(0f, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
+
+    // Network Variables for Blink
+    private NetworkVariable<float> netBlinkCooldown = new NetworkVariable<float>(0f, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
+    private NetworkVariable<float> netBlinkRadius = new NetworkVariable<float>(0f, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
+
+    // Network Variables for Fakeshot
+    private NetworkVariable<float> netFakeshotCooldown = new NetworkVariable<float>(0f, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
+
+    // Network Variables for Parry
+    private NetworkVariable<float> netParryCooldown = new NetworkVariable<float>(0f, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
+    private NetworkVariable<float> netParryDuration = new NetworkVariable<float>(0f, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
+
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -68,11 +95,244 @@ public class DeveloperDashboard : NetworkBehaviour
     private void OnEnable()
     {
         confirmButton.onClick.AddListener(ConfirmValues);
+        SetupInputFieldListeners();
     }
 
     private void OnDisable()
     {
-        confirmButton.onClick.AddListener(ConfirmValues);
+        confirmButton.onClick.RemoveListener(ConfirmValues);
+        RemoveInputFieldListeners();
+    }
+
+    private void SetupInputFieldListeners()
+    {
+        if (playerMovementSpeedInput != null)
+            playerMovementSpeedInput.onValueChanged.AddListener((value) => OnInputFieldChanged(InputFieldType.PlayerMovementSpeed, value));
+        if (playerChannelTimeInput != null)
+            playerChannelTimeInput.onValueChanged.AddListener((value) => OnInputFieldChanged(InputFieldType.PlayerChannelTime, value));
+
+        if (bulletDamageInput != null)
+            bulletDamageInput.onValueChanged.AddListener((value) => OnInputFieldChanged(InputFieldType.BulletDamage, value));
+        if (bulletProjectileSpeedInput != null)
+            bulletProjectileSpeedInput.onValueChanged.AddListener((value) => OnInputFieldChanged(InputFieldType.BulletProjectileSpeed, value));
+        if (bulletCooldownInput != null)
+            bulletCooldownInput.onValueChanged.AddListener((value) => OnInputFieldChanged(InputFieldType.BulletCooldown, value));
+        if (bulletMaxDistanceInput != null)
+            bulletMaxDistanceInput.onValueChanged.AddListener((value) => OnInputFieldChanged(InputFieldType.BulletMaxDistance, value));
+
+        if (boomerangDamageInput != null)
+            boomerangDamageInput.onValueChanged.AddListener((value) => OnInputFieldChanged(InputFieldType.BoomerangDamage, value));
+        if (boomerangProjectileSpeedInput != null)
+            boomerangProjectileSpeedInput.onValueChanged.AddListener((value) => OnInputFieldChanged(InputFieldType.BoomerangProjectileSpeed, value));
+        if (boomerangMaxCooldownInput != null)
+            boomerangMaxCooldownInput.onValueChanged.AddListener((value) => OnInputFieldChanged(InputFieldType.BoomerangMaxCooldown, value));
+        if (boomerangMaxDistanceInput != null)
+            boomerangMaxDistanceInput.onValueChanged.AddListener((value) => OnInputFieldChanged(InputFieldType.BoomerangMaxDistance, value));
+        if (boomerangReturnMaxDistanceInput != null)
+            boomerangReturnMaxDistanceInput.onValueChanged.AddListener((value) => OnInputFieldChanged(InputFieldType.BoomerangReturnMaxDistance, value));
+        if (boomerangCooldownReductionInput != null)
+            boomerangCooldownReductionInput.onValueChanged.AddListener((value) => OnInputFieldChanged(InputFieldType.BoomerangCooldownReduction, value));
+
+        if (blinkCooldownInput != null)
+            blinkCooldownInput.onValueChanged.AddListener((value) => OnInputFieldChanged(InputFieldType.BlinkCooldown, value));
+        if (blinkRadiusInput != null)
+            blinkRadiusInput.onValueChanged.AddListener((value) => OnInputFieldChanged(InputFieldType.BlinkRadius, value));
+
+        if (fakeshotCooldownInput != null)
+            fakeshotCooldownInput.onValueChanged.AddListener((value) => OnInputFieldChanged(InputFieldType.FakeshotCooldown, value));
+
+        if (parryCooldownInput != null)
+            parryCooldownInput.onValueChanged.AddListener((value) => OnInputFieldChanged(InputFieldType.ParryCooldown, value));
+        if (parryDurationInput != null)
+            parryDurationInput.onValueChanged.AddListener((value) => OnInputFieldChanged(InputFieldType.ParryDuration, value));
+    }
+
+    private void RemoveInputFieldListeners()
+    {
+        if (playerMovementSpeedInput != null)
+            playerMovementSpeedInput.onValueChanged.RemoveAllListeners();
+        if (playerChannelTimeInput != null)
+            playerChannelTimeInput.onValueChanged.RemoveAllListeners();
+
+        if (bulletDamageInput != null)
+            bulletDamageInput.onValueChanged.RemoveAllListeners();
+        if (bulletProjectileSpeedInput != null)
+            bulletProjectileSpeedInput.onValueChanged.RemoveAllListeners();
+        if (bulletCooldownInput != null)
+            bulletCooldownInput.onValueChanged.RemoveAllListeners();
+        if (bulletMaxDistanceInput != null)
+            bulletMaxDistanceInput.onValueChanged.RemoveAllListeners();
+
+        if (boomerangDamageInput != null)
+            boomerangDamageInput.onValueChanged.RemoveAllListeners();
+        if (boomerangProjectileSpeedInput != null)
+            boomerangProjectileSpeedInput.onValueChanged.RemoveAllListeners();
+        if (boomerangMaxCooldownInput != null)
+            boomerangMaxCooldownInput.onValueChanged.RemoveAllListeners();
+        if (boomerangMaxDistanceInput != null)
+            boomerangMaxDistanceInput.onValueChanged.RemoveAllListeners();
+        if (boomerangReturnMaxDistanceInput != null)
+            boomerangReturnMaxDistanceInput.onValueChanged.RemoveAllListeners();
+        if (boomerangCooldownReductionInput != null)
+            boomerangCooldownReductionInput.onValueChanged.RemoveAllListeners();
+
+        if (blinkCooldownInput != null)
+            blinkCooldownInput.onValueChanged.RemoveAllListeners();
+        if (blinkRadiusInput != null)
+            blinkRadiusInput.onValueChanged.RemoveAllListeners();
+
+        if (fakeshotCooldownInput != null)
+            fakeshotCooldownInput.onValueChanged.RemoveAllListeners();
+
+        if (parryCooldownInput != null)
+            parryCooldownInput.onValueChanged.RemoveAllListeners();
+        if (parryDurationInput != null)
+            parryDurationInput.onValueChanged.RemoveAllListeners();
+    }
+
+    private enum InputFieldType
+    {
+        PlayerMovementSpeed,
+        PlayerChannelTime,
+        BulletDamage,
+        BulletProjectileSpeed,
+        BulletCooldown,
+        BulletMaxDistance,
+        BoomerangDamage,
+        BoomerangProjectileSpeed,
+        BoomerangMaxCooldown,
+        BoomerangMaxDistance,
+        BoomerangReturnMaxDistance,
+        BoomerangCooldownReduction,
+        BlinkCooldown,
+        BlinkRadius,
+        FakeshotCooldown,
+        ParryCooldown,
+        ParryDuration
+    }
+
+    private void OnInputFieldChanged(InputFieldType fieldType, string value)
+    {
+        if (!IsHost)
+            return;
+
+        UpdateNetworkVariableServerRpc(fieldType, value);
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    private void UpdateNetworkVariableServerRpc(InputFieldType fieldType, string value)
+    {
+        switch (fieldType)
+        {
+            case InputFieldType.PlayerMovementSpeed:
+                if (float.TryParse(value, out float movSpeed))
+                    netPlayerMovementSpeed.Value = movSpeed;
+                break;
+            case InputFieldType.PlayerChannelTime:
+                if (int.TryParse(value, out int channelTime))
+                    netPlayerChannelTime.Value = channelTime;
+                break;
+            case InputFieldType.BulletDamage:
+                if (byte.TryParse(value, out byte bulletDmg))
+                    netBulletDamage.Value = bulletDmg;
+                break;
+            case InputFieldType.BulletProjectileSpeed:
+                if (float.TryParse(value, out float bulletSpeed))
+                    netBulletProjectileSpeed.Value = bulletSpeed;
+                break;
+            case InputFieldType.BulletCooldown:
+                if (float.TryParse(value, out float bulletCd))
+                    netBulletCooldown.Value = bulletCd;
+                break;
+            case InputFieldType.BulletMaxDistance:
+                if (float.TryParse(value, out float bulletDist))
+                    netBulletMaxDistance.Value = bulletDist;
+                break;
+            case InputFieldType.BoomerangDamage:
+                if (byte.TryParse(value, out byte boomDmg))
+                    netBoomerangDamage.Value = boomDmg;
+                break;
+            case InputFieldType.BoomerangProjectileSpeed:
+                if (float.TryParse(value, out float boomSpeed))
+                    netBoomerangProjectileSpeed.Value = boomSpeed;
+                break;
+            case InputFieldType.BoomerangMaxCooldown:
+                if (float.TryParse(value, out float boomCd))
+                    netBoomerangMaxCooldown.Value = boomCd;
+                break;
+            case InputFieldType.BoomerangMaxDistance:
+                if (float.TryParse(value, out float boomDist))
+                    netBoomerangMaxDistance.Value = boomDist;
+                break;
+            case InputFieldType.BoomerangReturnMaxDistance:
+                if (float.TryParse(value, out float boomRetDist))
+                    netBoomerangReturnMaxDistance.Value = boomRetDist;
+                break;
+            case InputFieldType.BoomerangCooldownReduction:
+                if (float.TryParse(value, out float boomCdRed))
+                    netBoomerangCooldownReduction.Value = boomCdRed;
+                break;
+            case InputFieldType.BlinkCooldown:
+                if (float.TryParse(value, out float blinkCd))
+                    netBlinkCooldown.Value = blinkCd;
+                break;
+            case InputFieldType.BlinkRadius:
+                if (float.TryParse(value, out float blinkRad))
+                    netBlinkRadius.Value = blinkRad;
+                break;
+            case InputFieldType.FakeshotCooldown:
+                if (float.TryParse(value, out float fakeCd))
+                    netFakeshotCooldown.Value = fakeCd;
+                break;
+            case InputFieldType.ParryCooldown:
+                if (float.TryParse(value, out float parryCd))
+                    netParryCooldown.Value = parryCd;
+                break;
+            case InputFieldType.ParryDuration:
+                if (float.TryParse(value, out float parryDur))
+                    netParryDuration.Value = parryDur;
+                break;
+        }
+    }
+
+    public override void OnNetworkSpawn()
+    {
+        base.OnNetworkSpawn();
+
+        if (!IsHost)
+            this.enabled = false;
+
+        // Subscribe to network variable changes on clients
+        netPlayerMovementSpeed.OnValueChanged += (oldVal, newVal) => UpdateInputField(playerMovementSpeedInput, newVal.ToString("F2"));
+        netPlayerChannelTime.OnValueChanged += (oldVal, newVal) => UpdateInputField(playerChannelTimeInput, newVal.ToString());
+
+        netBulletDamage.OnValueChanged += (oldVal, newVal) => UpdateInputField(bulletDamageInput, newVal.ToString());
+        netBulletProjectileSpeed.OnValueChanged += (oldVal, newVal) => UpdateInputField(bulletProjectileSpeedInput, newVal.ToString("F2"));
+        netBulletCooldown.OnValueChanged += (oldVal, newVal) => UpdateInputField(bulletCooldownInput, newVal.ToString("F2"));
+        netBulletMaxDistance.OnValueChanged += (oldVal, newVal) => UpdateInputField(bulletMaxDistanceInput, newVal.ToString("F2"));
+
+        netBoomerangDamage.OnValueChanged += (oldVal, newVal) => UpdateInputField(boomerangDamageInput, newVal.ToString());
+        netBoomerangProjectileSpeed.OnValueChanged += (oldVal, newVal) => UpdateInputField(boomerangProjectileSpeedInput, newVal.ToString("F2"));
+        netBoomerangMaxCooldown.OnValueChanged += (oldVal, newVal) => UpdateInputField(boomerangMaxCooldownInput, newVal.ToString("F2"));
+        netBoomerangMaxDistance.OnValueChanged += (oldVal, newVal) => UpdateInputField(boomerangMaxDistanceInput, newVal.ToString("F2"));
+        netBoomerangReturnMaxDistance.OnValueChanged += (oldVal, newVal) => UpdateInputField(boomerangReturnMaxDistanceInput, newVal.ToString("F2"));
+        netBoomerangCooldownReduction.OnValueChanged += (oldVal, newVal) => UpdateInputField(boomerangCooldownReductionInput, newVal.ToString("F2"));
+
+        netBlinkCooldown.OnValueChanged += (oldVal, newVal) => UpdateInputField(blinkCooldownInput, newVal.ToString("F2"));
+        netBlinkRadius.OnValueChanged += (oldVal, newVal) => UpdateInputField(blinkRadiusInput, newVal.ToString("F2"));
+
+        netFakeshotCooldown.OnValueChanged += (oldVal, newVal) => UpdateInputField(fakeshotCooldownInput, newVal.ToString("F2"));
+
+        netParryCooldown.OnValueChanged += (oldVal, newVal) => UpdateInputField(parryCooldownInput, newVal.ToString("F2"));
+        netParryDuration.OnValueChanged += (oldVal, newVal) => UpdateInputField(parryDurationInput, newVal.ToString("F2"));
+    }
+
+    private void UpdateInputField(TMP_InputField inputField, string value)
+    {
+        if (inputField != null && !IsHost)
+        {
+            inputField.text = value;
+        }
     }
 
     private void ConfirmValues()
@@ -114,7 +374,7 @@ public class DeveloperDashboard : NetworkBehaviour
         if (bulletPrefab != null)
         {
             if (bulletDamageInput != null)
-                bulletDamageInput.text = bulletPrefab.ProjectileDamage.ToString("F2");
+                bulletDamageInput.text = bulletPrefab.ProjectileDamage.ToString();
             if (bulletProjectileSpeedInput != null)
                 bulletProjectileSpeedInput.text = bulletPrefab.ProjectileSpeed.ToString("F2");
             if (bulletCooldownInput != null)
@@ -126,7 +386,7 @@ public class DeveloperDashboard : NetworkBehaviour
         if (boomerangPrefab != null)
         {
             if (boomerangDamageInput != null)
-                boomerangDamageInput.text = boomerangPrefab.ProjectileDamage.ToString("F2");
+                boomerangDamageInput.text = boomerangPrefab.ProjectileDamage.ToString();
             if (boomerangProjectileSpeedInput != null)
                 boomerangProjectileSpeedInput.text = boomerangPrefab.ProjectileSpeed.ToString("F2");
             if (boomerangMaxCooldownInput != null)
@@ -190,42 +450,36 @@ public class DeveloperDashboard : NetworkBehaviour
         Time.timeScale = paused ? 0f : 1f;
     }
 
-    public override void OnNetworkSpawn()
-    {
-        base.OnNetworkSpawn();
+    // Player Character Getters - now use network variables
+    public float GetPlayerMovementSpeed() => netPlayerMovementSpeed.Value;
+    public int GetPlayerChannelTime() => netPlayerChannelTime.Value;
 
-        if (!IsHost)
-            this.enabled = false;
-    }
+    // Bullet Getters - now use network variables
+    public byte GetBulletDamage() => netBulletDamage.Value;
+    public float GetBulletProjectileSpeed() => netBulletProjectileSpeed.Value;
+    public float GetBulletCooldown() => netBulletCooldown.Value;
+    public float GetBulletMaxDistance() => netBulletMaxDistance.Value;
 
-    // Player Character Getters
-    public float GetPlayerMovementSpeed() => float.TryParse(playerMovementSpeedInput.text, out float result) ? result : 0f;
-    public int GetPlayerChannelTime() => int.TryParse(playerChannelTimeInput.text, out int result) ? result : 0;
+    // Boomerang Getters - now use network variables
+    public byte GetBoomerangDamage() => netBoomerangDamage.Value;
+    public float GetBoomerangProjectileSpeed() => netBoomerangProjectileSpeed.Value;
+    public float GetBoomerangMaxCooldown() => netBoomerangMaxCooldown.Value;
+    public float GetBoomerangMaxDistance() => netBoomerangMaxDistance.Value;
+    public float GetBoomerangReturnMaxDistance() => netBoomerangReturnMaxDistance.Value;
+    public float GetBoomerangCooldownReduction() => netBoomerangCooldownReduction.Value;
 
-    // Bullet Getters
-    public byte GetBulletDamage() => byte.TryParse(bulletDamageInput.text, out byte result) ? result : (byte)0;
-    public float GetBulletProjectileSpeed() => float.TryParse(bulletProjectileSpeedInput.text, out float result) ? result : 0f;
-    public float GetBulletCooldown() => float.TryParse(bulletCooldownInput.text, out float result) ? result : 0f;
-    public float GetBulletMaxDistance() => float.TryParse(bulletMaxDistanceInput.text, out float result) ? result : 0f;
+    // Blink Getters - now use network variables
+    public float GetBlinkCooldown() => netBlinkCooldown.Value;
+    public float GetBlinkRadius() => netBlinkRadius.Value;
 
-    // Boomerang Getters
-    public byte GetBoomerangDamage() => byte.TryParse(boomerangDamageInput.text, out byte result) ? result : (byte)0;
-    public float GetBoomerangProjectileSpeed() => float.TryParse(boomerangProjectileSpeedInput.text, out float result) ? result : 0f;
-    public float GetBoomerangMaxCooldown() => float.TryParse(boomerangMaxCooldownInput.text, out float result) ? result : 0f;
-    public float GetBoomerangMaxDistance() => float.TryParse(boomerangMaxDistanceInput.text, out float result) ? result : 0f;
-    public float GetBoomerangReturnMaxDistance() => float.TryParse(boomerangReturnMaxDistanceInput.text, out float result) ? result : 0f;
-    public float GetBoomerangCooldownReduction() => float.TryParse(boomerangCooldownReductionInput.text, out float result) ? result : 0f;
+    // Fakeshot Getters - now use network variables
+    public float GetFakeshotCooldown() => netFakeshotCooldown.Value;
 
-    // Blink Getters
-    public float GetBlinkCooldown() => float.TryParse(blinkCooldownInput.text, out float result) ? result : 0f;
-    public float GetBlinkRadius() => float.TryParse(blinkRadiusInput.text, out float result) ? result : 0f;
-
-    // Fakeshot Getters
-    public float GetFakeshotCooldown() => float.TryParse(fakeshotCooldownInput.text, out float result) ? result : 0f;
-
-    // Parry Getters
-    public float GetParryCooldown() => float.TryParse(parryCooldownInput.text, out float result) ? result : 0f;
-    public float GetParryDuration() => float.TryParse(parryDurationInput.text, out float result) ? result : 0f;
+    // Parry Getters - now use network variables
+    public float GetParryCooldown() => netParryCooldown.Value;
+    public float GetParryDuration() => netParryDuration.Value;
 
     public bool OverrideValues => overrideValues;
+
+    public TMP_InputField.OnChangeEvent OnVlaueChanged { get; private set; }
 }

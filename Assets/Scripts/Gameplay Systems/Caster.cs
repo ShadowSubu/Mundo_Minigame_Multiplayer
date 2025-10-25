@@ -113,7 +113,15 @@ public class Caster : NetworkBehaviour
 
         Debug.Log("Requesting ability use...");
         RequestAbilityUseRpc(GetMouseWorldPosition(Input.mousePosition));
-        cooldownTime = abilityDictionary[selectedAbility].MaxCooldown;
+
+        if (DeveloperDashboard.Instance.OverrideValues)
+        {
+            cooldownTime = GetAbilityCooldownDev(selectedAbility);
+        }
+        else
+        {
+            cooldownTime = abilityDictionary[selectedAbility].MaxCooldown;
+        }
         InvokeRepeating(nameof(UpdateCooldownUI), 0f, 0.1f);
     }
 
@@ -150,7 +158,14 @@ public class Caster : NetworkBehaviour
 
     public float GetMaxCooldown()
     {
-        return abilityDictionary[selectedAbility].MaxCooldown;
+        if (DeveloperDashboard.Instance.OverrideValues)
+        {
+            return GetAbilityCooldownDev(selectedAbility);
+        }
+        else
+        {
+            return abilityDictionary[selectedAbility].MaxCooldown;
+        }
     }
 
     internal void SelectAbility(string abilityType)
@@ -159,4 +174,19 @@ public class Caster : NetworkBehaviour
     }
 
     public Camera MainCamera => mainCamera;
+
+    #region Development 
+
+    private float GetAbilityCooldownDev(AbilityType type)
+    {
+        return type switch
+        {
+            AbilityType.Blink => DeveloperDashboard.Instance.GetBulletCooldown(),
+            AbilityType.FakeShot => DeveloperDashboard.Instance.GetFakeshotCooldown(),
+            AbilityType.Parry =>DeveloperDashboard.Instance.GetParryCooldown(),
+            _ => abilityDictionary[selectedAbility].MaxCooldown,
+        };
+    }
+
+    #endregion
 }
