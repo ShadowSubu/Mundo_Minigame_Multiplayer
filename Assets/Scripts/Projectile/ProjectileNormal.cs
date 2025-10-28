@@ -10,7 +10,6 @@ public class ProjectileNormal : ProjectileBase
         {
             projectileDamage = DeveloperDashboard.Instance.GetBulletDamage();
             projectileSpeed = DeveloperDashboard.Instance.GetBulletProjectileSpeed();
-            maxCooldown = DeveloperDashboard.Instance.GetBulletCooldown();
             maxDistance = DeveloperDashboard.Instance.GetBulletMaxDistance();
         }
     }

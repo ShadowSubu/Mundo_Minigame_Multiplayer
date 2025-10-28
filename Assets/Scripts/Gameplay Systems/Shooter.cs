@@ -98,7 +98,16 @@ public class Shooter : NetworkBehaviour
 
         // Send to server to spawn bullet
         SpawnBulletServerRpc(projectileType, firePoint.position, direction, ownerClientId);
-        cooldownTime = projectilesDictionary[selectedProjectile].MaxCooldown;
+
+        if (DeveloperDashboard.Instance.OverrideValues)
+        {
+            cooldownTime = GetProjectileCooldownDev(selectedProjectile);
+        }
+        else
+        {
+            cooldownTime = projectilesDictionary[selectedProjectile].MaxCooldown;
+        }
+
         InvokeRepeating(nameof(UpdateCooldownUI), 0f, 0.1f);
         OnShoot?.Invoke(this, EventArgs.Empty);
         isShooting = false;
@@ -134,7 +143,14 @@ public class Shooter : NetworkBehaviour
 
     public float GetMaxCooldown()
     {
-        return projectilesDictionary[selectedProjectile].MaxCooldown;
+        if (DeveloperDashboard.Instance.OverrideValues)
+        {
+            return GetProjectileCooldownDev(selectedProjectile);
+        }
+        else
+        {
+            return projectilesDictionary[selectedProjectile].MaxCooldown;
+        }
     }
 
     public LayerMask ShootingLayer => shootingLayer;
@@ -158,6 +174,20 @@ public class Shooter : NetworkBehaviour
     public void SetChannelDuration(int value)
     {
         channelDuration = value;
+    }
+
+    #endregion
+
+    #region Development 
+
+    private float GetProjectileCooldownDev(ProjectileType type)
+    {
+        return type switch
+        {
+            ProjectileType.Normal => DeveloperDashboard.Instance.GetBulletCooldown(),
+            ProjectileType.Boomerang => DeveloperDashboard.Instance.GetBoomerangMaxCooldown(),
+            _ => projectilesDictionary[selectedProjectile].MaxCooldown,
+        };
     }
 
     #endregion
