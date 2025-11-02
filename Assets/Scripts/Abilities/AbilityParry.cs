@@ -24,7 +24,7 @@ public class AbilityParry : AbilityBase
         }
     }
 
-    internal override void OnAbilityUse(Ray ray)
+    internal override void OnAbilityUse(Ray ray, GameManager.Team team)
     {
         Debug.Log("Parry Ability Used");
         RequestParryRpc();

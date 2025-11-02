@@ -24,7 +24,7 @@ public abstract class AbilityBase : NetworkBehaviour
         casterObject = caster;
     }
 
-    internal abstract void OnAbilityUse(Ray ray);
+    internal abstract void OnAbilityUse(Ray ray, GameManager.Team team);
 
     public NetworkObject CasterObject => casterObject;
     public AbilityType AbilityType => abilityType;
@@ -37,5 +37,7 @@ public enum AbilityType
     None,
     Parry,
     Blink,
-    FakeShot
+    FakeShot,
+    Invisibility,
+    SpeedBoost
 }

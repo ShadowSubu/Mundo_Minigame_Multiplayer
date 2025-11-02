@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class AbilityFakeShot : AbilityBase
 {
-    internal override void OnAbilityUse(Ray ray)
+    internal override void OnAbilityUse(Ray ray, GameManager.Team team)
     {
         Shoot(ray);
     }

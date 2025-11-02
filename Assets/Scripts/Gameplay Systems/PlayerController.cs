@@ -158,6 +158,8 @@ public class PlayerController : NetworkBehaviour
     }
 
     public int AllowedNavmeshArea => allowedNavmeshArea;
+    public LayerMask AllowedLayer => allowedLayer;
+    public string PlayerAreaTag => playerAreaTag;
 
     #region Developer Dashboard values
 
