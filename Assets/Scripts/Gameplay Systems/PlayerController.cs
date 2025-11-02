@@ -1,11 +1,17 @@
 using System;
-using System.Threading.Tasks;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.AI;
 
 public class PlayerController : NetworkBehaviour
 {
+    [SerializeField] private float rotationSpeed = 100f;
+    private bool externalRotationApplied = false;
+    private List<Transform> enemies = new List<Transform>();
+
+    private GameManager.Team playerTeam;
     private string playerAreaTag;
     private Camera playerCamera;
     private LayerMask allowedLayer;
@@ -16,17 +22,26 @@ public class PlayerController : NetworkBehaviour
     public event EventHandler<float> OnPlayerMove;
 
     private Shooter shooter;
+    private Transform targetToFace;
+
+    public override void OnNetworkSpawn()
+    {
+        GameManager.Instance.AddPlayerRpc(this.OwnerClientId);
+    }
 
     private void Awake()
     {
         playerCamera = Camera.main;
         navMeshAgent = GetComponent<NavMeshAgent>();
         shooter = GetComponent<Shooter>();
+        navMeshAgent.updateRotation = false;
     }
 
     private void Update()
     {
         HandleMovement();
+        FindNearestEnemy();
+        FaceTheNearestEnemy();
         OnPlayerMove?.Invoke(this, navMeshAgent.velocity.sqrMagnitude);
     }
 
@@ -34,6 +49,7 @@ public class PlayerController : NetworkBehaviour
     public void InitializeRpc(GameManager.Team team, string projectileType, string abilityType)
     {
         Debug.Log($"Initializing PlayerController for team: {team}, Projectile: {projectileType}, Ability: {abilityType}");
+        playerTeam = team;
         switch (team)
         {
             case GameManager.Team.None:
@@ -112,6 +128,34 @@ public class PlayerController : NetworkBehaviour
         }
     }
 
+    private void FindNearestEnemy()
+    {
+        if(GameManager.Instance.CurrentPlayers.Count == 0) return;
+        float nearestDistance = float.MaxValue;
+        for (int i = 0; i < GameManager.Instance.CurrentPlayers.Count; i++)
+        {
+            if (GameManager.Instance.CurrentPlayers[i].PlayerTeam != PlayerTeam)
+            {
+                float distance = Vector3.Distance(transform.position, GameManager.Instance.CurrentPlayers[i].transform.position);
+                if (distance < nearestDistance)
+                {
+                    nearestDistance = distance;
+                    targetToFace = GameManager.Instance.CurrentPlayers[i].transform;
+                }
+            }
+        }
+    }
+
+    private void FaceTheNearestEnemy()
+    {
+        if(externalRotationApplied) return;
+        if (targetToFace == null) return;
+        Vector3 direction = targetToFace.position - transform.position;
+        direction.y = 0;
+        Quaternion targetRotation = Quaternion.LookRotation(direction);
+        transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
+    }
+
     private bool IsCorrectNavmeshArea(Vector3 position)
     {
         NavMeshHit navHit;
@@ -127,13 +171,13 @@ public class PlayerController : NetworkBehaviour
     {
         if (direction == Vector3.zero) return;
 
-        navMeshAgent.updateRotation = false;
+        externalRotationApplied = true;
         direction.y = 0;
 
         Quaternion targetRotation = Quaternion.LookRotation(direction);
 
         transform.rotation = targetRotation;
-        navMeshAgent.updateRotation = true;
+        externalRotationApplied = false;
     }
 
     private int GetNavmeshArea(string areaName)
@@ -160,6 +204,7 @@ public class PlayerController : NetworkBehaviour
     public int AllowedNavmeshArea => allowedNavmeshArea;
     public LayerMask AllowedLayer => allowedLayer;
     public string PlayerAreaTag => playerAreaTag;
+    public GameManager.Team PlayerTeam => playerTeam;
 
     #region Developer Dashboard values
 

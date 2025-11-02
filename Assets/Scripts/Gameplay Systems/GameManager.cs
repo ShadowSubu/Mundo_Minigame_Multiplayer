@@ -1,6 +1,6 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
-using System.Net;
 using System.Threading.Tasks;
 using Unity.Netcode;
 using Unity.Services.Authentication;
@@ -13,6 +13,8 @@ public class GameManager : NetworkBehaviour
     {
         Instance = this;
     }
+
+    private List<PlayerController> currentPlayers = new();
 
     public event EventHandler<SpawnPlayerEventArgs> OnSpawnPlayer;
     public class SpawnPlayerEventArgs : EventArgs
@@ -134,6 +136,54 @@ public class GameManager : NetworkBehaviour
     public Team GetLocalPlayerTeam()
     {
         return localPlayerTeam;
+    }
+
+    [Rpc(SendTo.ClientsAndHost)]
+    public void AddPlayerRpc(ulong clientId)
+    {
+        PlayerController player = GetNetworkObject<PlayerController>(clientId);
+        if (player != null)
+        {
+            if (!currentPlayers.Contains(player))
+            {
+                currentPlayers.Add(player);
+            }
+        }
+    }
+
+    [Rpc(SendTo.ClientsAndHost)]
+    public void RemovePlayerRpc(ulong clientId)
+    {
+        PlayerController player = GetNetworkObject<PlayerController>(clientId);
+        if (player != null)
+        {
+            if (currentPlayers.Contains(player))
+            {
+                currentPlayers.Remove(player);
+            }
+        }
+    }
+
+    public List<PlayerController> CurrentPlayers => currentPlayers;
+
+    public static T GetNetworkObject<T>(ulong clientId) where T : NetworkBehaviour
+    {
+        if (NetworkManager.Singleton == null || !NetworkManager.Singleton.IsListening)
+        {
+            Debug.LogWarning("NetworkManager is not active");
+            return null;
+        }
+
+        // Get the player object for this client
+        if (NetworkManager.Singleton.ConnectedClients.TryGetValue(clientId, out NetworkClient client))
+        {
+            if (client.PlayerObject != null)
+            {
+                return client.PlayerObject.GetComponent<T>();
+            }
+        }
+
+        return null;
     }
 
     #region Testing
