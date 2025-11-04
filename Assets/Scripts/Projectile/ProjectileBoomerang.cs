@@ -38,7 +38,7 @@ public class ProjectileBoomerang : ProjectileBase
                 hit.TryGetComponent(out TargetBase enemy);
                 if (enemy != null)
                 {
-                    enemy.ReceiveHitpointsRpc(projectileDamage, OwnerClientId);
+                    enemy.ReceiveDamageRpc(projectileDamage);
                 }
             }
             else if (isReturning && !hasHitTargetReturn)
@@ -46,7 +46,7 @@ public class ProjectileBoomerang : ProjectileBase
                 hit.TryGetComponent(out TargetBase enemy);
                 if (enemy != null)
                 {
-                    enemy.ReceiveHitpointsRpc(projectileDamage, OwnerClientId);
+                    enemy.ReceiveDamageRpc(projectileDamage);
                 }
             }
         }

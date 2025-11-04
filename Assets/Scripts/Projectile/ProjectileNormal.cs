@@ -21,7 +21,7 @@ public class ProjectileNormal : ProjectileBase
         if (hit != null && hit.OwnerClientId != ShooterObject.OwnerClientId)
         {
             // Hit an opponent - destroy bullet
-            hit.ReceiveHitpointsRpc(projectileDamage, OwnerClientId);
+            hit.ReceiveDamageRpc(projectileDamage);
             DestroyBullet();
         }
     }

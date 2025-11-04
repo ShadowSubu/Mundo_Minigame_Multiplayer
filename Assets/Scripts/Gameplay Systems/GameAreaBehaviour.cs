@@ -1,8 +1,11 @@
+using DG.Tweening;
 using System;
+using System.Threading;
+using System.Threading.Tasks;
 using Unity.Netcode;
 using UnityEngine;
 
-public class GameAreaBehaviour : MonoBehaviour
+public class GameAreaBehaviour : NetworkBehaviour
 {
     [SerializeField] private Transform teamASpawnPoint;
     [SerializeField] private Transform teamBSpawnPoint;
@@ -11,10 +14,20 @@ public class GameAreaBehaviour : MonoBehaviour
 
     [SerializeField] private PlayerController playerControllerPrefab;
 
+    [Header("Arena Heal")]
+    [SerializeField] private GameObject healCollider;
+    [SerializeField] private float healDropDuration = 1f;
+    [SerializeField] private int healCountdown = 5;
+    [SerializeField] private float healCooldown = 10f;
+    private CancellationTokenSource healdropCancellationTokenSource;
+    public event EventHandler<int> OnHealCountdown;
+
     private void Start()
     {
         GameManager.Instance.OnSpawnPlayer += GameManager_OnSpawnPlayer;
         Debug.Log("GameAreaBehaviour started and subscribed to GameManager.OnSpawnPlayer event.");
+
+        StartHealDropCycle();
 
         #region Testing
 
@@ -22,8 +35,6 @@ public class GameAreaBehaviour : MonoBehaviour
 
         #endregion
     }
-
-
 
     private void GameManager_OnSpawnPlayer(object sender, GameManager.SpawnPlayerEventArgs e)
     {
@@ -50,7 +61,7 @@ public class GameAreaBehaviour : MonoBehaviour
         }
     }
 
-    [Rpc(SendTo.Server)]
+    //[Rpc(SendTo.Server)]
     private void SpawnNetworkPlayerRpc(Transform playerPosition, Transform cameraPostion, ulong clientId, GameManager.Team team, string projectileType, string abilityType)
     {
         if (!NetworkManager.Singleton.IsServer) return;
@@ -59,12 +70,70 @@ public class GameAreaBehaviour : MonoBehaviour
         playerController.InitializeRpc(team, projectileType, abilityType);
     }
 
-    [Rpc(SendTo.ClientsAndHost)]
+    //[Rpc(SendTo.ClientsAndHost)]
     private void SetCameraRpc(Vector3 position, Quaternion rotation, ulong clientId)
     {
         if (NetworkManager.Singleton.LocalClientId != clientId) return;
         Camera.main.transform.SetPositionAndRotation(position, rotation);
     }
+
+    #region Arena Heal
+
+    private void StartHealDropCycle()
+    {
+        if (!NetworkManager.Singleton.IsServer) return;
+        healdropCancellationTokenSource = new CancellationTokenSource();
+        HealDropCycle(healdropCancellationTokenSource.Token);
+    }
+
+    private void StopHealDropCycle()
+    {
+        healdropCancellationTokenSource?.Cancel();
+        healdropCancellationTokenSource?.Dispose();
+    }
+
+    private async void HealDropCycle(CancellationToken cancellationToken)
+    {
+        try
+        {
+            while (!cancellationToken.IsCancellationRequested)
+            {
+                await Task.Delay(TimeSpan.FromSeconds(healCooldown), cancellationToken);
+                healCollider.SetActive(false);
+
+                int countdown = healCountdown;
+
+                for (int i = 0; i < healCountdown; i++)
+                {
+                    OnHealCountdown?.Invoke(this, countdown);
+                    await Task.Delay(1000, cancellationToken);
+                    countdown--;
+                }
+                OnHealCountdown?.Invoke(this, 0);
+
+                ToggleArenaHealRpc(true);
+                
+                await Task.Delay((int)(healDropDuration * 1000), cancellationToken);
+
+                ToggleArenaHealRpc(false);
+                
+                await Task.Delay(100, cancellationToken);
+            }
+        }
+        catch (OperationCanceledException)
+        {
+
+        }
+    }
+
+    [Rpc(SendTo.ClientsAndHost)]
+    private void ToggleArenaHealRpc(bool value)
+    {
+        Debug.Log("Heal collider state : " + value);
+        healCollider.SetActive(value);
+    }
+
+    #endregion
 
     #region Testing
 
