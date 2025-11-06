@@ -20,11 +20,14 @@ public abstract class ProjectileBase : NetworkBehaviour
     protected Vector3 startPosition;
     protected Vector3 moveDirection;
 
-    internal void Initialize(Vector3 direction, NetworkObject shooterObject)
+    protected Ray ray;
+
+    internal void Initialize(Ray ray, Vector3 direction, NetworkObject shooterObject)
     {
         this.shooterObject.Value = shooterObject;
         moveDirection = direction.normalized;
         startPosition = transform.position;
+        this.ray = ray;
     }
 
     private void Update()
@@ -86,5 +89,8 @@ public abstract class ProjectileBase : NetworkBehaviour
 public enum ProjectileType
 {
     Normal,
-    Boomerang
+    Boomerang,
+    Mortar,
+    Homing,
+    Curved
 }

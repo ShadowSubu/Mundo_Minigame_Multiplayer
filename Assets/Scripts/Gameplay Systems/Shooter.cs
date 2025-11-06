@@ -13,7 +13,10 @@ public class Shooter : NetworkBehaviour
     private Dictionary<string, ProjectileType> projectileTypeMapping = new()
     {
         { "Bullet", ProjectileType.Normal },
-        { "Boomerang", ProjectileType.Boomerang }
+        { "Boomerang", ProjectileType.Boomerang },
+        { "Mortar", ProjectileType.Mortar},
+        { "Homing", ProjectileType.Homing },
+        { "Curved", ProjectileType.Curved }
     };
 
     [SerializeField] private Transform firePoint;
@@ -60,7 +63,7 @@ public class Shooter : NetworkBehaviour
                 Vector3 direction = (hit.point - firePoint.position).normalized;
                 direction.y = 0;
 
-                Shoot(selectedProjectile, direction, OwnerClientId);
+                Shoot(GetMouseWorldPosition(Input.mousePosition), selectedProjectile, direction, OwnerClientId);
             }
         }
         UpdateCoolDown();
@@ -85,7 +88,7 @@ public class Shooter : NetworkBehaviour
         OnCooldownChanged?.Invoke(this, cooldownTime);
     }
 
-    public async void Shoot(ProjectileType projectileType, Vector3 direction, ulong ownerClientId)
+    public async void Shoot(Ray ray, ProjectileType projectileType, Vector3 direction, ulong ownerClientId)
     {
         if (cooldownTime > 0f)
         {
@@ -97,7 +100,7 @@ public class Shooter : NetworkBehaviour
         await Task.Delay(channelDuration);
 
         // Send to server to spawn bullet
-        SpawnBulletServerRpc(projectileType, firePoint.position, direction, ownerClientId);
+        SpawnBulletServerRpc(ray, projectileType, firePoint.position, direction, ownerClientId);
 
         if (DeveloperDashboard.Instance.OverrideValues)
         {
@@ -114,14 +117,14 @@ public class Shooter : NetworkBehaviour
     }
 
     [Rpc(SendTo.Server)]
-    void SpawnBulletServerRpc(ProjectileType projectileType, Vector3 spawnPos, Vector3 direction, ulong ownerClientId)
+    void SpawnBulletServerRpc(Ray ray, ProjectileType projectileType, Vector3 spawnPos, Vector3 direction, ulong ownerClientId)
     {
         Debug.Log("Selected projectile : " + selectedProjectile);
         ProjectileBase projectile = Instantiate(projectilesDictionary[projectileType], spawnPos, Quaternion.LookRotation(direction));
 
         if (projectile != null)
         {
-            projectile.Initialize(direction, this.NetworkObject);
+            projectile.Initialize(ray, direction, this.NetworkObject);
         }
 
         projectile.GetComponent<NetworkObject>().SpawnWithOwnership(ownerClientId, true);
@@ -151,6 +154,14 @@ public class Shooter : NetworkBehaviour
         {
             return projectilesDictionary[selectedProjectile].MaxCooldown;
         }
+    }
+
+    Ray GetMouseWorldPosition(Vector3 mousePosition)
+    {
+        Debug.Log("Mouse Position: " + mousePosition);
+        Ray ray = mainCamera.ScreenPointToRay(mousePosition);
+        Debug.DrawRay(ray.origin, ray.direction * 1000f, Color.red, 2f);
+        return ray;
     }
 
     public LayerMask ShootingLayer => shootingLayer;

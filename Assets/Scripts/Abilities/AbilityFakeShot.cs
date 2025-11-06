@@ -27,12 +27,12 @@ public class AbilityFakeShot : AbilityBase
             Vector3 direction = (hit.point - shooter.FirePoint.position).normalized;
             direction.y = 0;
 
-            SpawnBulletServerRpc(shooter.FirePoint.position, direction);
+            SpawnBulletServerRpc(ray, shooter.FirePoint.position, direction);
         }
     }
 
     [Rpc(SendTo.Server)]
-    private void SpawnBulletServerRpc(Vector3 spawnPos, Vector3 direction)
+    private void SpawnBulletServerRpc(Ray ray,Vector3 spawnPos, Vector3 direction)
     {
         Debug.Log("Spawning Fake bullet.");
         Shooter shooter = casterObject.GetComponent<Shooter>();
@@ -42,7 +42,7 @@ public class AbilityFakeShot : AbilityBase
 
         if (projectile != null)
         {
-            projectile.Initialize(direction, casterObject);
+            projectile.Initialize(ray, direction, casterObject);
         }
 
         projectile.GetComponent<NetworkObject>().Spawn(true);
