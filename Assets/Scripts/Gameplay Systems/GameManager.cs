@@ -73,18 +73,29 @@ public class GameManager : NetworkBehaviour
     private void ShuffleTeam()
     {
         Debug.Log("Shuffling Teams...");
-        Team[] teams = { Team.A, Team.B };
-        var shuffled = teams.OrderBy(_ => UnityEngine.Random.value).ToArray();
 
         ulong[] clientIds = NetworkManager.Singleton.ConnectedClientsIds.ToArray();
-        for (int i = 0; i < clientIds.Length; i++)
+        int totalPlayers = clientIds.Length;
+
+        // Log connected clients
+        for (int i = 0; i < totalPlayers; i++)
         {
-            // print clients
             Debug.Log($"Client {i}: {clientIds[i]}");
         }
 
-        AssignTeamRpc(clientIds[0], teams[0]);
-        AssignTeamRpc(clientIds[1], teams[1]);
+        // Shuffle the client IDs randomly
+        var shuffledClients = clientIds.OrderBy(_ => UnityEngine.Random.value).ToArray();
+
+        // Determine players per team based on total players
+        int playersPerTeam = totalPlayers / 2;
+
+        // Assign first half to Team A, second half to Team B
+        for (int i = 0; i < totalPlayers; i++)
+        {
+            Team assignedTeam = i < playersPerTeam ? Team.A : Team.B;
+            AssignTeamRpc(shuffledClients[i], assignedTeam);
+            Debug.Log($"Assigned Client {shuffledClients[i]} to {assignedTeam}");
+        }
     }
 
     [Rpc(SendTo.ClientsAndHost)]

@@ -1,5 +1,5 @@
-using DG.Tweening;
 using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using Unity.Netcode;
@@ -7,10 +7,12 @@ using UnityEngine;
 
 public class GameAreaBehaviour : NetworkBehaviour
 {
-    [SerializeField] private Transform teamASpawnPoint;
-    [SerializeField] private Transform teamBSpawnPoint;
+    [SerializeField] private List<Transform> teamASpawnPoints;
+    [SerializeField] private List<Transform> teamBSpawnPoints;
     [SerializeField] private Transform teamACameraLocation;
     [SerializeField] private Transform teamBCameraLocation;
+    private List<Transform> availableA = new();
+    private List<Transform> availableB = new();
 
     [SerializeField] private PlayerController playerControllerPrefab;
 
@@ -21,6 +23,12 @@ public class GameAreaBehaviour : NetworkBehaviour
     [SerializeField] private float healCooldown = 10f;
     private CancellationTokenSource healdropCancellationTokenSource;
     public event EventHandler<int> OnHealCountdown;
+
+    private void Awake()
+    {
+        availableA.AddRange(teamASpawnPoints);
+        availableB.AddRange(teamBSpawnPoints);
+    }
 
     private void Start()
     {
@@ -48,17 +56,31 @@ public class GameAreaBehaviour : NetworkBehaviour
                 break;
             case GameManager.Team.A:
                 Debug.Log("Spawning Player in Team A");
-                SpawnNetworkPlayerRpc(teamASpawnPoint, teamACameraLocation, e.clientId, e.PlayerTeam, e.projectileType, e.abilityType);
+                SpawnNetworkPlayerRpc(GetSpawnPoint(e.PlayerTeam), teamACameraLocation, e.clientId, e.PlayerTeam, e.projectileType, e.abilityType);
                 SetCameraRpc(teamACameraLocation.position, teamACameraLocation.rotation, e.clientId);
                 break;
             case GameManager.Team.B:
                 Debug.Log("Spawning Player in Team B");
-                SpawnNetworkPlayerRpc(teamBSpawnPoint, teamBCameraLocation, e.clientId, e.PlayerTeam, e.projectileType, e.abilityType);
+                SpawnNetworkPlayerRpc(GetSpawnPoint(e.PlayerTeam), teamBCameraLocation, e.clientId, e.PlayerTeam, e.projectileType, e.abilityType);
                 SetCameraRpc(teamBCameraLocation.position, teamBCameraLocation.rotation, e.clientId);
                 break;
             default:
                 break;
         }
+    }
+
+    private Transform GetSpawnPoint(GameManager.Team team)
+    {
+        List<Transform> list = team == GameManager.Team.A ? availableA : availableB;
+        if (list.Count == 0)
+        {
+            Debug.LogWarning($"No available spawn points for team {team}");
+            return null;
+        }
+
+        Transform spawn = list[0];
+        list.Remove(spawn);
+        return spawn;
     }
 
     //[Rpc(SendTo.Server)]
@@ -139,12 +161,12 @@ public class GameAreaBehaviour : NetworkBehaviour
 
     private void GameManager_SpawnTestPlayer(object sender, EventArgs e)
     {
-        PlayerController playerController = Instantiate(playerControllerPrefab, teamASpawnPoint.position, teamASpawnPoint.rotation);
+        PlayerController playerController = Instantiate(playerControllerPrefab, teamASpawnPoints[0].position, teamASpawnPoints[0].rotation);
         playerController.GetComponent<NetworkObject>().SpawnAsPlayerObject(NetworkManager.Singleton.LocalClientId, true);
         playerController.InitializeRpc(GameManager.Team.A);
         Camera.main.transform.SetPositionAndRotation(teamACameraLocation.position, teamACameraLocation.rotation);
 
-        PlayerController dummyEnemy = Instantiate(playerControllerPrefab, teamBSpawnPoint.position, teamBSpawnPoint.rotation);
+        PlayerController dummyEnemy = Instantiate(playerControllerPrefab, teamBSpawnPoints[0].position, teamBSpawnPoints[0].rotation);
         dummyEnemy.InitializeRpc(GameManager.Team.B);
     }
 
