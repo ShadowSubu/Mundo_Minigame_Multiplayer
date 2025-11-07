@@ -45,6 +45,6 @@ public class AbilityFakeShot : AbilityBase
             projectile.Initialize(ray, direction, casterObject);
         }
 
-        projectile.GetComponent<NetworkObject>().Spawn(true);
+        projectile.GetComponent<NetworkObject>().SpawnWithOwnership(CasterObject.OwnerClientId, true);
     }
 }

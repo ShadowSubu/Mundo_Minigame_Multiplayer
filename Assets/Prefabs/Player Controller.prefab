@@ -1831,7 +1831,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 1977837446
+  GlobalObjectIdHash: 2841858534
   InScenePlacedSourceGlobalObjectIdHash: 2841858534
   DeferredDespawnTick: 0
   Ownership: 1
@@ -1962,7 +1962,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
-  selectedProjectile: 1
+  selectedProjectile: 3
   projectilesDatabase:
   - {fileID: 6835288002042263518, guid: 40e2683d1bc7aa341be032fdbc5e657e, type: 3}
   - {fileID: 1720307071514249388, guid: 1278ac92556a6614fa9bbb4ea51c9907, type: 3}

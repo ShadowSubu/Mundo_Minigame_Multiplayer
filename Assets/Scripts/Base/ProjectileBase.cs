@@ -30,7 +30,7 @@ public abstract class ProjectileBase : NetworkBehaviour
         this.ray = ray;
     }
 
-    private void Update()
+    protected virtual void FixedUpdate()
     {
         if (!IsServer) return;
         ProjectileBehaviour();
