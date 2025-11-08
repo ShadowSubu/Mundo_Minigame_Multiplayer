@@ -10,7 +10,6 @@ public class ProjectileNormal : ProjectileBase
         {
             projectileDamage = DeveloperDashboard.Instance.GetBulletDamage();
             projectileSpeed = DeveloperDashboard.Instance.GetBulletProjectileSpeed();
-            maxCooldown = DeveloperDashboard.Instance.GetBulletCooldown();
             maxDistance = DeveloperDashboard.Instance.GetBulletMaxDistance();
         }
     }
@@ -19,10 +18,10 @@ public class ProjectileNormal : ProjectileBase
     {
         TargetBase hit = other.GetComponent<TargetBase>();
         Debug.Log($"Projectile hit: {other.name}, OwnerClientId: {hit?.OwnerClientId}");
-        if (hit != null && hit.OwnerClientId != ShooterObject.OwnerClientId)
+        if (hit != null && hit.GetComponent<PlayerController>().PlayerTeam != ShooterObject.GetComponent<PlayerController>().PlayerTeam)
         {
             // Hit an opponent - destroy bullet
-            hit.ReceiveHitpointsRpc(projectileDamage, OwnerClientId);
+            hit.ReceiveDamageRpc(projectileDamage);
             DestroyBullet();
         }
     }

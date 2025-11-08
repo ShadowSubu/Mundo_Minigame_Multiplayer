@@ -7,7 +7,7 @@ public class AbilityBlink : AbilityBase
     [SerializeField] private LayerMask groundLayer;
     [SerializeField] private float blinkRadius = 10f;
 
-    internal override void OnAbilityUse(Ray ray)
+    internal override void OnAbilityUse(Ray ray, GameManager.Team team)
     {
         Blink(ray);
     }

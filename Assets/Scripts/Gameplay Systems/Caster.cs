@@ -14,7 +14,9 @@ public class Caster : NetworkBehaviour
     {
         { "Blink", AbilityType.Blink },
         { "FakeShot", AbilityType.FakeShot },
-        { "Parry", AbilityType.Parry }
+        { "Parry", AbilityType.Parry },
+        { "Invisibility", AbilityType.Invisibility },
+        { "SpeedBoost", AbilityType.SpeedBoost }
     };
 
     private AbilityBase activeAbility;
@@ -112,8 +114,16 @@ public class Caster : NetworkBehaviour
         }
 
         Debug.Log("Requesting ability use...");
-        RequestAbilityUseRpc(GetMouseWorldPosition(Input.mousePosition));
-        cooldownTime = abilityDictionary[selectedAbility].MaxCooldown;
+        RequestAbilityUseRpc(GetMouseWorldPosition(Input.mousePosition), GameManager.Instance.GetLocalPlayerTeam());
+
+        if (DeveloperDashboard.Instance.OverrideValues)
+        {
+            cooldownTime = GetAbilityCooldownDev(selectedAbility);
+        }
+        else
+        {
+            cooldownTime = abilityDictionary[selectedAbility].MaxCooldown;
+        }
         InvokeRepeating(nameof(UpdateCooldownUI), 0f, 0.1f);
     }
 
@@ -131,12 +141,12 @@ public class Caster : NetworkBehaviour
     }
 
     [Rpc(SendTo.Server)]
-    private void RequestAbilityUseRpc(Ray ray)
+    private void RequestAbilityUseRpc(Ray ray, GameManager.Team team)
     {
         if (activeAbility != null)
         {
             Debug.Log("Ability used on server.");
-            activeAbility.OnAbilityUse(ray);
+            activeAbility.OnAbilityUse(ray, team);
         }
     }
 
@@ -150,7 +160,14 @@ public class Caster : NetworkBehaviour
 
     public float GetMaxCooldown()
     {
-        return abilityDictionary[selectedAbility].MaxCooldown;
+        if (DeveloperDashboard.Instance.OverrideValues)
+        {
+            return GetAbilityCooldownDev(selectedAbility);
+        }
+        else
+        {
+            return abilityDictionary[selectedAbility].MaxCooldown;
+        }
     }
 
     internal void SelectAbility(string abilityType)
@@ -159,4 +176,19 @@ public class Caster : NetworkBehaviour
     }
 
     public Camera MainCamera => mainCamera;
+
+    #region Development 
+
+    private float GetAbilityCooldownDev(AbilityType type)
+    {
+        return type switch
+        {
+            AbilityType.Blink => DeveloperDashboard.Instance.GetBulletCooldown(),
+            AbilityType.FakeShot => DeveloperDashboard.Instance.GetFakeshotCooldown(),
+            AbilityType.Parry =>DeveloperDashboard.Instance.GetParryCooldown(),
+            _ => abilityDictionary[selectedAbility].MaxCooldown,
+        };
+    }
+
+    #endregion
 }

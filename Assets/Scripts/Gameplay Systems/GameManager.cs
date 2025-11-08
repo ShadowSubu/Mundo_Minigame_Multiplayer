@@ -1,6 +1,6 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
-using System.Net;
 using System.Threading.Tasks;
 using Unity.Netcode;
 using Unity.Services.Authentication;
@@ -13,6 +13,8 @@ public class GameManager : NetworkBehaviour
     {
         Instance = this;
     }
+
+    private List<PlayerController> currentPlayers = new();
 
     public event EventHandler<SpawnPlayerEventArgs> OnSpawnPlayer;
     public class SpawnPlayerEventArgs : EventArgs
@@ -71,18 +73,29 @@ public class GameManager : NetworkBehaviour
     private void ShuffleTeam()
     {
         Debug.Log("Shuffling Teams...");
-        Team[] teams = { Team.A, Team.B };
-        var shuffled = teams.OrderBy(_ => UnityEngine.Random.value).ToArray();
 
         ulong[] clientIds = NetworkManager.Singleton.ConnectedClientsIds.ToArray();
-        for (int i = 0; i < clientIds.Length; i++)
+        int totalPlayers = clientIds.Length;
+
+        // Log connected clients
+        for (int i = 0; i < totalPlayers; i++)
         {
-            // print clients
             Debug.Log($"Client {i}: {clientIds[i]}");
         }
 
-        AssignTeamRpc(clientIds[0], teams[0]);
-        AssignTeamRpc(clientIds[1], teams[1]);
+        // Shuffle the client IDs randomly
+        var shuffledClients = clientIds.OrderBy(_ => UnityEngine.Random.value).ToArray();
+
+        // Determine players per team based on total players
+        int playersPerTeam = totalPlayers / 2;
+
+        // Assign first half to Team A, second half to Team B
+        for (int i = 0; i < totalPlayers; i++)
+        {
+            Team assignedTeam = i < playersPerTeam ? Team.A : Team.B;
+            AssignTeamRpc(shuffledClients[i], assignedTeam);
+            Debug.Log($"Assigned Client {shuffledClients[i]} to {assignedTeam}");
+        }
     }
 
     [Rpc(SendTo.ClientsAndHost)]
@@ -134,6 +147,54 @@ public class GameManager : NetworkBehaviour
     public Team GetLocalPlayerTeam()
     {
         return localPlayerTeam;
+    }
+
+    [Rpc(SendTo.ClientsAndHost)]
+    public void AddPlayerRpc(ulong clientId)
+    {
+        PlayerController player = GetNetworkObject<PlayerController>(clientId);
+        if (player != null)
+        {
+            if (!currentPlayers.Contains(player))
+            {
+                currentPlayers.Add(player);
+            }
+        }
+    }
+
+    [Rpc(SendTo.ClientsAndHost)]
+    public void RemovePlayerRpc(ulong clientId)
+    {
+        PlayerController player = GetNetworkObject<PlayerController>(clientId);
+        if (player != null)
+        {
+            if (currentPlayers.Contains(player))
+            {
+                currentPlayers.Remove(player);
+            }
+        }
+    }
+
+    public List<PlayerController> CurrentPlayers => currentPlayers;
+
+    public static T GetNetworkObject<T>(ulong clientId) where T : NetworkBehaviour
+    {
+        if (NetworkManager.Singleton == null || !NetworkManager.Singleton.IsListening)
+        {
+            Debug.LogWarning("NetworkManager is not active");
+            return null;
+        }
+
+        // Get the player object for this client
+        if (NetworkManager.Singleton.ConnectedClients.TryGetValue(clientId, out NetworkClient client))
+        {
+            if (client.PlayerObject != null)
+            {
+                return client.PlayerObject.GetComponent<T>();
+            }
+        }
+
+        return null;
     }
 
     #region Testing

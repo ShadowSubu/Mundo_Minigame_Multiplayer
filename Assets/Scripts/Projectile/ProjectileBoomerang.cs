@@ -31,14 +31,14 @@ public class ProjectileBoomerang : ProjectileBase
     {
         other.TryGetComponent(out NetworkObject hit);
         // Enemy
-        if (hit != null && hit.OwnerClientId != ShooterObject.OwnerClientId)
+        if (hit != null && hit.GetComponent<PlayerController>().PlayerTeam != ShooterObject.GetComponent<PlayerController>().PlayerTeam)
         {
             if (!isReturning && !hasHitTargetForward)
             {
                 hit.TryGetComponent(out TargetBase enemy);
                 if (enemy != null)
                 {
-                    enemy.ReceiveHitpointsRpc(projectileDamage, OwnerClientId);
+                    enemy.ReceiveDamageRpc(projectileDamage);
                 }
             }
             else if (isReturning && !hasHitTargetReturn)
@@ -46,7 +46,7 @@ public class ProjectileBoomerang : ProjectileBase
                 hit.TryGetComponent(out TargetBase enemy);
                 if (enemy != null)
                 {
-                    enemy.ReceiveHitpointsRpc(projectileDamage, OwnerClientId);
+                    enemy.ReceiveDamageRpc(projectileDamage);
                 }
             }
         }
