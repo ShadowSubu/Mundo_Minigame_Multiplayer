@@ -24,7 +24,7 @@ public class AbilityParry : AbilityBase
         }
     }
 
-    internal override void OnAbilityUse(Ray ray)
+    internal override void OnAbilityUse(Ray ray, GameManager.Team team)
     {
         Debug.Log("Parry Ability Used");
         RequestParryRpc();
@@ -91,7 +91,10 @@ public class AbilityParry : AbilityBase
             Vector3 shootDirection = (shooterPosition - casterObject.transform.position).normalized;
             shootDirection.y = 0;
 
-            shooter.Shoot(opponentProjectileType, shootDirection, casterObject.OwnerClientId);
+            Vector3 rayOrigin = shooterPosition;
+            rayOrigin.y = 100;
+            Ray ray = new Ray(rayOrigin, Vector3.down);
+            shooter.Shoot(ray, opponentProjectileType, shootDirection, casterObject.OwnerClientId);
             shooter.ResetCooldownRpc();
         }
     }

@@ -12,11 +12,11 @@ EditorBuildSettings:
     path: Assets/Scenes/Lobby.unity
     guid: 06e7ebb179e314b48a6e6bf51a98fe7c
   - enabled: 1
-    path: Assets/Scenes/Game.unity
+    path: Assets/Scenes/Game 1v1.unity
     guid: 8a5c47a66b5c73c409f9d5f3dece12d6
   - enabled: 1
-    path: Assets/Scenes/Game Experiment.unity
-    guid: b48981bbfe7368243a97543a19844470
+    path: Assets/Scenes/Game 2v2.unity
+    guid: a0b9669db93fe5d4a988d35a83d029a6
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   m_UseUCBPForAssetBundles: 0
