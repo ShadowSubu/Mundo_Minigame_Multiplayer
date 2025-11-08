@@ -326,7 +326,7 @@ ModelImporter:
       scale: {x: 1, y: 1.0000001, z: 1}
     - name: Hand.L
       parentName: Body
-      position: {x: -0.00000089240535, y: -0.37606633, z: 0.62220514}
+      position: {x: -0.0000008924054, y: -0.37606633, z: 0.62220514}
       rotation: {x: -0.000000055879354, y: 0.75180864, z: -0.65938145, w: -0.00000004284084}
       scale: {x: 1, y: 1, z: 1}
     - name: Cube
