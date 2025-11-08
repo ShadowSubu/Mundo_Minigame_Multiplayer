@@ -32,7 +32,7 @@ public class ProjectileMortar : ProjectileBase
         // If the player hits it's own team, then ignore
         if (other.TryGetComponent(out PlayerController controller))
         {
-            if (controller.PlayerTeam != myTeam)
+            if (controller.PlayerTeam == myTeam)
             {
                 return;
             }

@@ -774,7 +774,7 @@ public class DeveloperDashboard : NetworkBehaviour
             if (homingMaxDistanceInput != null)
                 homingMaxDistanceInput.text = homingPrefab.MaxDistance.ToString("F2");
             if (homingTurnSensitivityInput != null)
-                homingTurnSensitivityInput.text = homingPrefab.TurnSensitivity.ToString("F2");
+                homingTurnSensitivityInput.text = homingPrefab.TurnSensitivity.ToString();
         }
 
         // Curve
