@@ -12,6 +12,19 @@ public class ProjectileMortar : ProjectileBase
     bool bulletShot = false;
 
     private CancellationTokenSource cancellationTokenSource;
+
+    private void Start()
+    {
+        if (DeveloperDashboard.Instance.OverrideValues)
+        {
+            projectileDamage = DeveloperDashboard.Instance.GetMortarDamage();
+            projectileSpeed = DeveloperDashboard.Instance.GetMortarProjectileSpeed();
+            maxCooldown = DeveloperDashboard.Instance.GetMortarMaxCooldown();
+            height = DeveloperDashboard.Instance.GetMortarMaxHeight();
+            explosionRadius = DeveloperDashboard.Instance.GetMortarExplosionRadius();
+        }
+    }
+
     internal override void OnTriggerEnterBehaviour(Collider other)
     {
         GameManager.Team myTeam = ShooterObject.GetComponent<PlayerController>().PlayerTeam;
@@ -19,7 +32,7 @@ public class ProjectileMortar : ProjectileBase
         // If the player hits it's own team, then ignore
         if (other.TryGetComponent(out PlayerController controller))
         {
-            if (controller.PlayerTeam == myTeam)
+            if (controller.PlayerTeam != myTeam)
             {
                 return;
             }
@@ -95,4 +108,7 @@ public class ProjectileMortar : ProjectileBase
         transform.position = end;
         DestroyBullet();
     }
+
+    public float MaxHeight => height;
+    public float ExplosionRadius => explosionRadius;
 }

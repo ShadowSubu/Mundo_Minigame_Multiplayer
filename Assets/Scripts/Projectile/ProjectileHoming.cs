@@ -13,11 +13,23 @@ public class ProjectileHoming : ProjectileBase
     {
         mainCamera = Camera.main;
     }
+
+    private void Start()
+    {
+        if (DeveloperDashboard.Instance.OverrideValues)
+        {
+            projectileDamage = DeveloperDashboard.Instance.GetHomingDamage();
+            projectileSpeed = DeveloperDashboard.Instance.GetHomingProjectileSpeed();
+            maxCooldown = DeveloperDashboard.Instance.GetHomingMaxCooldown();
+            turnSensitivity = DeveloperDashboard.Instance.GetHomingTurnSensitivity();
+            maxDistance = DeveloperDashboard.Instance.GetHomingMaxDistance();
+        }
+    }
     internal override void OnTriggerEnterBehaviour(Collider other)
     {
         TargetBase hit = other.GetComponent<TargetBase>();
         Debug.Log($"Projectile hit: {other.name}, OwnerClientId: {hit?.OwnerClientId}");
-        if (hit != null && hit.OwnerClientId != ShooterObject.OwnerClientId)
+        if (hit != null && hit.GetComponent<PlayerController>().PlayerTeam != ShooterObject.GetComponent<PlayerController>().PlayerTeam)
         {
             // Hit an opponent - destroy bullet
             hit.ReceiveDamageRpc(projectileDamage);
@@ -72,4 +84,5 @@ public class ProjectileHoming : ProjectileBase
     }
 
     public float MaxDistance => maxDistance;
+    public float TurnSensitivity => turnSensitivity;
 }

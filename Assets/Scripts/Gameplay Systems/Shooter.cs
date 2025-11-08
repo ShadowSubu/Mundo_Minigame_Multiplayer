@@ -51,6 +51,8 @@ public class Shooter : NetworkBehaviour
 
     private void Update()
     {
+        if (DeveloperDashboard.Instance.DashboardEnabled) return;
+
         if (IsOwner && Input.GetMouseButton(0))
         {
             if (isShooting) return;
@@ -169,6 +171,7 @@ public class Shooter : NetworkBehaviour
     public ProjectileBase SelectedProjectile => projectilesDictionary[selectedProjectile];
     public ProjectileType SelectedProjectileType => selectedProjectile;
     public bool IsShooting => isShooting;
+    public float ChannelDuration => channelDuration;
 
     #region Testing
 

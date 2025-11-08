@@ -8,6 +8,15 @@ public class AbilitySpeedBoost : AbilityBase
     [SerializeField] private float duration = 5f;
     private float defaulSpeed;
 
+    private void Start()
+    {
+        if (DeveloperDashboard.Instance.OverrideValues)
+        {
+            maxCooldown = DeveloperDashboard.Instance.GetSpeedBoostCooldown();
+            duration = DeveloperDashboard.Instance.GetSpeedBoostDuration();
+        }
+    }
+
     internal override void OnAbilityUse(Ray ray, GameManager.Team team)
     {
         BoostSpeed();
@@ -25,4 +34,6 @@ public class AbilitySpeedBoost : AbilityBase
     {
         casterObject.GetComponent<NavMeshAgent>().speed = defaulSpeed;
     }
+
+    public float SpeedBoostDuration => duration;
 }

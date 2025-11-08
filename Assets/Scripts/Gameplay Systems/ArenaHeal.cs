@@ -12,4 +12,10 @@ public class ArenaHeal : MonoBehaviour
             hit.ReceiveHealRpc(healAmount);
         }
     }
+
+    public byte HealAmount => healAmount;
+    public void SetArenaHealAmount(byte healAmount)
+    {
+        this.healAmount = healAmount;
+    }
 }

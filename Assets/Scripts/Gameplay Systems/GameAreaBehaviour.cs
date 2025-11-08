@@ -155,6 +155,8 @@ public class GameAreaBehaviour : NetworkBehaviour
         healCollider.SetActive(value);
     }
 
+    public float HealCooldown => healCooldown;
+
     #endregion
 
     #region Testing
@@ -168,6 +170,11 @@ public class GameAreaBehaviour : NetworkBehaviour
 
         PlayerController dummyEnemy = Instantiate(playerControllerPrefab, teamBSpawnPoints[0].position, teamBSpawnPoints[0].rotation);
         dummyEnemy.InitializeRpc(GameManager.Team.B);
+    }
+
+    public void SetArenaHealCooldown(float cooldown)
+    {
+        healCooldown = cooldown;
     }
 
     #endregion

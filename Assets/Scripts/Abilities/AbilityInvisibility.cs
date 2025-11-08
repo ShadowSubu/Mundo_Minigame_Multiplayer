@@ -28,6 +28,15 @@ public class AbilityInvisibility : AbilityBase
         propertyBlock = new MaterialPropertyBlock();
     }
 
+    private void Start()
+    {
+        if (DeveloperDashboard.Instance.OverrideValues)
+        {
+            maxCooldown = DeveloperDashboard.Instance.GetInvisibilityCooldown();
+            duration = DeveloperDashboard.Instance.GetInvisibilityDuration();
+        }
+    }
+
     internal override void OnAbilityUse(Ray ray, GameManager.Team team)
     {
         RequestToInvisibleRpc(team);
@@ -113,4 +122,6 @@ public class AbilityInvisibility : AbilityBase
         mat.DisableKeyword("_ALPHAPREMULTIPLY_ON");
         mat.renderQueue = -1;
     }
+
+    public float InvisibilityDuration => duration;
 }

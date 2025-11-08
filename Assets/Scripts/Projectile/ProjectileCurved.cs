@@ -12,10 +12,21 @@ public class ProjectileCurved : ProjectileBase
 
     private CancellationTokenSource cancellationTokenSource;
 
+    private void Start()
+    {
+        if (DeveloperDashboard.Instance.OverrideValues)
+        {
+            projectileDamage = DeveloperDashboard.Instance.GetCurveDamage();
+            projectileSpeed = DeveloperDashboard.Instance.GetCurveProjectileSpeed();
+            maxCooldown = DeveloperDashboard.Instance.GetCurveMaxCooldown();
+            curveStrength = DeveloperDashboard.Instance.GetCurveStrength();
+        }
+    }
+
     internal override void OnTriggerEnterBehaviour(Collider other)
     {
         other.TryGetComponent(out NetworkObject hit);
-        if (hit != null && hit.OwnerClientId != ShooterObject.OwnerClientId)
+        if (hit != null && hit.GetComponent<PlayerController>().PlayerTeam != ShooterObject.GetComponent<PlayerController>().PlayerTeam)
         {
             hit.TryGetComponent(out TargetBase enemy);
             if (enemy != null)
@@ -72,4 +83,6 @@ public class ProjectileCurved : ProjectileBase
         transform.position = end;
         DestroyBullet();
     }
+
+    public float CurveStrength => curveStrength;
 }

@@ -31,7 +31,7 @@ public class ProjectileBoomerang : ProjectileBase
     {
         other.TryGetComponent(out NetworkObject hit);
         // Enemy
-        if (hit != null && hit.OwnerClientId != ShooterObject.OwnerClientId)
+        if (hit != null && hit.GetComponent<PlayerController>().PlayerTeam != ShooterObject.GetComponent<PlayerController>().PlayerTeam)
         {
             if (!isReturning && !hasHitTargetForward)
             {
