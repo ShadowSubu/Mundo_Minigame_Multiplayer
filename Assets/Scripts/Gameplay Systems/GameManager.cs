@@ -25,7 +25,7 @@ public class GameManager : NetworkBehaviour
         public string abilityType;
     }
 
-    public event EventHandler OnGameOver;
+    public event EventHandler<Team> OnGameOver;
 
     private Team localPlayerTeam;
 
@@ -134,14 +134,73 @@ public class GameManager : NetworkBehaviour
         //TriggerSpawnPlayerRpc(team, clientId);
     }
 
-    public void GameOver()
+    [Rpc(SendTo.Server)]
+    public void CheckGameOverRpc()
     {
-        OnGameOver?.Invoke(this, EventArgs.Empty);
+        List<TargetPlayer> teamAPlayers = new();
+        List<TargetPlayer> teamBPlayers = new();
+
+        for (int i = 0; i < CurrentPlayers.Count; i++)
+        {
+            if (CurrentPlayers[i].PlayerTeam == Team.A)
+            {
+                teamAPlayers.Add(CurrentPlayers[i].GetComponent<TargetPlayer>());
+            }
+            else if (CurrentPlayers[i].PlayerTeam == Team.B)
+            {
+                teamBPlayers.Add(CurrentPlayers[i].GetComponent<TargetPlayer>());
+            }
+        }
+
+        int defeatedAPLayers = 0;
+        for (int i = 0; i < teamAPlayers.Count; i++)
+        {
+            if (teamAPlayers[i].GetComponent<TargetPlayer>().GetCurrentHealth() <= 0)
+            {
+                defeatedAPLayers++;
+            }
+        }
+        if (defeatedAPLayers >= teamAPlayers.Count())
+        {
+            // All players in this team are dead
+            OnGameOver?.Invoke(this, Team.B);
+            return;
+        }
+
+        int defeatedBPLayers = 0;
+        for (int i = 0; i < teamBPlayers.Count; i++)
+        {
+            if (teamAPlayers[i].GetComponent<TargetPlayer>().GetCurrentHealth() <= 0)
+            {
+                defeatedBPLayers++;
+            }
+        }
+        if (defeatedBPLayers >= teamBPlayers.Count())
+        {
+            // All players in this team are dead
+            OnGameOver?.Invoke(this, Team.A);
+        }
     }
 
     public void RestartGame()
     {
-        SceneLoadingManager.Instance.LoadSceneAsync("Game");
+        switch (LobbyManager.Instance.gameMode)
+        {
+            case GameMode.oneVone:
+                SceneLoadingManager.Instance.LoadSceneAsync("Game 1v1");
+                break;
+            case GameMode.twoVtwo:
+                SceneLoadingManager.Instance.LoadSceneAsync("Game 2v2");
+                break;
+            default:
+                break;
+        }
+    }
+
+    public void ReturnToLobby()
+    {
+        NetworkManager.Singleton.Shutdown();
+        SceneLoadingManager.Instance.LoadSceneAsync("Lobby");
     }
 
     public Team GetLocalPlayerTeam()

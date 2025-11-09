@@ -15,7 +15,6 @@ public class LobbyManager : NetworkBehaviour
 
     #region Constants
 
-    public int MAX_PLAYERS = 2;
     public const string KEY_PLAYER_NAME = "PlayerName";
     public const string KEY_START_GAME = "StartGame_RelayCode";
     private const string PROJECTILE_SELECTION_KEY_PREFIX = "PlayerProjectileSelection_";
@@ -23,6 +22,8 @@ public class LobbyManager : NetworkBehaviour
     private const string CLIENT_ID_PREFIX = "ClientId_";
 
     #endregion
+    public int MAX_PLAYERS = 2;
+    public GameMode gameMode;
 
     #region Lobby Events
 
@@ -256,6 +257,8 @@ public class LobbyManager : NetworkBehaviour
                 { KEY_START_GAME, new DataObject(DataObject.VisibilityOptions.Member, "0") }
             }
         };
+
+        this.gameMode = gameMode;
 
         switch (gameMode)
         {
