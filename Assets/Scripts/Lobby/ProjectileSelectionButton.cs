@@ -1,10 +1,12 @@
 using System;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class ProjectileSelectionButton : MonoBehaviour
+public class ProjectileSelectionButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     [SerializeField] private string projectileName;
+    [SerializeField, TextArea] private string description;
     private Button button;
 
     private void Awake()
@@ -27,5 +29,14 @@ public class ProjectileSelectionButton : MonoBehaviour
     {   
         await LobbyManager.Instance.SavePlayerProjectileSelection(projectileName);
         OnProjectileSelected?.Invoke(this, gameObject);
+    }
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        UITooltip.Instance.Show(description);
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        UITooltip.Instance.Hide();
     }
 }

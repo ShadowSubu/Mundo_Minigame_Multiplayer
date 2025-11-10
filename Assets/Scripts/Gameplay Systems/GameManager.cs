@@ -17,6 +17,7 @@ public class GameManager : NetworkBehaviour
     private List<PlayerController> currentPlayers = new();
 
     public event EventHandler<SpawnPlayerEventArgs> OnSpawnPlayer;
+    public event EventHandler<List<PlayerController>> OnAllPlayersSpawned;
     public class SpawnPlayerEventArgs : EventArgs
     {
         public Team PlayerTeam;
@@ -59,6 +60,19 @@ public class GameManager : NetworkBehaviour
             }
             SpawnTestSetup();
         }
+
+        CheckForAllPLayerSpawned();
+    }
+
+    private async void CheckForAllPLayerSpawned()
+    {
+        while (currentPlayers.Count < NetworkManager.Singleton.ConnectedClients.Count)
+        {
+            Debug.Log("Waiting for all the clients to connect");
+            await Task.Delay(200);
+        }
+        Debug.Log("All the clients connected : "+ currentPlayers.Count);
+        OnAllPlayersSpawned?.Invoke(this, CurrentPlayers);
     }
 
     public async void RequestSpawnPlayer()
@@ -211,6 +225,7 @@ public class GameManager : NetworkBehaviour
     [Rpc(SendTo.ClientsAndHost)]
     public void AddPlayerRpc(ulong clientId)
     {
+        WaitForPlayerAndAdd(clientId);
         PlayerController player = GetNetworkObject<PlayerController>(clientId);
         if (player != null)
         {
@@ -218,6 +233,36 @@ public class GameManager : NetworkBehaviour
             {
                 currentPlayers.Add(player);
             }
+        }
+        else
+        {
+            Debug.Log("Did not find any player with client id : " +  clientId);
+        }
+    }
+
+    private async void WaitForPlayerAndAdd(ulong clientId)
+    {
+        PlayerController player = null;
+        while (player == null)
+        {
+            player = GetNetworkObject<PlayerController>(clientId);
+
+            if (player == null)
+            {
+                await Task.Delay(100);
+            }
+        }
+        if (player != null)
+        {
+            if (!currentPlayers.Contains(player))
+            {
+                currentPlayers.Add(player);
+                Debug.Log($"Successfully added player with client id: {clientId}. Total players: {currentPlayers.Count}");
+            }
+        }
+        else
+        {
+            Debug.LogError($"Failed to find player with client id: {clientId}");
         }
     }
 
@@ -231,6 +276,10 @@ public class GameManager : NetworkBehaviour
             {
                 currentPlayers.Remove(player);
             }
+        }
+        else
+        {
+            Debug.Log("Did not find any player with client id : " + clientId);
         }
     }
 

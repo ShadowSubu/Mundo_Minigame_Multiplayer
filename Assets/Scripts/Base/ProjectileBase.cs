@@ -10,6 +10,7 @@ using UnityEngine;
 public abstract class ProjectileBase : NetworkBehaviour
 {
     [SerializeField] private ProjectileType projectileType;
+    [SerializeField] private Sprite projectileIcon;
 
     [SerializeField] protected float projectileSpeed = 20f;
     [SerializeField] protected byte projectileDamage = 10;
@@ -78,6 +79,7 @@ public abstract class ProjectileBase : NetworkBehaviour
     public byte ProjectileDamage => projectileDamage;
     public float ProjectileSpeed => projectileSpeed;
     public float MaxCooldown => maxCooldown;
+    public Sprite ProjectileIcon => projectileIcon;
 
     public NetworkObject GetOwnerNetworkObject()
     {

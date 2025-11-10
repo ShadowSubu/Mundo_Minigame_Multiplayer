@@ -8,6 +8,7 @@ using UnityEngine;
 public abstract class AbilityBase : NetworkBehaviour
 {
     [SerializeField] private AbilityType abilityType;
+    [SerializeField] private Sprite abilityIcon;
 
     [SerializeField] protected float maxCooldown = 25f;
 
@@ -29,6 +30,8 @@ public abstract class AbilityBase : NetworkBehaviour
     public NetworkObject CasterObject => casterObject;
     public AbilityType AbilityType => abilityType;
     public float MaxCooldown => maxCooldown;
+
+    public Sprite AbilityIcon => abilityIcon;
 }
 
 [Serializable]
