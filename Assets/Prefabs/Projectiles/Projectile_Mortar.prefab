@@ -197,6 +197,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
   projectileType: 2
+  projectileIcon: {fileID: -1471430452, guid: 3ee3921f083deac43ac27e166f831223, type: 3}
   projectileSpeed: 15
   projectileDamage: 20
   maxCooldown: 4

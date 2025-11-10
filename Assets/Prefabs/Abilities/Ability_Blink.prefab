@@ -46,7 +46,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
   abilityType: 2
-  maxCooldown: 2
+  maxCooldown: 12
   groundLayer:
     serializedVersion: 2
     m_Bits: 64

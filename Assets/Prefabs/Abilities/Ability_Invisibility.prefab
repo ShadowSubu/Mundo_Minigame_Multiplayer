@@ -46,4 +46,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
   abilityType: 4
-  maxCooldown: 25
+  maxCooldown: 20
+  duration: 5
+  allyAlpha: 0.3
+  enemyAlpha: 0
+  renderers: []
+  canvasToHide: {fileID: 0}

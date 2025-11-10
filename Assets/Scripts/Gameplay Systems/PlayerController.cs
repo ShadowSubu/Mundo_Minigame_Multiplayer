@@ -1,6 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.AI;
@@ -9,7 +7,6 @@ public class PlayerController : NetworkBehaviour
 {
     [SerializeField] private float rotationSpeed = 100f;
     private bool externalRotationApplied = false;
-    private List<Transform> enemies = new List<Transform>();
 
     private GameManager.Team playerTeam;
     private string playerAreaTag;
@@ -26,7 +23,10 @@ public class PlayerController : NetworkBehaviour
 
     public override void OnNetworkSpawn()
     {
-        GameManager.Instance.AddPlayerRpc(this.OwnerClientId);
+        if (IsServer)
+        {
+            GameManager.Instance.AddPlayerRpc(OwnerClientId);
+        }
     }
 
     private void Awake()

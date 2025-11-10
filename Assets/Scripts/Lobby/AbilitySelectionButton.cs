@@ -1,9 +1,11 @@
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class AbilitySelectionButton : MonoBehaviour
+public class AbilitySelectionButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     [SerializeField] private string abilityName;
+    [SerializeField, TextArea] private string description;
     private Button button;
 
     private void Awake()
@@ -25,5 +27,15 @@ public class AbilitySelectionButton : MonoBehaviour
     {
         await LobbyManager.Instance.SavePlayerAbilitySelection(abilityName);
         OnAbilitySelected?.Invoke(this, gameObject);
+    }
+
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        UITooltip.Instance.Show(description);
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        UITooltip.Instance.Hide();
     }
 }

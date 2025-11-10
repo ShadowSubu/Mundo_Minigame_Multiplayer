@@ -176,6 +176,7 @@ public class Caster : NetworkBehaviour
     }
 
     public Camera MainCamera => mainCamera;
+    public AbilityBase SelectedAbility => abilityDictionary[selectedAbility];
 
     #region Development 
 

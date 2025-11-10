@@ -46,4 +46,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
   abilityType: 5
-  maxCooldown: 25
+  maxCooldown: 20
+  boostedSpeed: 25
+  duration: 5

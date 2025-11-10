@@ -46,8 +46,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f839e5754db3c254db576ac124181736, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ShowTopMostFoldoutHeaderGroup: 1
   abilityType: 1
-  maxCooldown: 2
+  maxCooldown: 8
   parryCollider: {fileID: 6583198765338856368}
   parryDuration: 0.5
   parryVisual: {fileID: 7335592803215524860}
