@@ -154,9 +154,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
   projectileType: 3
+  projectileIcon: {fileID: 1634883915, guid: 3ee3921f083deac43ac27e166f831223, type: 3}
   projectileSpeed: 15
   projectileDamage: 10
-  maxCooldown: 4
+  maxCooldown: 5
   maxDistance: 30
   turnSensitivity: 0.002
   shootingLayer:
