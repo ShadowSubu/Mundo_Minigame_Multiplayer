@@ -2,9 +2,14 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using System.Collections.Generic;
+using UnityEngine.SceneManagement;
+using Unity.Netcode;
 
 public class SettingsUIController : MonoBehaviour
 {
+    [Header("Main")]
+    [SerializeField] private RectTransform settingsWindow;
+
     [Header("Graphics UI")]
     [SerializeField] private TMP_Dropdown windowModeDropdown;
     [SerializeField] private TMP_Dropdown resolutionDropdown;
@@ -28,15 +33,31 @@ public class SettingsUIController : MonoBehaviour
     [SerializeField] private Button quitButton;
     [SerializeField] private Button quitYesButton;
     [SerializeField] private Button quitNoButton;
+    [SerializeField] private Button leaveGameButton;
 
     [Header("Other")]
     [SerializeField] private GameObject exitConfirmationPopup;
+
+    public bool isOpen = false;
 
     private void Start()
     {
         InitializeUI();
         LoadCurrentSettings();
         SetupListeners();
+        SceneManager.sceneLoaded += SceneManager_sceneLoaded;
+    }
+
+    private void SceneManager_sceneLoaded(Scene scene, LoadSceneMode loadSceneMode)
+    {
+        if (scene.name == "Lobby")
+        {
+            leaveGameButton.gameObject.SetActive(false);
+        }
+        else
+        {
+            leaveGameButton.gameObject.SetActive(true);
+        }
     }
 
     private void InitializeUI()
@@ -124,6 +145,11 @@ public class SettingsUIController : MonoBehaviour
 
         if (closeButton != null)
             closeButton.onClick.AddListener(OnCloseClicked);
+
+        quitButton.onClick.AddListener(OpenExitPopup);
+        quitYesButton.onClick.AddListener(ExitGame);
+        quitNoButton.onClick.AddListener(CloseExitPopup);
+        leaveGameButton.onClick.AddListener(LeaveGame);
     }
 
     #region Graphics Callbacks
@@ -208,10 +234,37 @@ public class SettingsUIController : MonoBehaviour
 
     private void OnCloseClicked()
     {
-        gameObject.SetActive(false);
+        ToggleSettingWindow(false);
     }
 
     #endregion
+
+    public void ToggleSettingWindow(bool value)
+    {
+        settingsWindow.gameObject.SetActive(value);
+        isOpen = value;
+    }
+
+    private void OpenExitPopup()
+    {
+        exitConfirmationPopup.SetActive(true);
+    }
+
+    private void CloseExitPopup()
+    {
+        exitConfirmationPopup.SetActive(false);
+    }
+
+    private void ExitGame()
+    {
+        Application.Quit();
+    }
+
+    private void LeaveGame()
+    {
+        NetworkManager.Singleton.Shutdown();
+        SceneManager.LoadScene("Lobby");
+    }
 
     private void OnDestroy()
     {
@@ -224,5 +277,8 @@ public class SettingsUIController : MonoBehaviour
         masterVolumeSlider.onValueChanged.RemoveListener(OnMasterVolumeChanged);
         sfxVolumeSlider.onValueChanged.RemoveListener(OnSFXVolumeChanged);
         musicVolumeSlider.onValueChanged.RemoveListener(OnMusicVolumeChanged);
+        quitButton.onClick.RemoveAllListeners();
+        quitYesButton.onClick.RemoveAllListeners();
+        quitNoButton.onClick.RemoveAllListeners();
     }
 }

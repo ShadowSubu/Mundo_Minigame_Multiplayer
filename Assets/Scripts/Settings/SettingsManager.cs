@@ -15,6 +15,7 @@ public class SettingsManager : MonoBehaviour
 
     // Settings data
     private SettingsData settings;
+    [SerializeField] private SettingsUIController uiController;
 
     private void Awake()
     {
@@ -285,6 +286,22 @@ public class SettingsManager : MonoBehaviour
         };
         ApplyAllSettings();
         SaveSettings();
+    }
+
+    public void OpenSetting()
+    {
+        if (!uiController.isOpen)
+        {
+            uiController.ToggleSettingWindow(true);
+        }
+    }
+
+    public void CloseSetting()
+    {
+        if (uiController.isOpen)
+        {
+            uiController.ToggleSettingWindow(false);
+        }
     }
 
     #endregion
