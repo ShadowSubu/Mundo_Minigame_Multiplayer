@@ -315,7 +315,7 @@ GameObject:
   - component: {fileID: 159931206}
   - component: {fileID: 159931207}
   - component: {fileID: 159931208}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Heal Zone
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -959,7 +959,7 @@ Transform:
   m_GameObject: {fileID: 920092626}
   serializedVersion: 2
   m_LocalRotation: {x: 0.1464466, y: 0.8535535, z: -0.35355338, w: 0.35355338}
-  m_LocalPosition: {x: -50, y: 67.5, z: 49}
+  m_LocalPosition: {x: -50.95, y: 68.47, z: 49.95}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1250,7 +1250,7 @@ Transform:
   m_GameObject: {fileID: 1097456499}
   serializedVersion: 2
   m_LocalRotation: {x: 0.35355338, y: -0.35355338, z: 0.1464466, w: 0.8535535}
-  m_LocalPosition: {x: 50, y: 67.5, z: -49}
+  m_LocalPosition: {x: 50.95, y: 68.47, z: -49.95}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

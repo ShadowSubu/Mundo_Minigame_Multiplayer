@@ -58,6 +58,9 @@ public class LobbyUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI errorText;
     [SerializeField] private Button errorCloseButton;
 
+    [Header("Other UI")]
+    [SerializeField] private Button settingButton;
+
     private void Awake()
     {
         lobbyPanel.SetActive(false);
@@ -86,6 +89,7 @@ public class LobbyUI : MonoBehaviour
         startGameButton.onClick.AddListener(StartGame);
         oneVoneButton.onClick.AddListener(SelectGameMode1v1);
         twoVtwoButton.onClick.AddListener(SelectGameMode2v2);
+        settingButton.onClick.AddListener(OpenSettings);
     }
 
     private void OnDisable()
@@ -102,6 +106,7 @@ public class LobbyUI : MonoBehaviour
         startGameButton.onClick.RemoveAllListeners();
         oneVoneButton.onClick.RemoveAllListeners();
         twoVtwoButton.onClick.RemoveAllListeners();
+        settingButton.onClick.RemoveAllListeners();
     }
 
     private void Start()
@@ -385,5 +390,10 @@ public class LobbyUI : MonoBehaviour
     private void CloseError()
     {
         errorUI.SetActive(false);
+    }
+
+    private void OpenSettings()
+    {
+        SettingsManager.Instance.OpenSetting();
     }
 }
