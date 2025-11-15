@@ -19,6 +19,14 @@ public class GameUIManager : NetworkBehaviour
         GameManager.Instance.OnAllPlayersSpawned += GameManager_OnAllPlayersSpawned;
     }
 
+    private void Update()
+    {
+        if (Input.GetKeyUp(KeyCode.Escape))
+        {
+            SettingsManager.Instance?.OpenSetting();
+        }
+    }
+
     private void GameManager_OnAllPlayersSpawned(object sender, List<PlayerController> players)
     {
         SpawnPlayerHealthUIRpc();

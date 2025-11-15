@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Unity.Netcode;
 using Unity.Services.Authentication;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : NetworkBehaviour
 {
@@ -184,7 +185,7 @@ public class GameManager : NetworkBehaviour
         int defeatedBPLayers = 0;
         for (int i = 0; i < teamBPlayers.Count; i++)
         {
-            if (teamAPlayers[i].GetComponent<TargetPlayer>().GetCurrentHealth() <= 0)
+            if (teamBPlayers[i].GetComponent<TargetPlayer>().GetCurrentHealth() <= 0)
             {
                 defeatedBPLayers++;
             }
@@ -201,10 +202,16 @@ public class GameManager : NetworkBehaviour
         switch (LobbyManager.Instance.gameMode)
         {
             case GameMode.oneVone:
-                SceneLoadingManager.Instance.LoadSceneAsync("Game 1v1");
+                if (NetworkManager.Singleton.ConnectedClients.Count == 2)
+                {
+                    SceneLoadingManager.Instance.LoadSceneAsync("Game 1v1");
+                }
                 break;
             case GameMode.twoVtwo:
-                SceneLoadingManager.Instance.LoadSceneAsync("Game 2v2");
+                if (NetworkManager.Singleton.ConnectedClients.Count == 4)
+                {
+                    SceneLoadingManager.Instance.LoadSceneAsync("Game 2v2");
+                }
                 break;
             default:
                 break;
@@ -214,6 +221,10 @@ public class GameManager : NetworkBehaviour
     public void ReturnToLobby()
     {
         NetworkManager.Singleton.Shutdown();
+        if (!IsServer)
+        {
+            SceneManager.LoadSceneAsync("Lobby");
+        }
         SceneLoadingManager.Instance.LoadSceneAsync("Lobby");
     }
 
