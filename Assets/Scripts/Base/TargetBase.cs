@@ -42,10 +42,10 @@ public abstract class TargetBase : NetworkBehaviour
     /// <summary>
     /// Change the Health Value of this target
     /// </summary>
-    /// <param name="hitpoints">Amount to change (-ve to reduce / +ve to increase)</param>
+    /// <param name="hitpoints">Amount to change</param>
     /// <param name="invokerClientId"></param>
     [Rpc(SendTo.Server)]
-    public void ReceiveHitpointsRpc(byte hitpoints, ulong invokerClientId)
+    public void ReceiveDamageRpc(byte hitpoints)
     {
         if (!IsServer) return;
         currentHealth.Value = (byte)Mathf.Max(0, currentHealth.Value - hitpoints);
@@ -54,6 +54,18 @@ public abstract class TargetBase : NetworkBehaviour
             OnHitpointsDepletedBehaviour();
         }
     }
+
+    [Rpc(SendTo.Server)]
+    public void ReceiveHealRpc(byte hitpoints)
+    {
+        if (!IsServer) return;
+        currentHealth.Value = (byte)Mathf.Max(0, currentHealth.Value + hitpoints);
+        if (currentHealth.Value >= maxHealth)
+        {
+            currentHealth.Value = maxHealth;
+        }
+    }
+
 
     public byte GetCurrentHealth() => currentHealth.Value;
 

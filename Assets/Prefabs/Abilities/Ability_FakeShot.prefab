@@ -45,8 +45,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7eaacf232d87a404a968fe0ee0d4a0e2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ShowTopMostFoldoutHeaderGroup: 1
   abilityType: 3
-  maxCooldown: 2
+  maxCooldown: 15
 --- !u!136 &2090833169929770096
 CapsuleCollider:
   m_ObjectHideFlags: 0

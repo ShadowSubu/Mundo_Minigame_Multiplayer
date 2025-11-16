@@ -30,15 +30,19 @@ public class ProjectileBoomerang : ProjectileBase
     internal override void OnTriggerEnterBehaviour(Collider other)
     {
         other.TryGetComponent(out NetworkObject hit);
+        if (hit == null) return;
+
+        hit.TryGetComponent(out PlayerController playerController);
+
         // Enemy
-        if (hit != null && hit.OwnerClientId != ShooterObject.OwnerClientId)
+        if (playerController != null  && playerController.PlayerTeam != ShooterObject.GetComponent<PlayerController>().PlayerTeam)
         {
             if (!isReturning && !hasHitTargetForward)
             {
                 hit.TryGetComponent(out TargetBase enemy);
                 if (enemy != null)
                 {
-                    enemy.ReceiveHitpointsRpc(projectileDamage, OwnerClientId);
+                    enemy.ReceiveDamageRpc(projectileDamage);
                 }
             }
             else if (isReturning && !hasHitTargetReturn)
@@ -46,12 +50,12 @@ public class ProjectileBoomerang : ProjectileBase
                 hit.TryGetComponent(out TargetBase enemy);
                 if (enemy != null)
                 {
-                    enemy.ReceiveHitpointsRpc(projectileDamage, OwnerClientId);
+                    enemy.ReceiveDamageRpc(projectileDamage);
                 }
             }
         }
         // Self
-        else if (hit != null && hit.OwnerClientId == ShooterObject.OwnerClientId)
+        else if (playerController != null && hit.OwnerClientId == ShooterObject.OwnerClientId)
         {
             if (isReturning)
             {

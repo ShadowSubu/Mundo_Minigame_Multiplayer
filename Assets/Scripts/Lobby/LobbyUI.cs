@@ -20,6 +20,9 @@ public class LobbyUI : MonoBehaviour
     [SerializeField] private Toggle createLobbyPrivateToggle;
     [SerializeField] private Button createLobbyConfirmButton;
     [SerializeField] private Button leaveCreateLobbyButton;
+    [SerializeField] private Button oneVoneButton;
+    [SerializeField] private Button twoVtwoButton;
+    private GameMode gameMode;
 
     [Header("Join Lobby UI")]
     [SerializeField] private GameObject joinLobbyUI;
@@ -55,6 +58,9 @@ public class LobbyUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI errorText;
     [SerializeField] private Button errorCloseButton;
 
+    [Header("Other UI")]
+    [SerializeField] private Button settingButton;
+
     private void Awake()
     {
         lobbyPanel.SetActive(false);
@@ -64,6 +70,9 @@ public class LobbyUI : MonoBehaviour
         lobbyDetailsUI.SetActive(false);
         loadingUI.SetActive(false);
         errorUI.SetActive(false);
+        oneVoneButton.image.color = new Color(1, 1, 1, 1f);
+        twoVtwoButton.image.color = new Color(1, 1, 1, 0.5f);
+        gameMode = GameMode.oneVone;
     }
 
     private void OnEnable()
@@ -78,6 +87,9 @@ public class LobbyUI : MonoBehaviour
         leaveJoinLobbyUI.onClick.AddListener(LeaveJoinLobbyUI);
         errorCloseButton.onClick.AddListener(CloseError);
         startGameButton.onClick.AddListener(StartGame);
+        oneVoneButton.onClick.AddListener(SelectGameMode1v1);
+        twoVtwoButton.onClick.AddListener(SelectGameMode2v2);
+        settingButton.onClick.AddListener(OpenSettings);
     }
 
     private void OnDisable()
@@ -92,6 +104,9 @@ public class LobbyUI : MonoBehaviour
         leaveJoinLobbyUI.onClick.RemoveAllListeners();
         errorCloseButton.onClick.RemoveAllListeners();
         startGameButton.onClick.RemoveAllListeners();
+        oneVoneButton.onClick.RemoveAllListeners();
+        twoVtwoButton.onClick.RemoveAllListeners();
+        settingButton.onClick.RemoveAllListeners();
     }
 
     private void Start()
@@ -134,11 +149,25 @@ public class LobbyUI : MonoBehaviour
         createLobbyUI.SetActive(true);
     }
 
+    private void SelectGameMode1v1()
+    {
+        oneVoneButton.image.color = new Color(1, 1, 1, 1f);
+        twoVtwoButton.image.color = new Color(1, 1, 1, 0.5f);
+        gameMode = GameMode.oneVone;
+    }
+
+    private void SelectGameMode2v2()
+    {
+        oneVoneButton.image.color = new Color(1, 1, 1, 0.5f);
+        twoVtwoButton.image.color = new Color(1, 1, 1, 1f);
+        gameMode = GameMode.twoVtwo;
+    }
+
     private void CreateLobby()
     {
         if (!string.IsNullOrEmpty(createLobbyNameInputField.text))
         {
-            LobbyManager.Instance.CreateLobby(createLobbyNameInputField.text, createLobbyPrivateToggle.isOn);
+            LobbyManager.Instance.CreateLobby(createLobbyNameInputField.text, createLobbyPrivateToggle.isOn, gameMode);
             ShowLoading("Creating lobby...");
         }
         else
@@ -317,7 +346,17 @@ public class LobbyUI : MonoBehaviour
 
     private void StartGame()
     {
-        SceneLoadingManager.Instance.LoadSceneAsync("Game");
+        switch (gameMode)
+        {
+            case GameMode.oneVone:
+                SceneLoadingManager.Instance.LoadSceneAsync("Game 1v1");
+                break;
+            case GameMode.twoVtwo:
+                SceneLoadingManager.Instance.LoadSceneAsync("Game 2v2");
+                break;
+            default:
+                break;
+        }
     }
 
     private void ChangeStartGameButtonState()
@@ -351,5 +390,10 @@ public class LobbyUI : MonoBehaviour
     private void CloseError()
     {
         errorUI.SetActive(false);
+    }
+
+    private void OpenSettings()
+    {
+        SettingsManager.Instance.OpenSetting();
     }
 }

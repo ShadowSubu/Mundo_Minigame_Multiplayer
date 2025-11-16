@@ -1,6 +1,7 @@
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Unity.Netcode;
 using Unity.Services.Authentication;
@@ -15,7 +16,6 @@ public class LobbyManager : NetworkBehaviour
 
     #region Constants
 
-    public const int MAX_PLAYERS = 2;
     public const string KEY_PLAYER_NAME = "PlayerName";
     public const string KEY_START_GAME = "StartGame_RelayCode";
     private const string PROJECTILE_SELECTION_KEY_PREFIX = "PlayerProjectileSelection_";
@@ -23,6 +23,8 @@ public class LobbyManager : NetworkBehaviour
     private const string CLIENT_ID_PREFIX = "ClientId_";
 
     #endregion
+    public int MAX_PLAYERS = 2;
+    public GameMode gameMode;
 
     #region Lobby Events
 
@@ -171,8 +173,8 @@ public class LobbyManager : NetworkBehaviour
     {
         return currentLobby != null && 
                currentLobby.Players != null && 
-               currentLobby.Players.Count >= 2 && 
-               NetworkManager.Singleton.ConnectedClients.Count >= 2 &&
+               currentLobby.Players.Count >= MAX_PLAYERS && 
+               NetworkManager.Singleton.ConnectedClients.Count >= MAX_PLAYERS &&
                currentLobby.Data.ContainsKey(KEY_START_GAME) && 
                currentLobby.Data[KEY_START_GAME].Value != "0" &&
                AllClientsMapped() &&
@@ -243,7 +245,7 @@ public class LobbyManager : NetworkBehaviour
         });
     }
 
-    public async void CreateLobby(string lobbyName, bool isPrivate)
+    public async void CreateLobby(string lobbyName, bool isPrivate, GameMode gameMode)
     {
         Player player = GetPlayer();
 
@@ -256,6 +258,20 @@ public class LobbyManager : NetworkBehaviour
                 { KEY_START_GAME, new DataObject(DataObject.VisibilityOptions.Member, "0") }
             }
         };
+
+        this.gameMode = gameMode;
+
+        switch (gameMode)
+        {
+            case GameMode.oneVone:
+                MAX_PLAYERS = 2;
+                break;
+            case GameMode.twoVtwo:
+                MAX_PLAYERS = 4;
+                break;
+            default:
+                break;
+        }
 
         try
         {
@@ -385,23 +401,24 @@ public class LobbyManager : NetworkBehaviour
 
     public void SaveClientIdMapping(ulong clientId)
     {
-        RequestSaveClientMappingRpc(clientId, AuthenticationService.Instance.PlayerId);
+        RequestSaveClientMappingRpc(clientId, AuthenticationService.Instance.PlayerId, AuthenticationService.Instance.PlayerName);
     }
 
     [Rpc(SendTo.Server, RequireOwnership = false)]
-    private void RequestSaveClientMappingRpc(ulong clientId, string playerId)
+    private void RequestSaveClientMappingRpc(ulong clientId, string playerId, string playerName)
     {
-        SaveClientIdMappingHost(clientId, playerId);
+        SaveClientIdMappingHost(clientId, playerId, playerName);
     }
 
-    private async void SaveClientIdMappingHost(ulong clientId, string playerId)
+    private async void SaveClientIdMappingHost(ulong clientId, string playerId, string playerName)
     {
         if (!NetworkManager.Singleton.IsServer) return;
 
         var lobby = GetCurrentLobby();
         if (lobby == null) return;
 
-        string key = CLIENT_ID_PREFIX + clientId;
+        string playerIdKey = CLIENT_ID_PREFIX + clientId;
+        string playerNameKey = CLIENT_ID_PREFIX + clientId + "_name";
 
         try
         {
@@ -409,11 +426,12 @@ public class LobbyManager : NetworkBehaviour
             {
                 Data = new Dictionary<string, DataObject>
             {
-                { key, new DataObject(DataObject.VisibilityOptions.Member, playerId) }
+                { playerIdKey, new DataObject(DataObject.VisibilityOptions.Member, playerId) },
+                { playerNameKey, new DataObject(DataObject.VisibilityOptions.Member, playerName) }
             }
             });
 
-            Debug.Log($"Saved mapping: {key} -> {playerId}");
+            Debug.Log($"Saved mapping: {playerIdKey} -> {playerId}, {playerNameKey} -> {playerName}");
         }
         catch (LobbyServiceException ex)
         {
@@ -435,6 +453,20 @@ public class LobbyManager : NetworkBehaviour
 
         Debug.LogWarning($"No mapping found for clientId: {clientId}");
 
+        return null;
+    }
+
+    public string GetPlayerNameFromClientId(ulong clientId)
+    {
+        var lobby = GetCurrentLobby();
+        if (lobby == null || lobby.Data == null) return null;
+        string key = CLIENT_ID_PREFIX + clientId + "_name";
+        if (lobby.Data.ContainsKey(key))
+        {
+            Debug.Log($"Found player name: {key} -> {lobby.Data[key].Value}");
+            return lobby.Data[key].Value;
+        }
+        Debug.LogWarning($"No player name found for clientId: {clientId}");
         return null;
     }
 
@@ -618,4 +650,10 @@ public class PlayerAbilitySelectionData
     public string abilityType;
     public string ToJson() => JsonConvert.SerializeObject(this);
     public static PlayerAbilitySelectionData FromJson(string json) => JsonConvert.DeserializeObject<PlayerAbilitySelectionData>(json);
+}
+
+public enum GameMode
+{
+    oneVone,
+    twoVtwo
 }

@@ -17,6 +17,8 @@ MonoBehaviour:
     - d9807a6952bcfbe4bb5ffad231b18e3e
     - 8c9cfa26abfee488c85f1582747f6a02
     - 097a62f667a350146a1ae661c7f43a37
+    - 8a5c47a66b5c73c409f9d5f3dece12d6
+    - 06e7ebb179e314b48a6e6bf51a98fe7c
     values:
     - goDatas_byGlobalId:
         keys:
@@ -77,5 +79,11 @@ MonoBehaviour:
           iconNameOrGuid: cs Script Icon
           isIconRecursive: 0
           isColorRecursive: 0
+    - goDatas_byGlobalId:
+        keys: []
+        values: []
+    - goDatas_byGlobalId:
+        keys: []
+        values: []
   bookmarks: []
   bookmarkedScenePaths: []

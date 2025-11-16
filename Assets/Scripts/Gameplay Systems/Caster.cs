@@ -14,7 +14,9 @@ public class Caster : NetworkBehaviour
     {
         { "Blink", AbilityType.Blink },
         { "FakeShot", AbilityType.FakeShot },
-        { "Parry", AbilityType.Parry }
+        { "Parry", AbilityType.Parry },
+        { "Invisibility", AbilityType.Invisibility },
+        { "SpeedBoost", AbilityType.SpeedBoost }
     };
 
     private AbilityBase activeAbility;
@@ -112,7 +114,7 @@ public class Caster : NetworkBehaviour
         }
 
         Debug.Log("Requesting ability use...");
-        RequestAbilityUseRpc(GetMouseWorldPosition(Input.mousePosition));
+        RequestAbilityUseRpc(GetMouseWorldPosition(Input.mousePosition), GameManager.Instance.GetLocalPlayerTeam());
 
         if (DeveloperDashboard.Instance.OverrideValues)
         {
@@ -139,12 +141,12 @@ public class Caster : NetworkBehaviour
     }
 
     [Rpc(SendTo.Server)]
-    private void RequestAbilityUseRpc(Ray ray)
+    private void RequestAbilityUseRpc(Ray ray, GameManager.Team team)
     {
         if (activeAbility != null)
         {
             Debug.Log("Ability used on server.");
-            activeAbility.OnAbilityUse(ray);
+            activeAbility.OnAbilityUse(ray, team);
         }
     }
 
@@ -174,6 +176,7 @@ public class Caster : NetworkBehaviour
     }
 
     public Camera MainCamera => mainCamera;
+    public AbilityBase SelectedAbility => abilityDictionary[selectedAbility];
 
     #region Development 
 

@@ -8,6 +8,7 @@ using UnityEngine;
 public abstract class AbilityBase : NetworkBehaviour
 {
     [SerializeField] private AbilityType abilityType;
+    [SerializeField] private Sprite abilityIcon;
 
     [SerializeField] protected float maxCooldown = 25f;
 
@@ -24,11 +25,13 @@ public abstract class AbilityBase : NetworkBehaviour
         casterObject = caster;
     }
 
-    internal abstract void OnAbilityUse(Ray ray);
+    internal abstract void OnAbilityUse(Ray ray, GameManager.Team team);
 
     public NetworkObject CasterObject => casterObject;
     public AbilityType AbilityType => abilityType;
     public float MaxCooldown => maxCooldown;
+
+    public Sprite AbilityIcon => abilityIcon;
 }
 
 [Serializable]
@@ -37,5 +40,7 @@ public enum AbilityType
     None,
     Parry,
     Blink,
-    FakeShot
+    FakeShot,
+    Invisibility,
+    SpeedBoost
 }
