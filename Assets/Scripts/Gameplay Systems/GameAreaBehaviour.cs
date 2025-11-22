@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using NullReferenceDetection;
 using Unity.Netcode;
 using UnityEngine;
 
@@ -17,7 +18,8 @@ public class GameAreaBehaviour : NetworkBehaviour
     [SerializeField] private PlayerController playerControllerPrefab;
 
     [Header("Arena Heal")]
-    [SerializeField] private GameObject healCollider;
+    [SerializeField] private ArenaHeal healCollider;
+    [Tooltip("VFX Controller for heal arena"), SerializeField, ValueRequired] private Healing_Area_FX.Controller healVFX;
     [SerializeField] private float healDropDuration = 1f;
     [SerializeField] private int healCountdown = 5;
     [SerializeField] private float healCooldown = 10f;
@@ -121,7 +123,11 @@ public class GameAreaBehaviour : NetworkBehaviour
             while (!cancellationToken.IsCancellationRequested)
             {
                 await Task.Delay(TimeSpan.FromSeconds(healCooldown), cancellationToken);
-                healCollider.SetActive(false);
+                
+                // Added by Om - 8.35pm - 22.11.25
+                StartCoroutine(healVFX.PlayVisual(healCountdown));
+
+                healCollider.gameObject.SetActive(false);
 
                 int countdown = healCountdown;
 
@@ -152,7 +158,7 @@ public class GameAreaBehaviour : NetworkBehaviour
     private void ToggleArenaHealRpc(bool value)
     {
         Debug.Log("Heal collider state : " + value);
-        healCollider.SetActive(value);
+        healCollider.gameObject.SetActive(value);
     }
 
     public float HealCooldown => healCooldown;

@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 27772eb970281fe45a16dfd00dcaf557
+guid: 57fcc3c8517c28447988eec1de29470e
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 8020143640844766479
-    second: spritesheet_0
+      213: -7219133396254456106
+    second: godrays_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -100,45 +100,23 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: radialgradient
+      name: godrays_0
       rect:
         serializedVersion: 2
-        x: 10
-        y: 502
-        width: 512
-        height: 512
+        x: 0
+        y: 0
+        width: 299
+        height: 652
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: f0d092816264d4f60800000000000000
-      internalID: 8020143640844766479
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: circle
-      rect:
-        serializedVersion: 2
-        x: 532
-        y: 758
-        width: 256
-        height: 256
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 128, y: 128, z: 128, w: 128}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 3a4c3eaad601f4a4cb13023d6481851c
-      internalID: 143758528
+      spriteID: 6d6081abc6c70db90800000000000000
+      internalID: -7219133396254456106
       vertices: []
       indices: 
       edges: []
@@ -147,7 +125,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 3dd227d6fa382f54db243ddac5568dec
+    spriteID: 
     internalID: 0
     vertices: []
     indices: 
@@ -157,9 +135,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      circle: 143758528
-      radialgradient: 8020143640844766479
-      spritesheet_1: 571604566
+      godrays_0: -7219133396254456106
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
