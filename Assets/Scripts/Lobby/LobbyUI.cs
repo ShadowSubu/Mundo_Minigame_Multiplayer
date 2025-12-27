@@ -13,6 +13,7 @@ public class LobbyUI : MonoBehaviour
     [SerializeField] private GameObject lobbyOptionsPanel;
     [SerializeField] private Button createLobbyButton;
     [SerializeField] private Button joinLobbyButton;
+    [SerializeField] private Button practiceModeButton;
 
     [Header("Create Lobby UI")]
     [SerializeField] private GameObject createLobbyUI;
@@ -79,6 +80,7 @@ public class LobbyUI : MonoBehaviour
     {
         createLobbyButton.onClick.AddListener(OpenCreateLobbyUI);
         joinLobbyButton.onClick.AddListener(OpenJoinLobbyUI);
+        practiceModeButton.onClick.AddListener(LaunchPracticeMode);
         createLobbyConfirmButton.onClick.AddListener(CreateLobby);
         leaveCreateLobbyButton.onClick.AddListener(LeaveCreateLobby);
         refreshPublicLobbiesButton.onClick.AddListener(RefreshPublicLobbies);
@@ -96,6 +98,7 @@ public class LobbyUI : MonoBehaviour
     {
         createLobbyButton.onClick.RemoveAllListeners();
         joinLobbyButton.onClick.RemoveAllListeners();
+        practiceModeButton.onClick.RemoveAllListeners();
         createLobbyConfirmButton.onClick.RemoveAllListeners();
         leaveCreateLobbyButton.onClick.RemoveAllListeners();
         refreshPublicLobbiesButton.onClick.RemoveAllListeners();
@@ -147,6 +150,11 @@ public class LobbyUI : MonoBehaviour
     {
         lobbyOptionsPanel.SetActive(false);
         createLobbyUI.SetActive(true);
+    }
+
+    private void LaunchPracticeMode()
+    {
+        SceneLoadingManager.Instance.LoadSceneAsync("Game Practice Mode");
     }
 
     private void SelectGameMode1v1()
