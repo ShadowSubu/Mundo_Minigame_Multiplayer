@@ -10216,6 +10216,7 @@ MonoBehaviour:
   lobbyOptionsPanel: {fileID: 1887022279}
   createLobbyButton: {fileID: 456850428}
   joinLobbyButton: {fileID: 690755317}
+  practiceModeButton: {fileID: 238928182}
   createLobbyUI: {fileID: 2028283246}
   createLobbyNameInputField: {fileID: 319186168}
   createLobbyPrivateToggle: {fileID: 1955857833}
