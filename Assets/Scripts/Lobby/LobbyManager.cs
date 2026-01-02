@@ -278,7 +278,7 @@ public class LobbyManager : NetworkBehaviour
             Lobby lobby = await LobbyService.Instance.CreateLobbyAsync(lobbyName, MAX_PLAYERS, options);
             currentLobby = lobby;
 
-            StartConnectingGame();
+            await StartConnectingGame();
 
             OnJoinedLobby?.Invoke(this, new LobbyEventArgs { lobby = lobby });
 
@@ -327,7 +327,7 @@ public class LobbyManager : NetworkBehaviour
             Lobby lobby = await LobbyService.Instance.CreateLobbyAsync(lobbyName, MAX_PLAYERS, options);
             currentLobby = lobby;
 
-            StartConnectingGame();
+            await StartConnectingGame();
 
             Debug.Log("Created Lobby " + lobby.Name);
         }
@@ -647,7 +647,7 @@ public class LobbyManager : NetworkBehaviour
 
     #region Relay
 
-    public async void StartConnectingGame()
+    public async Task StartConnectingGame()
     {
         if (IsLobbyHost())
         {

@@ -1,10 +1,10 @@
 using System;
 using UnityEngine;
 
-public class PlayerAnimator : MonoBehaviour
+public class BotAnimator : MonoBehaviour
 {
     [SerializeField] private Animator animator;
-    [SerializeField] private PlayerController playerController;
+    [SerializeField] private Bot botController;
     [SerializeField] private Shooter shooter;
     [SerializeField] private Caster caster;
 
@@ -13,13 +13,13 @@ public class PlayerAnimator : MonoBehaviour
 
     private void Start()
     {
-        playerController.OnPlayerMove += HandleMovement;
+        botController.OnBotMove += HandleMovement;
         shooter.OnShoot += HandleShooting;
     }
 
     private void OnDestroy()
     {
-        playerController.OnPlayerMove -= HandleMovement;
+        botController.OnBotMove -= HandleMovement;
         shooter.OnShoot -= HandleShooting;
     }
 

@@ -1,6 +1,9 @@
-﻿using UnityEditor;
+﻿using System;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.AI;
+using Random = UnityEngine.Random;
+
 
 public class Bot : MonoBehaviour
 {
@@ -42,6 +45,8 @@ public class Bot : MonoBehaviour
     private float nextAbilityTime;
     private float nextMoveTime;
 
+    public event EventHandler<float> OnBotMove;
+
     private void Awake()
     {
         agent = GetComponent<NavMeshAgent>();
@@ -61,6 +66,7 @@ public class Bot : MonoBehaviour
         HandleMovement();
         HandleShooting();
         HandleAbility();
+        OnBotMove?.Invoke(this, agent.velocity.sqrMagnitude);
     }
 
     // ---------------- MOVEMENT ----------------

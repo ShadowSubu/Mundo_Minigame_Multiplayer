@@ -1698,7 +1698,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 820790714
+  GlobalObjectIdHash: 2481810374
   InScenePlacedSourceGlobalObjectIdHash: 2841858534
   DeferredDespawnTick: 0
   Ownership: 1
@@ -1927,7 +1927,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
-  TransitionStateInfoList: []
+  TransitionStateInfoList:
+  - IsCrossFadeExit: 0
+    Layer: 0
+    OriginatingState: 1326225478
+    DestinationState: -1316629574
+    TransitionDuration: 0.25
+    TriggerNameHash: -1316629574
+    TransitionIndex: 1
   m_Animator: {fileID: 553929741240945982}
 --- !u!114 &433885755440652245
 MonoBehaviour:
@@ -1941,7 +1948,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6dd83f92f5b71c5489ed442f84ca1fab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  animator: {fileID: 553929741240945982}
+  animator: {fileID: 6241237397318166306}
   playerController: {fileID: 4014160347200438750}
   shooter: {fileID: 5349249638996190983}
   caster: {fileID: 8091447567121734062}
@@ -2485,6 +2492,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Character
       objectReference: {fileID: 0}
+    - target: {fileID: 564008150529913243, guid: 662b64018d8fb804b83ade0500639ff9, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2282824925322623669, guid: 662b64018d8fb804b83ade0500639ff9, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
@@ -2568,7 +2579,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: a393ed34cad31644b93d7a009415fcc4, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: -0.967
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: a393ed34cad31644b93d7a009415fcc4, type: 3}
       propertyPath: m_LocalPosition.z
@@ -2618,6 +2629,11 @@ PrefabInstance:
 --- !u!4 &35316918797057368 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: a393ed34cad31644b93d7a009415fcc4, type: 3}
+  m_PrefabInstance: {fileID: 574140720790166195}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &6241237397318166306 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 5866666021909216657, guid: a393ed34cad31644b93d7a009415fcc4, type: 3}
   m_PrefabInstance: {fileID: 574140720790166195}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &3446928349577710186
