@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 5a55f6d98facf1243bbde292b501f20c
+guid: 2357598265729ad4291b941a6cfdefec
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -7847967556099761499
-    second: GradientBG_0
+      213: -2960178225869106907
+    second: Gradient_ring_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -37,7 +37,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 0
+    filterMode: 1
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -113,7 +113,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: GradientBG_0
+      name: Gradient_ring_0
       rect:
         serializedVersion: 2
         x: 0
@@ -128,8 +128,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 5aa12e9861b661390800000000000000
-      internalID: -7847967556099761499
+      spriteID: 521d93756955be6d0800000000000000
+      internalID: -2960178225869106907
       vertices: []
       indices: 
       edges: []
@@ -148,7 +148,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      GradientBG_0: -7847967556099761499
+      Gradient_ring_0: -2960178225869106907
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
