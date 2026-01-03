@@ -20,6 +20,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Game Practice Mode.unity
     guid: 5b871e464c38ac348a20097464d81566
+  - enabled: 1
+    path: Assets/Scenes/Game_Swapnil.unity
+    guid: 5a91b4935ccc45d4db77c72511d10f50
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   m_UseUCBPForAssetBundles: 0
