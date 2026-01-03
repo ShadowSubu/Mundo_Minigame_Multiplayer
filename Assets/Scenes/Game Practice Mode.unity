@@ -288,7 +288,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 3540287568
+  GlobalObjectIdHash: 3809524814
   InScenePlacedSourceGlobalObjectIdHash: 0
   DeferredDespawnTick: 0
   Ownership: 1
@@ -465,7 +465,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 1997232901
+  GlobalObjectIdHash: 2959128458
   InScenePlacedSourceGlobalObjectIdHash: 0
   DeferredDespawnTick: 0
   Ownership: 1
@@ -1068,7 +1068,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 343420249
+  GlobalObjectIdHash: 284424324
   InScenePlacedSourceGlobalObjectIdHash: 0
   DeferredDespawnTick: 0
   Ownership: 1
@@ -2116,7 +2116,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 3717199375
+  GlobalObjectIdHash: 1783109135
   InScenePlacedSourceGlobalObjectIdHash: 0
   DeferredDespawnTick: 0
   Ownership: 1
@@ -2639,6 +2639,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Character
       objectReference: {fileID: 0}
+    - target: {fileID: 564008150529913243, guid: 662b64018d8fb804b83ade0500639ff9, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2282824925322623669, guid: 662b64018d8fb804b83ade0500639ff9, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
@@ -2668,11 +2672,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 662b64018d8fb804b83ade0500639ff9, type: 3}
---- !u!95 &232083590287545551 stripped
-Animator:
-  m_CorrespondingSourceObject: {fileID: 330859411138041217, guid: 662b64018d8fb804b83ade0500639ff9, type: 3}
-  m_PrefabInstance: {fileID: 232083590287545550}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &232083590287545552 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 285080776201864086, guid: 662b64018d8fb804b83ade0500639ff9, type: 3}
@@ -2708,22 +2707,6 @@ SkinnedMeshRenderer:
   m_CorrespondingSourceObject: {fileID: 2463451922390125495, guid: 662b64018d8fb804b83ade0500639ff9, type: 3}
   m_PrefabInstance: {fileID: 232083590287545550}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &433885754887213988
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6143255507259283901}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6dd83f92f5b71c5489ed442f84ca1fab, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  animator: {fileID: 232083590287545551}
-  playerController: {fileID: 0}
-  shooter: {fileID: 5349249639482846070}
-  caster: {fileID: 8091447566635275743}
 --- !u!1001 &574140721343960770
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2738,7 +2721,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: a393ed34cad31644b93d7a009415fcc4, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: -1.17
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: a393ed34cad31644b93d7a009415fcc4, type: 3}
       propertyPath: m_LocalPosition.z
@@ -2788,6 +2771,11 @@ PrefabInstance:
 --- !u!4 &574140721343960771 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: a393ed34cad31644b93d7a009415fcc4, type: 3}
+  m_PrefabInstance: {fileID: 574140721343960770}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &574140721343960772 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 5866666021909216657, guid: a393ed34cad31644b93d7a009415fcc4, type: 3}
   m_PrefabInstance: {fileID: 574140721343960770}
   m_PrefabAsset: {fileID: 0}
 --- !u!23 &883768388076056859
@@ -3492,7 +3480,7 @@ GameObject:
   - component: {fileID: 5349249639482846070}
   - component: {fileID: 8091447566635275743}
   - component: {fileID: 5363858303749266164}
-  - component: {fileID: 433885754887213988}
+  - component: {fileID: 8091447566635275747}
   m_Layer: 0
   m_Name: Bot
   m_TagString: Untagged
@@ -3527,7 +3515,7 @@ Transform:
   m_GameObject: {fileID: 6143255507259283901}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -7}
+  m_LocalPosition: {x: 0, y: 0, z: -11.44}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -3759,7 +3747,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 2100572769
+  GlobalObjectIdHash: 2502279699
   InScenePlacedSourceGlobalObjectIdHash: 0
   DeferredDespawnTick: 0
   Ownership: 1
@@ -3772,6 +3760,22 @@ MonoBehaviour:
   AutoObjectParentSync: 1
   SyncOwnerTransformWhenParented: 1
   AllowOwnerToParent: 0
+--- !u!114 &8091447566635275747
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6143255507259283901}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: de45966093fcec042b65c11aadbb9ba3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  animator: {fileID: 574140721343960772}
+  botController: {fileID: 8091447566635275745}
+  shooter: {fileID: 5349249639482846070}
+  caster: {fileID: 8091447566635275743}
 --- !u!4 &9133914459884936608
 Transform:
   m_ObjectHideFlags: 0
@@ -3785,8 +3789,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children:
-  - {fileID: 232083590287545552}
   - {fileID: 574140721343960771}
+  - {fileID: 232083590287545552}
   m_Father: {fileID: 6637179408739858760}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1660057539 &9223372036854775807

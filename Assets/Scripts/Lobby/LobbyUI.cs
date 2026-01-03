@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using TMPro;
+using Unity.Services.Lobbies;
 using Unity.Services.Lobbies.Models;
 using UnityEngine;
 using UnityEngine.UI;
@@ -152,8 +154,11 @@ public class LobbyUI : MonoBehaviour
         createLobbyUI.SetActive(true);
     }
 
-    private void LaunchPracticeMode()
+    private async void LaunchPracticeMode()
     {
+        //SceneLoadingManager.Instance.LoadSceneAsync("Game Practice Mode");
+        ShowLoading("Creating practice lobby...");
+        await LobbyManager.Instance.CreateBotLobby("Practice Lobby", true, GameMode.practice);
         SceneLoadingManager.Instance.LoadSceneAsync("Game Practice Mode");
     }
 
