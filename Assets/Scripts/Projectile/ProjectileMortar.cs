@@ -59,7 +59,7 @@ public class ProjectileMortar : ProjectileBase
         DestroyBullet();
     }
 
-    private void Explode()
+    private void ExplodeVFX()
     {
 
     }
@@ -106,6 +106,7 @@ public class ProjectileMortar : ProjectileBase
         }
 
         transform.position = end;
+        ExplodeVFX();
         DestroyBullet();
     }
 
