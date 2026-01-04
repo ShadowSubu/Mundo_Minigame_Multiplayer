@@ -10,7 +10,7 @@ ModelImporter:
       name: Common_MAT
     second: {fileID: 2100000, guid: c1f9f74958427024cb1b56680b20fdd1, type: 2}
   materials:
-    materialImportMode: 2
+    materialImportMode: 0
     materialName: 0
     materialSearch: 1
     materialLocation: 1

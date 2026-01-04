@@ -20,6 +20,7 @@ public class PlayerAnimator : MonoBehaviour
     private void OnDestroy()
     {
         playerController.OnPlayerMove -= HandleMovement;
+        shooter.OnShoot -= HandleShooting;
     }
 
     private void HandleMovement(object sender, float sqrMagnitude)

@@ -278,9 +278,56 @@ public class LobbyManager : NetworkBehaviour
             Lobby lobby = await LobbyService.Instance.CreateLobbyAsync(lobbyName, MAX_PLAYERS, options);
             currentLobby = lobby;
 
-            StartConnectingGame();
+            await StartConnectingGame();
 
             OnJoinedLobby?.Invoke(this, new LobbyEventArgs { lobby = lobby });
+
+            Debug.Log("Created Lobby " + lobby.Name);
+        }
+        catch (LobbyServiceException ex)
+        {
+            OnServiceError?.Invoke(this, ex.Message);
+            return;
+        }
+    }
+
+    public async Task CreateBotLobby(string lobbyName, bool isPrivate, GameMode gameMode)
+    {
+        Player player = GetPlayer();
+
+        CreateLobbyOptions options = new CreateLobbyOptions
+        {
+            Player = player,
+            IsPrivate = isPrivate,
+            Data = new Dictionary<string, DataObject>
+            {
+                { KEY_START_GAME, new DataObject(DataObject.VisibilityOptions.Member, "0") }
+            }
+        };
+
+        this.gameMode = gameMode;
+
+        switch (gameMode)
+        {
+            case GameMode.oneVone:
+                MAX_PLAYERS = 2;
+                break;
+            case GameMode.twoVtwo:
+                MAX_PLAYERS = 4;
+                break;
+            case GameMode.practice:
+                MAX_PLAYERS = 1;
+                break;
+            default:
+                break;
+        }
+
+        try
+        {
+            Lobby lobby = await LobbyService.Instance.CreateLobbyAsync(lobbyName, MAX_PLAYERS, options);
+            currentLobby = lobby;
+
+            await StartConnectingGame();
 
             Debug.Log("Created Lobby " + lobby.Name);
         }
@@ -600,7 +647,7 @@ public class LobbyManager : NetworkBehaviour
 
     #region Relay
 
-    public async void StartConnectingGame()
+    public async Task StartConnectingGame()
     {
         if (IsLobbyHost())
         {
@@ -655,5 +702,6 @@ public class PlayerAbilitySelectionData
 public enum GameMode
 {
     oneVone,
-    twoVtwo
+    twoVtwo,
+    practice
 }
