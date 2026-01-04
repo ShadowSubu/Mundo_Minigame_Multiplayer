@@ -125,7 +125,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 1548911482
+  GlobalObjectIdHash: 4187264640
   InScenePlacedSourceGlobalObjectIdHash: 4187264640
   DeferredDespawnTick: 0
   Ownership: 1
@@ -199,14 +199,14 @@ MonoBehaviour:
   ShowTopMostFoldoutHeaderGroup: 1
   projectileType: 2
   projectileIcon: {fileID: -1471430452, guid: 3ee3921f083deac43ac27e166f831223, type: 3}
-  projectileSpeed: 15
+  projectileSpeed: 4
   projectileDamage: 20
   maxCooldown: 4
   groundLayer:
     serializedVersion: 2
     m_Bits: 64
   travelDuration: 1
-  height: 5
+  height: 20
   explosionRadius: 4
   heightCurve:
     serializedVersion: 2

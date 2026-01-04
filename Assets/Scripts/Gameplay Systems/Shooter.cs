@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class Shooter : NetworkBehaviour
 {
-    [SerializeField] private ProjectileType selectedProjectile;
+    [SerializeField] protected ProjectileType selectedProjectile;
     [SerializeField] private List<ProjectileBase> projectilesDatabase;
     private Dictionary<ProjectileType, ProjectileBase> projectilesDictionary;
 
@@ -19,14 +19,14 @@ public class Shooter : NetworkBehaviour
         { "Curved", ProjectileType.Curved }
     };
 
-    [SerializeField] private Transform firePoint;
-    [SerializeField] LayerMask shootingLayer;
+    [SerializeField] protected Transform firePoint;
+    [SerializeField] protected LayerMask shootingLayer;
     [SerializeField, Tooltip("in ms")] private int channelDuration;
 
     private float cooldownTime = 0f;
-    private bool isShooting = false;
+    protected bool isShooting = false;
 
-    private Camera mainCamera;
+    protected Camera mainCamera;
 
     public event EventHandler<float> OnCooldownChanged;
     public event EventHandler OnShoot;
@@ -49,7 +49,7 @@ public class Shooter : NetworkBehaviour
         }
     }
 
-    private void Update()
+    protected virtual void Update()
     {
         if (DeveloperDashboard.Instance.DashboardEnabled) return;
 
@@ -71,7 +71,7 @@ public class Shooter : NetworkBehaviour
         UpdateCoolDown();
     }
 
-    private void UpdateCoolDown()
+    protected void UpdateCoolDown()
     {
         if (cooldownTime > 0f)
         {
@@ -158,7 +158,7 @@ public class Shooter : NetworkBehaviour
         }
     }
 
-    Ray GetMouseWorldPosition(Vector3 mousePosition)
+    protected Ray GetMouseWorldPosition(Vector3 mousePosition)
     {
         Debug.Log("Mouse Position: " + mousePosition);
         Ray ray = mainCamera.ScreenPointToRay(mousePosition);
