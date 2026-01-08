@@ -14854,6 +14854,8 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 0
   channelDuration: 0
+  targetTransform: {fileID: 0}
+  fireInterval: 2
 --- !u!4 &1641448308
 Transform:
   m_ObjectHideFlags: 0
