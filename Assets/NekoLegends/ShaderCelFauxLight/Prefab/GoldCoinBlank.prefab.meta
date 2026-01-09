@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 3da94ca8b18b8aa4f98177aee8784e48
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 265078
+  packageName: Cel Shader Faux Lighting URP
+  packageVersion: 1.0
+  assetPath: Assets/NekoLegends/ShaderCelFauxLight/Prefab/GoldCoinBlank.prefab
+  uploadId: 612354

@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: d63481289a6ba3749995448d98a2bc5c
+ShaderImporter:
+  externalObjects: {}
+  defaultTextures:
+  - _Main_Texture: {instanceID: 0}
+  - _EmissionTex: {instanceID: 0}
+  nonModifiableTextures: []
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 265078
+  packageName: Cel Shader Faux Lighting URP
+  packageVersion: 1.0
+  assetPath: Assets/NekoLegends/ShaderCelFauxLight/CelFauxLightURP.shader
+  uploadId: 612354
