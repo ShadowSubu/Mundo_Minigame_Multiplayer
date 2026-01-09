@@ -123,9 +123,8 @@ public class GameAreaBehaviour : NetworkBehaviour
             while (!cancellationToken.IsCancellationRequested)
             {
                 await Task.Delay(TimeSpan.FromSeconds(healCooldown), cancellationToken);
-                
-                // Added by Om - 8.35pm - 22.11.25
-                StartCoroutine(healVFX.PlayVisual(healCountdown));
+
+                PlayArenaHealVisualRpc();
 
                 healCollider.gameObject.SetActive(false);
 
@@ -152,6 +151,13 @@ public class GameAreaBehaviour : NetworkBehaviour
         {
 
         }
+    }
+
+    [Rpc(SendTo.ClientsAndHost)]
+    public void PlayArenaHealVisualRpc()
+    {
+        // Added by Om - 8.35pm - 22.11.25
+        StartCoroutine(healVFX.PlayVisual(healCountdown));
     }
 
     [Rpc(SendTo.ClientsAndHost)]

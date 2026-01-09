@@ -1,46 +1,73 @@
 using NullReferenceDetection;
+using System.Collections.Generic;
+using Unity.Netcode;
 using UnityEngine;
+using VInspector;
 
-public class AutoProjectileShooter : Shooter
+public class AutoProjectileShooter : NetworkBehaviour
 {
-    [Header("Auto Shooter Settings")]
-    [Tooltip("Where should the bullet go to"), SerializeField, ValueRequired] public Transform targetTransform;
-    [Tooltip("Time in seconds"), SerializeField, ValueRequired] public float fireInterval=2;
+    [SerializeField] protected ProjectileType selectedProjectile;
+    [SerializeField] private List<ProjectileBase> projectilesDatabase;
+    private Dictionary<ProjectileType, ProjectileBase> projectilesDictionary;
 
-    private void Start()
+    private Dictionary<string, ProjectileType> projectileTypeMapping = new()
     {
-        Debug.Log("Auto Shooter Start");
-        InvokeRepeating(nameof(ShootOnTimer), fireInterval, fireInterval);
-    }
-    
-    private void ShootOnTimer()
+        { "Bullet", ProjectileType.Normal },
+        { "Boomerang", ProjectileType.Boomerang },
+        { "Mortar", ProjectileType.Mortar},
+        { "Homing", ProjectileType.Homing },
+        { "Curved", ProjectileType.Curved }
+    };
+
+    [SerializeField, ValueRequired] private Transform firePoint;
+    [SerializeField, ValueRequired] private Transform targetPoint;
+
+    private void Awake()
     {
-        // Calculate direction from fire point to mouse click
-        Vector3 direction = (targetTransform.position - firePoint.position).normalized;
-        direction.y = 0;
-        
-        Shoot(GetMouseWorldPosition(targetTransform.position), selectedProjectile, direction, OwnerClientId);
+        InitializeProjectileDictionary();
     }
-    
-    protected override void Update()
+
+    [Button]
+    public void StartShooting()
     {
-        // if (DeveloperDashboard.Instance.DashboardEnabled) return;
-        //
-        // if (IsOwner && Input.GetMouseButton(0))
-        // {
-        //     if (isShooting) return;
-        //     Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
-        //     RaycastHit hit;
-        //
-        //     if (Physics.Raycast(ray, out hit, Mathf.Infinity, shootingLayer))
-        //     {
-        //         // Calculate direction from fire point to mouse click
-        //         Vector3 direction = (hit.point - firePoint.position).normalized;
-        //         direction.y = 0;
-        //
-        //         Shoot(GetMouseWorldPosition(Input.mousePosition), selectedProjectile, direction, OwnerClientId);
-        //     }
-        // }
-        UpdateCoolDown();
+        InvokeRepeating(nameof(ShootProjectile), 0f, 2f);
     }
+
+    [Button]
+    public void StopShooting()
+    {
+        CancelInvoke(nameof(ShootProjectile));
+    }
+
+    private void ShootProjectile()
+    {
+        //SpawnBullet();
+    }
+
+    void SpawnBullet(Ray ray, ProjectileType projectileType, Vector3 spawnPos, Vector3 direction, ulong ownerClientId)
+    {
+        Debug.Log("Selected projectile : " + selectedProjectile);
+        ProjectileBase projectile = Instantiate(projectilesDictionary[projectileType], spawnPos, Quaternion.LookRotation(direction));
+
+        if (projectile != null)
+        {
+            projectile.Initialize(ray, direction, this.NetworkObject);
+        }
+
+        projectile.GetComponent<NetworkObject>().SpawnWithOwnership(ownerClientId, true);
+    }
+
+    private void InitializeProjectileDictionary()
+    {
+        projectilesDictionary = new();
+        foreach (ProjectileBase projectile in projectilesDatabase)
+        {
+            if (!projectilesDictionary.ContainsKey(projectile.ProjectileType))
+            {
+                projectilesDictionary.Add(projectile.ProjectileType, projectile);
+            }
+        }
+    }
+    public ProjectileBase SelectedProjectile => projectilesDictionary[selectedProjectile];
+    public ProjectileType SelectedProjectileType => selectedProjectile;
 }
