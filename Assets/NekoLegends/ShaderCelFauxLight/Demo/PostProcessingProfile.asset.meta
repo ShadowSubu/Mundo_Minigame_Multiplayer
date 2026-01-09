@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 841a641f9555d544bb06e76759056716
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 11400000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 265078
+  packageName: Cel Shader Faux Lighting URP
+  packageVersion: 1.0
+  assetPath: Assets/NekoLegends/ShaderCelFauxLight/Demo/PostProcessingProfile.asset
+  uploadId: 612354
