@@ -620,11 +620,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 945f02b0d09c45d4f8cf42fdc83960bb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  teamASpawnPoint: {fileID: 1774777400}
-  teamBSpawnPoint: {fileID: 480622283}
+  ShowTopMostFoldoutHeaderGroup: 1
+  teamASpawnPoints: []
+  teamBSpawnPoints: []
   teamACameraLocation: {fileID: 1097456500}
   teamBCameraLocation: {fileID: 920092627}
   playerControllerPrefab: {fileID: 4014160347200438750, guid: b82c7d2d64d5f264aaf9f54e246f96b5, type: 3}
+  healCollider: {fileID: 0}
+  healVFX: {fileID: 0}
+  healDropDuration: 1
+  healCountdown: 5
+  healCooldown: 10
 --- !u!1 &150291571
 GameObject:
   m_ObjectHideFlags: 0
@@ -2715,7 +2721,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fd1171211c9d5be47b5d8b9def3d01e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ShowTopMostFoldoutHeaderGroup: 1
+  bg: {fileID: 0}
   restartButton: {fileID: 1859630257}
+  returnToLobbyButton: {fileID: 0}
+  gameOverText: {fileID: 0}
 --- !u!1 &1255848789
 GameObject:
   m_ObjectHideFlags: 0
@@ -3172,6 +3182,86 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1491244649}
   m_CullTransparentMesh: 1
+--- !u!1 &1726816826
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1726816829}
+  - component: {fileID: 1726816827}
+  - component: {fileID: 1726816828}
+  m_Layer: 0
+  m_Name: Auto Projectile Shooter
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1726816827
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1726816826}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GlobalObjectIdHash: 392146639
+  InScenePlacedSourceGlobalObjectIdHash: 0
+  DeferredDespawnTick: 0
+  Ownership: 1
+  AlwaysReplicateAsRoot: 0
+  SynchronizeTransform: 1
+  ActiveSceneSynchronization: 0
+  SceneMigrationSynchronization: 1
+  SpawnWithObservers: 1
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
+  SyncOwnerTransformWhenParented: 1
+  AllowOwnerToParent: 0
+--- !u!114 &1726816828
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1726816826}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 487ff50254cf98d4492a45934b43bd65, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShowTopMostFoldoutHeaderGroup: 1
+  selectedProjectile: 0
+  projectilesDatabase: []
+  firePoint: {fileID: 0}
+  shootingLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  channelDuration: 0
+  targetTransform: {fileID: 0}
+  fireInterval: 2
+--- !u!4 &1726816829
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1726816826}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 10.771271, y: 14.534905, z: 4.915886}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1774777399
 GameObject:
   m_ObjectHideFlags: 0
@@ -4189,3 +4279,4 @@ SceneRoots:
   - {fileID: 227071471}
   - {fileID: 771442663}
   - {fileID: 1299959863}
+  - {fileID: 1726816829}

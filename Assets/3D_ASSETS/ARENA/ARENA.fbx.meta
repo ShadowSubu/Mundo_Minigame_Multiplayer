@@ -7,10 +7,40 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: Arena_Border_Area
+    second: {fileID: 2100000, guid: d479c37360bcc9448a95532643225377, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Arena_Bottom_Area
+    second: {fileID: 2100000, guid: 1328879bc7d2b7e478c03c3d9367272c, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Arena_MiddleLine_Border
+    second: {fileID: 2100000, guid: ee8314267b11678438489e20e38172fd, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Arena_MiddleLine_Center
+    second: {fileID: 2100000, guid: a937d000e2267364f9f77f70eecb3541, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Arena_Side_Area
+    second: {fileID: 2100000, guid: 5c85e124b702cce47a1071a9d9c429b5, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Arena_Walking_Area
+    second: {fileID: 2100000, guid: 6d44f532a6a7c724c8277fe5baa4c290, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: Common_MAT
     second: {fileID: 2100000, guid: c1f9f74958427024cb1b56680b20fdd1, type: 2}
   materials:
-    materialImportMode: 0
+    materialImportMode: 2
     materialName: 0
     materialSearch: 1
     materialLocation: 1
@@ -50,7 +80,7 @@ ModelImporter:
     importLights: 1
     nodeNameCollisionStrategy: 1
     fileIdsGeneration: 2
-    swapUVChannels: 0
+    swapUVChannels: 1
     generateSecondaryUV: 0
     useFileUnits: 1
     keepQuads: 0

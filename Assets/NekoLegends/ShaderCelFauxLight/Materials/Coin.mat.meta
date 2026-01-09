@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 932c8e6b9d3c8eb4aafbab9c0899c5a3
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 265078
+  packageName: Cel Shader Faux Lighting URP
+  packageVersion: 1.0
+  assetPath: Assets/NekoLegends/ShaderCelFauxLight/Materials/Coin.mat
+  uploadId: 612354
