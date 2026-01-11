@@ -26,6 +26,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Game_Om Experimentation.unity
     guid: 065d4af082817314396ac21e5e583ce9
+  - enabled: 1
+    path: Assets/Scenes/Game_Om.unity
+    guid: ab4cbf3f0ef3f30468e2d6cbf80ad860
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   m_UseUCBPForAssetBundles: 0
