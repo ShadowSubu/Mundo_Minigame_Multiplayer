@@ -15,6 +15,7 @@ namespace Chat_UI.Chatbox
         [Header("References")]
         [Tooltip("TMP which displays the actual typed message."), SerializeField, ValueRequired] TMP_Text messageTMP ;
         [Tooltip("Horizontal Layout Group"), SerializeField, ValueRequired] HorizontalLayoutGroup chatboxLG ;
+        [Tooltip("Horizontal Layout Group"), SerializeField, ValueRequired] RectTransform chatboxGraphicRT ;
 
         [Header("Add animation settings")]
         public float addDuration = .2f;
@@ -132,6 +133,9 @@ namespace Chat_UI.Chatbox
             messageTMP.text += c;
             messageTMP.ForceMeshUpdate();
             LayoutRebuilder.ForceRebuildLayoutImmediate(chatboxLG.transform as RectTransform);
+            Vector2 targetSize = new Vector2(((RectTransform)chatboxLG.transform).rect.width, chatboxGraphicRT.sizeDelta.y);
+            if(messageTMP.text.Length>0)OpenChat();
+            chatboxGraphicRT.DOSizeDelta(targetSize, addDuration).SetEase(openEase);
             yield return new WaitForEndOfFrame();
 
             // Force TMP to parse + generate mesh immediately
@@ -141,19 +145,6 @@ namespace Chat_UI.Chatbox
             if(charInfo.isVisible == false) yield break;
             
             TMP_MeshInfo meshInfo = textInfo.meshInfo[0];   // Assuming there is only one mesh
-
-            // Debug.Log("CharacterInfo Length: " + textInfo.characterInfo.Length);
-            // Debug.Log("Character Count: " + textInfo.characterCount);
-            // Debug.Log("Vertex Index for '"+charInfo.character+"' : " + charInfo.vertexIndex);
-            // Debug.Log("Vertex Index Alt: " + textInfo.characterInfo[^1].vertexIndex);
-            
-            // string s = "";
-            // for (int i = 0; i < textInfo.characterInfo.Length; i++)
-            // {
-            //     Debug.Log("Vertex Index for '"+textInfo.characterInfo[i].character+"' : "+textInfo.characterInfo[i].vertexIndex);
-            //     s += textInfo.characterInfo[i].character;
-            // }
-            // Debug.Log("Final string = " + s);
             
             float step = 0f;
             Vector3 v0 = meshInfo.vertices[charInfo.vertexIndex];
@@ -228,9 +219,5 @@ namespace Chat_UI.Chatbox
                 }
             }
         }
-        
-        // Animation for characters appearing.
-        
-        // Animation for characters disappearing.
     }
 }
