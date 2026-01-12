@@ -26,8 +26,7 @@ Material:
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords:
   - _NORMALMAP
-  - _OCCLUSIONMAP
-  - _PARALLAXMAP
+  - _SMOOTHNESS_TEXTURE_ALBEDO_CHANNEL_A
   m_InvalidKeywords: []
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
@@ -51,10 +50,10 @@ Material:
         m_Offset: {x: 0, y: 0}
     - _BaseMap:
         m_Texture: {fileID: 0}
-        m_Scale: {x: 3, y: 3}
+        m_Scale: {x: 0.7, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BumpMap:
-        m_Texture: {fileID: 2800000, guid: a33509d7a79d5284b9fb04ea669b38db, type: 3}
+        m_Texture: {fileID: 2800000, guid: 891e55e86090177448877075a3dd5577, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _DetailAlbedoMap:
@@ -70,7 +69,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _EmissionMap:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: 5a55f6d98facf1243bbde292b501f20c, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _EmissionTex:
@@ -79,7 +78,7 @@ Material:
         m_Offset: {x: 0, y: 0}
     - _MainTex:
         m_Texture: {fileID: 0}
-        m_Scale: {x: 3, y: 3}
+        m_Scale: {x: 0.7, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Main_Texture:
         m_Texture: {fileID: 0}
@@ -94,7 +93,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _OcclusionMap:
-        m_Texture: {fileID: 2800000, guid: f72027f6bb5f3ea4ebfc13cf80360fed, type: 3}
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _PainterlyMask_nrm_r_colVar_g:
@@ -102,7 +101,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _ParallaxMap:
-        m_Texture: {fileID: 2800000, guid: 10a80f5111f27604f9232f4f83009474, type: 3}
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _SpecGlossMap:
@@ -151,7 +150,7 @@ Material:
     - _NormalIntensity: 1.02
     - _OcclusionStrength: 1
     - _OutlineWidth: 0.786
-    - _Parallax: 0.03
+    - _Parallax: 0.005
     - _QueueControl: 0
     - _QueueOffset: 0
     - _ReceiveShadows: 1
@@ -161,8 +160,8 @@ Material:
     - _ShadingFalloff: 1
     - _ShadowStep: 0.416
     - _ShadowStepSmooth: 0.214
-    - _Smoothness: 0.3
-    - _SmoothnessTextureChannel: 0
+    - _Smoothness: 0.355
+    - _SmoothnessTextureChannel: 1
     - _SpecularHighlights: 1
     - _SpecularStep: 0.234
     - _SpecularStepSmooth: 0.688
@@ -180,9 +179,9 @@ Material:
     - _WorkflowMode: 1
     - _ZWrite: 1
     m_Colors:
-    - _BaseColor: {r: 0, g: 0.6685715, b: 0.78, a: 1}
-    - _Color: {r: 0, g: 0.6685715, b: 0.78, a: 1}
-    - _EmissionColor: {r: 0, g: 0, b: 0, a: 0}
+    - _BaseColor: {r: 0, g: 0.6666667, b: 0.78039217, a: 1}
+    - _Color: {r: 0, g: 0.6666667, b: 0.78039217, a: 1}
+    - _EmissionColor: {r: 0.0007314641, g: 0.0002489276, b: 0, a: 0}
     - _OutlineColor: {r: 0, g: 0, b: 0, a: 1}
     - _RimColor: {r: 1, g: 1, b: 1, a: 1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
