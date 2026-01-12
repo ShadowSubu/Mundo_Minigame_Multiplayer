@@ -1,6 +1,7 @@
 using System;
 using Unity.Netcode;
 
+[Obsolete]
 public class ChatSystem : NetworkBehaviour
 {
     public static ChatSystem Instance { get; private set; }

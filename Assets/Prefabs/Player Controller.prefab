@@ -1698,7 +1698,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 2481810374
+  GlobalObjectIdHash: 1060206913
   InScenePlacedSourceGlobalObjectIdHash: 2841858534
   DeferredDespawnTick: 0
   Ownership: 1
@@ -1803,7 +1803,7 @@ NavMeshAgent:
   m_GameObject: {fileID: 6143255506705520076}
   m_Enabled: 0
   m_AgentTypeID: 0
-  m_Radius: 0.3
+  m_Radius: 1
   m_Speed: 15
   m_Acceleration: 200
   avoidancePriority: 50
@@ -1854,7 +1854,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
-  selectedAbility: 1
+  selectedAbilityType: 0
   abilityDatabase:
   - {fileID: 5822959551496583459}
   - {fileID: 4999069061404131673}
@@ -1983,8 +1983,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children:
-  - {fileID: 57501980129794857}
   - {fileID: 35316918797057368}
+  - {fileID: 57501980129794857}
   m_Father: {fileID: 6637179409327076665}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &24540278716641353
