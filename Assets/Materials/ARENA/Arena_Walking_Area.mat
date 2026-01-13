@@ -160,7 +160,7 @@ Material:
     - _ShadingFalloff: 1
     - _ShadowStep: 0.416
     - _ShadowStepSmooth: 0.214
-    - _Smoothness: 0.355
+    - _Smoothness: 0.168
     - _SmoothnessTextureChannel: 1
     - _SpecularHighlights: 1
     - _SpecularStep: 0.234
@@ -179,8 +179,8 @@ Material:
     - _WorkflowMode: 1
     - _ZWrite: 1
     m_Colors:
-    - _BaseColor: {r: 0, g: 0.6666667, b: 0.78039217, a: 1}
-    - _Color: {r: 0, g: 0.6666667, b: 0.78039217, a: 1}
+    - _BaseColor: {r: 0.2325569, g: 0.70055693, b: 0.78039217, a: 1}
+    - _Color: {r: 0.23255685, g: 0.70055693, b: 0.78039217, a: 1}
     - _EmissionColor: {r: 0.0007314641, g: 0.0002489276, b: 0, a: 0}
     - _OutlineColor: {r: 0, g: 0, b: 0, a: 1}
     - _RimColor: {r: 1, g: 1, b: 1, a: 1}

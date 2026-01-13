@@ -2946,6 +2946,10 @@ PrefabInstance:
       propertyPath: m_AABB.m_Extent.z
       value: 0.12224302
       objectReference: {fileID: 0}
+    - target: {fileID: -9165797768001435688, guid: a393ed34cad31644b93d7a009415fcc4, type: 3}
+      propertyPath: 'm_BlendShapeWeights.Array.data[0]'
+      value: 100
+      objectReference: {fileID: 0}
     - target: {fileID: -8912189966947192040, guid: a393ed34cad31644b93d7a009415fcc4, type: 3}
       propertyPath: m_LocalRotation.w
       value: 1
@@ -3144,7 +3148,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -1526964690268444965, guid: a393ed34cad31644b93d7a009415fcc4, type: 3}
       propertyPath: 'm_BlendShapeWeights.Array.data[0]'
-      value: 80
+      value: 100
       objectReference: {fileID: 0}
     - target: {fileID: -1255605710908113952, guid: a393ed34cad31644b93d7a009415fcc4, type: 3}
       propertyPath: m_LocalRotation.w
@@ -3189,6 +3193,10 @@ PrefabInstance:
     - target: {fileID: -809828480950454423, guid: a393ed34cad31644b93d7a009415fcc4, type: 3}
       propertyPath: m_AABB.m_Extent.z
       value: 0.10628903
+      objectReference: {fileID: 0}
+    - target: {fileID: -809828480950454423, guid: a393ed34cad31644b93d7a009415fcc4, type: 3}
+      propertyPath: 'm_BlendShapeWeights.Array.data[0]'
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 327064008815436722, guid: a393ed34cad31644b93d7a009415fcc4, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
@@ -3342,6 +3350,10 @@ PrefabInstance:
       propertyPath: m_AABB.m_Extent.z
       value: 0.10628903
       objectReference: {fileID: 0}
+    - target: {fileID: 7603786706384944740, guid: a393ed34cad31644b93d7a009415fcc4, type: 3}
+      propertyPath: 'm_BlendShapeWeights.Array.data[0]'
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -3444,6 +3456,10 @@ PrefabInstance:
     - target: {fileID: 2176229848800606782, guid: e0e7cbe14815b0c4fba7f7214890f801, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5656855758239743850, guid: e0e7cbe14815b0c4fba7f7214890f801, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6043992234054852931, guid: e0e7cbe14815b0c4fba7f7214890f801, type: 3}
       propertyPath: m_Name
