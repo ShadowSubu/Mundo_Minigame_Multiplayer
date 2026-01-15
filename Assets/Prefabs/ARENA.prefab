@@ -1136,6 +1136,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Border_Frame_1 (4)
       objectReference: {fileID: 0}
+    - target: {fileID: 4307498282501220507, guid: 69eaa929e03e3704599812f07599f26b, type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 6424283234691311750, guid: 41b5db163a451d948b98b54dad723ff7, type: 3}
     - target: {fileID: 5790376848677634994, guid: 69eaa929e03e3704599812f07599f26b, type: 3}
       propertyPath: m_LocalScale.y
       value: 0.49689674
