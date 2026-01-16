@@ -38,7 +38,7 @@ public class PlayerUI : NetworkBehaviour
 
         if (!IsOwner)
         {
-            playerCanvas.gameObject.SetActive(false);
+            TogglePlayerUICanvas(false);
         }
 
         projectileCooldownBar.fillAmount = 0f;
@@ -65,6 +65,7 @@ public class PlayerUI : NetworkBehaviour
 
     private void UpdateProjectileCooldownBar(object sender, float e)
     {
+        Debug.Log($"Updating Projectile Cooldown Bar: Current Cooldown = {e}, Max Cooldown = {shooter.GetMaxCooldown()}");
         projectileCooldownBar.fillAmount = e / shooter.GetMaxCooldown();
         if (e == shooter.GetMaxCooldown())
         {
@@ -98,6 +99,14 @@ public class PlayerUI : NetworkBehaviour
     private void UpdateHealthBarRpc(byte e)
     {
         healthBar.fillAmount = (float)e / (float)playerController.GetMaxHealth();
+    }
+
+    public void TogglePlayerUICanvas(bool value)
+    {
+        if (IsOwner)
+        {
+            playerCanvas.gameObject.SetActive(value);
+        }
     }
 
     #region Testing
