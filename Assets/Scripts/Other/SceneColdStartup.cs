@@ -1,5 +1,7 @@
+using System.Threading.Tasks;
 using TMPro;
 using Unity.Netcode;
+using UnityEditor.PackageManager;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -9,7 +11,8 @@ public class SceneColdStartup : MonoBehaviour
     [SerializeField] private bool startSceneCold = true;
     public bool StartSceneCold => startSceneCold;
 
-    [SerializeField] private NetworkObject playerController;
+    [SerializeField] private PlayerController playerControllerPrefab;
+    [SerializeField] private Transform playerSpawnPosition;
     [SerializeField] private Button startButton;
     [SerializeField] private TMP_Dropdown projectileDropdown;
     [SerializeField] private TMP_Dropdown abilityDropdown;
@@ -45,20 +48,17 @@ public class SceneColdStartup : MonoBehaviour
         // Wait until the network is ready
         while (!NetworkManager.Singleton.IsListening)
         {
-            await System.Threading.Tasks.Task.Yield();
+            await Task.Yield();
         }
 
-        // Wait one more frame to ensure everything is initialized
-        await System.Threading.Tasks.Task.Yield();
+        PlayerController playerController = Instantiate(playerControllerPrefab, playerSpawnPosition.position, playerSpawnPosition.rotation);
+        playerController.GetComponent<NetworkObject>().SpawnAsPlayerObject(NetworkManager.Singleton.LocalClientId, true);
+        //playerController.GetComponent<NetworkObject>().ChangeOwnership(NetworkManager.Singleton.LocalClientId);
 
-        // Change ownership
-        playerController.ChangeOwnership(NetworkManager.Singleton.LocalClientId);
-
-        // Wait one frame for ownership change to process
-        await System.Threading.Tasks.Task.Yield();
-
-        // Now call the RPC
         playerController.GetComponent<PlayerController>().InitializeRpc(GameManager.Team.A, projectileDropdown.options[projectileDropdown.value].text, abilityDropdown.options[abilityDropdown.value].text);
+        
+        await Task.Yield();
+
         loadoutSelectionWindow.SetActive(false);
         playerController.GetComponent<PlayerUI>().TogglePlayerUICanvas(true);
     }

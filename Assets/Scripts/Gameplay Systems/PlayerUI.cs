@@ -65,6 +65,7 @@ public class PlayerUI : NetworkBehaviour
 
     private void UpdateProjectileCooldownBar(object sender, float e)
     {
+        Debug.Log($"Updating Projectile Cooldown Bar: Current Cooldown = {e}, Max Cooldown = {shooter.GetMaxCooldown()}");
         projectileCooldownBar.fillAmount = e / shooter.GetMaxCooldown();
         if (e == shooter.GetMaxCooldown())
         {
