@@ -5713,6 +5713,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5722132401261668055, guid: e0e7cbe14815b0c4fba7f7214890f801, type: 3}
+      propertyPath: m_NavMeshData
+      value: 
+      objectReference: {fileID: 23800000, guid: 7f2383f0aecb2644ebd481ed790bee08, type: 2}
     - target: {fileID: 6043992234054852931, guid: e0e7cbe14815b0c4fba7f7214890f801, type: 3}
       propertyPath: m_Name
       value: ARENA
@@ -5721,6 +5725,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7667301745668163726, guid: e0e7cbe14815b0c4fba7f7214890f801, type: 3}
+      propertyPath: m_NavMeshData
+      value: 
+      objectReference: {fileID: 23800000, guid: 21a71f00f0cefd942b94a0e3f244f4bf, type: 2}
     - target: {fileID: 7787540479797070652, guid: e0e7cbe14815b0c4fba7f7214890f801, type: 3}
       propertyPath: m_IsActive
       value: 0

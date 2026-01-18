@@ -214,29 +214,29 @@ MonoBehaviour:
     - serializedVersion: 3
       time: 0
       value: 0
-      inSlope: 2.0138245
-      outSlope: 2.0138245
-      tangentMode: 34
+      inSlope: 4.7749376
+      outSlope: 4.7749376
+      tangentMode: 0
       weightedMode: 0
       inWeight: 0
-      outWeight: 0.33333334
+      outWeight: 0.14626636
     - serializedVersion: 3
-      time: 0.49240544
-      value: 0.99161816
-      inSlope: 0.035958648
-      outSlope: 0.035958648
-      tangentMode: 34
+      time: 0.5
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
       weightedMode: 0
       inWeight: 0.33333334
       outWeight: 0.33333334
     - serializedVersion: 3
       time: 1
       value: 0.0059165955
-      inSlope: -2.2435107
-      outSlope: -2.2435107
+      inSlope: -3.671428
+      outSlope: -3.671428
       tangentMode: 0
       weightedMode: 0
-      inWeight: 0.11588683
+      inWeight: 0.19245587
       outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
@@ -246,21 +246,39 @@ MonoBehaviour:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 0.5
-      inSlope: 0
-      outSlope: 0
+      value: 0.08
+      inSlope: 18.630735
+      outSlope: 18.630735
       tangentMode: 0
       weightedMode: 0
       inWeight: 0
-      outWeight: 0
+      outWeight: 0.0686229
+    - serializedVersion: 3
+      time: 0.5
+      value: 1
+      inSlope: 0.27014354
+      outSlope: 0.048132773
+      tangentMode: 1
+      weightedMode: 0
+      inWeight: 0.123723805
+      outWeight: 0.14276552
+    - serializedVersion: 3
+      time: 0.61651266
+      value: 1.2544771
+      inSlope: 4.3966193
+      outSlope: 4.3966193
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.104055494
     - serializedVersion: 3
       time: 1
-      value: 1.5
-      inSlope: 0
-      outSlope: 0
+      value: 1.4974287
+      inSlope: -1.8255374
+      outSlope: -1.8255374
       tangentMode: 0
       weightedMode: 0
-      inWeight: 0
+      inWeight: 0.12345672
       outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
@@ -275,7 +293,7 @@ Rigidbody:
   serializedVersion: 4
   m_Mass: 1
   m_Drag: 0
-  m_AngularDrag: 0.05
+  m_AngularDrag: 0
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
   m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
