@@ -234,6 +234,7 @@ MonoBehaviour:
   maxDistance: 30
   returnMaxDistance: 50
   cooldownReduction: 3
+  bulletRotationSpeed: 800
 --- !u!1001 &6340781737931479663
 PrefabInstance:
   m_ObjectHideFlags: 0

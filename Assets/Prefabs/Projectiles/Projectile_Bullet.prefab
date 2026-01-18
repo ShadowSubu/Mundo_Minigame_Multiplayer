@@ -17,7 +17,7 @@ GameObject:
   - component: {fileID: -7522262536494060318}
   - component: {fileID: 6835288002042263518}
   m_Layer: 0
-  m_Name: Projectile_Normal
+  m_Name: Projectile_Bullet
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -230,6 +230,7 @@ MonoBehaviour:
   projectileDamage: 10
   maxCooldown: 5
   maxDistance: 30
+  bulletRotation: 100
 --- !u!1001 &8208060691041063841
 PrefabInstance:
   m_ObjectHideFlags: 0

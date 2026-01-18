@@ -1,9 +1,10 @@
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using UnityEngine;
 
 public class ProjectileMortar : ProjectileBase
 {
+    [Header("Mortar Projectile Settings")]
     [SerializeField] private LayerMask groundLayer;
     [SerializeField] private float travelDuration = 1f;
     [SerializeField] private float height = 5f;
@@ -12,6 +13,7 @@ public class ProjectileMortar : ProjectileBase
     [SerializeField] private AnimationCurve speedCurve = AnimationCurve.EaseInOut(0f, 0.5f, 1f, 1.5f);
 
     bool bulletShot = false;
+    private Vector3 lastPosition;
     private CancellationTokenSource cancellationTokenSource;
 
     private void Start()
@@ -87,34 +89,43 @@ public class ProjectileMortar : ProjectileBase
     {
         float time = 0f;
         float normalizedTime = 0f;
+        lastPosition = start;
 
         while (normalizedTime < 1f)
         {
-            if (cancellationTokenSource.IsCancellationRequested) return;
+            if (token.IsCancellationRequested) return;
 
-            // Get speed multiplier from curve
-            float speedMultiplier = 1f;
-            if (speedCurve != null && speedCurve.length > 0)
-            {
-                speedMultiplier = speedCurve.Evaluate(normalizedTime);
-            }
+            float speedMultiplier = speedCurve != null && speedCurve.length > 0
+                ? speedCurve.Evaluate(normalizedTime)
+                : 1f;
 
-            // Apply speed multiplier to time progression
             time += Time.deltaTime * speedMultiplier;
             normalizedTime = Mathf.Clamp01(time / travelDuration);
 
-            // Linear interpolation for horizontal movement
             Vector3 horizontal = Vector3.Lerp(start, end, normalizedTime);
 
-            // Vertical offset for arc
-            float yOffset = height * 4f * (normalizedTime - normalizedTime * normalizedTime); // Basic parabola
+            float yOffset = height * 4f * (normalizedTime - normalizedTime * normalizedTime);
             if (heightCurve != null && heightCurve.length > 0)
                 yOffset = height * heightCurve.Evaluate(normalizedTime);
 
-            transform.position = new Vector3(horizontal.x, horizontal.y + yOffset, horizontal.z);
+            Vector3 newPosition = new Vector3(
+                horizontal.x,
+                horizontal.y + yOffset,
+                horizontal.z
+            );
 
-            await Task.Yield(); // Wait for next frame
+            transform.position = newPosition;
+
+            // 🔥 Face movement direction
+            Vector3 direction = newPosition - lastPosition;
+            if (direction.sqrMagnitude > 0.0001f)
+                transform.rotation = Quaternion.LookRotation(direction.normalized);
+
+            lastPosition = newPosition;
+
+            await Task.Yield();
         }
+
 
         transform.position = end;
         ExplodeVFX();
