@@ -1,16 +1,19 @@
+using DG.Tweening;
+using NullReferenceDetection;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using DG.Tweening;
-using NullReferenceDetection;
+using System.Threading;
+using System.Threading.Tasks;
 using TMPro;
+using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.UI;
 using VInspector;
 
 namespace Chat_UI.Chatbox
 {
-    public class Animations : MonoBehaviour
+    public class Animations : NetworkBehaviour
     {
         [Header("References")]
         [Tooltip("TMP which displays the actual typed message."), SerializeField, ValueRequired] TMP_Text messageTMP ;
@@ -47,15 +50,20 @@ namespace Chat_UI.Chatbox
         Queue<char> inputQueue = new Queue<char>();
         bool processing = false;
 
+        [Header("Chat Inactivity Settings")]
+        [SerializeField] private float chatDisplayDuration = 5f;
+        private float inactivityTimer = 0f;
+        private CancellationTokenSource chatInactivityCancellationToken;
+
         void Update()
         {
-            foreach (char c in Input.inputString)
-            {
-                if (IsAllowedCharacter(c))
-                {
-                    inputQueue.Enqueue(c);
-                }
-            }
+            //foreach (char c in Input.inputString)
+            //{
+            //    if (IsAllowedCharacter(c))
+            //    {
+            //        inputQueue.Enqueue(c);
+            //    }
+            //}
 
             if (!processing && inputQueue.Count > 0)
             {
@@ -71,6 +79,19 @@ namespace Chat_UI.Chatbox
                 c == ' ';
         }
 
+        public void EnqueueCharacter(char c, ulong senderClientId)
+        {
+            if (OwnerClientId == senderClientId)
+            {
+                if (IsAllowedCharacter(c))
+                {
+                    inputQueue.Enqueue(c);
+                }
+
+                inactivityTimer = 0f;
+            }
+        }
+
         IEnumerator ProcessQueue()
         {
             processing = true;
@@ -81,6 +102,7 @@ namespace Chat_UI.Chatbox
                 AddCharacter(c);
                 yield return new WaitForSeconds(addDuration);
             }
+            StartChatInactivityTimer();
 
             processing = false;
         }
@@ -167,7 +189,43 @@ namespace Chat_UI.Chatbox
                 yield return null;
             }
         }
-        
+
+        #region Chat Inactivity Handling
+
+        private void StartChatInactivityTimer()
+        {
+            CancelInActivityTimer();
+            chatInactivityCancellationToken = new CancellationTokenSource();
+            _ = DisableAfterInactivityAsync(chatInactivityCancellationToken.Token);
+        }
+
+        private async Task DisableAfterInactivityAsync(CancellationToken cancellationToken)
+        {
+            try
+            {
+                await Task.Delay(TimeSpan.FromSeconds(chatDisplayDuration), cancellationToken);
+
+                CloseChat();
+            }
+            catch (OperationCanceledException ex)
+            {
+                Debug.Log($"Chat inactivity timer cancelled: {ex.Message}");
+            }
+            catch (Exception ex)
+            {
+                Debug.Log($"Error in chat inactivity timer: {ex.Message}");
+            }
+        }
+
+        private void CancelInActivityTimer()
+        {
+            chatInactivityCancellationToken?.Cancel();
+            chatInactivityCancellationToken?.Dispose();
+            chatInactivityCancellationToken = null;
+        }
+
+        #endregion
+
         [Button]
         void TestAnimation()
         {
