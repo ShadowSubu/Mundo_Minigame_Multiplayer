@@ -1,7 +1,6 @@
 using System;
 using Unity.Netcode;
 
-[Obsolete]
 public class ChatSystem : NetworkBehaviour
 {
     public static ChatSystem Instance { get; private set; }
@@ -16,23 +15,40 @@ public class ChatSystem : NetworkBehaviour
     public class ChatMessageEventArgs : EventArgs
     {
         public ulong senderCliendId;
-        public string message;
+        public char character;
     }
 
+    //[Rpc(SendTo.Server)]
+    //public void RequestToSendChatInputRpc(string message, ulong clientId)
+    //{
+    //    if (!IsServer) return;
+    //    SendChatInputRpc(message, clientId);
+    //}
+
+    //[Rpc(SendTo.ClientsAndHost)]
+    //public void SendChatInputRpc(string message, ulong clientId)
+    //{
+    //    OnChatInputRecieved?.Invoke(this, new ChatMessageEventArgs
+    //    {
+    //        senderCliendId = clientId,
+    //        character = message
+    //    });
+    //}
+
     [Rpc(SendTo.Server)]
-    public void RequestToSendChatInputRpc(string message, ulong clientId)
+    public void RequestToSendChatInputRpc(char character, ulong clientId)
     {
         if (!IsServer) return;
-        SendChatInputRpc(message, clientId);
+        SendChatInputRpc(character, clientId);
     }
 
     [Rpc(SendTo.ClientsAndHost)]
-    public void SendChatInputRpc(string message, ulong clientId)
+    public void SendChatInputRpc(char character, ulong clientId)
     {
         OnChatInputRecieved?.Invoke(this, new ChatMessageEventArgs
         {
             senderCliendId = clientId,
-            message = message
+            character = character
         });
     }
 
