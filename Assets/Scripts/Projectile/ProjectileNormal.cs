@@ -2,7 +2,9 @@ using UnityEngine;
 
 public class ProjectileNormal : ProjectileBase
 {
+    [Header("Bullet Settings")]
     [SerializeField] private float maxDistance = 20f;
+    [SerializeField] private float bulletRotationSpeed = 2f;
 
     private void Start()
     {
@@ -29,7 +31,8 @@ public class ProjectileNormal : ProjectileBase
     internal override void ProjectileBehaviour()
     {
         // Move bullet
-        transform.position += moveDirection * projectileSpeed * Time.deltaTime;
+        transform.position += projectileSpeed * Time.deltaTime * moveDirection;
+        transform.Rotate(bulletRotationSpeed * Time.deltaTime * Vector3.forward);
 
         // Check if traveled max distance
         float distanceTraveled = Vector3.Distance(startPosition, transform.position);

@@ -46,6 +46,10 @@ public class GameManager : NetworkBehaviour
 
     private async void Start()
     {
+        if (SceneColdStartup.Instance != null && SceneColdStartup.Instance.StartSceneCold)
+        {
+            return;
+        }
         if (NetworkManager.Singleton != null && NetworkManager.Singleton.IsConnectedClient)
         {
             RequestSpawnPlayer();

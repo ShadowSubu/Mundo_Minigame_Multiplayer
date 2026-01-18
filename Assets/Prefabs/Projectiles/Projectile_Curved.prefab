@@ -127,7 +127,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 220813579
+  GlobalObjectIdHash: 3356397622
   InScenePlacedSourceGlobalObjectIdHash: 3356397622
   DeferredDespawnTick: 0
   Ownership: 1
@@ -209,6 +209,9 @@ MonoBehaviour:
     m_Bits: 64
   travelDuration: 1
   curveStrength: 10
+  rotationSpeed: 360
+  wobbleAngle: 10
+  wobbleSpeed: 10
 --- !u!54 &3603903159397681386
 Rigidbody:
   m_ObjectHideFlags: 0

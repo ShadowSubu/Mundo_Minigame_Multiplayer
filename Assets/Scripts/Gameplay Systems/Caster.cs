@@ -5,7 +5,20 @@ using UnityEngine;
 
 public class Caster : NetworkBehaviour
 {
-    [SerializeField] private AbilityType selectedAbility;
+    [SerializeField] private AbilityType selectedAbilityType;
+    private AbilityType SelectedAbilityType
+    {
+        get => selectedAbilityType;
+        set
+        {
+            if (selectedAbilityType != value)
+            {
+                selectedAbilityType = value;
+                RequestSetupSelectedAbilityRpc();
+            }
+        }
+    }
+
     [SerializeField] private List<AbilityBase> abilityDatabase;
     private Dictionary<AbilityType, AbilityBase> abilityDictionary;
 
@@ -51,7 +64,7 @@ public class Caster : NetworkBehaviour
             if (!abilityDictionary.ContainsKey(ability.AbilityType))
             {
                 abilityDictionary.Add(ability.AbilityType, ability);
-                Debug.Log($"Added ability: {ability.AbilityType} to dictionary");
+                //Debug.Log($"Added ability: {ability.AbilityType} to dictionary");
             }
         }
     }
@@ -72,7 +85,7 @@ public class Caster : NetworkBehaviour
         }
 
         // Activate the selected ability
-        activeAbility = abilityDictionary[selectedAbility];
+        activeAbility = abilityDictionary[SelectedAbilityType];
         activeAbility.gameObject.SetActive(true);
         activeAbility.InitializeAbility(this.NetworkObject);
     }
@@ -118,11 +131,11 @@ public class Caster : NetworkBehaviour
 
         if (DeveloperDashboard.Instance.OverrideValues)
         {
-            cooldownTime = GetAbilityCooldownDev(selectedAbility);
+            cooldownTime = GetAbilityCooldownDev(SelectedAbilityType);
         }
         else
         {
-            cooldownTime = abilityDictionary[selectedAbility].MaxCooldown;
+            cooldownTime = abilityDictionary[SelectedAbilityType].MaxCooldown;
         }
         InvokeRepeating(nameof(UpdateCooldownUI), 0f, 0.1f);
     }
@@ -162,21 +175,21 @@ public class Caster : NetworkBehaviour
     {
         if (DeveloperDashboard.Instance.OverrideValues)
         {
-            return GetAbilityCooldownDev(selectedAbility);
+            return GetAbilityCooldownDev(SelectedAbilityType);
         }
         else
         {
-            return abilityDictionary[selectedAbility].MaxCooldown;
+            return abilityDictionary[SelectedAbilityType].MaxCooldown;
         }
     }
 
     internal void SelectAbility(string abilityType)
     {
-        selectedAbility = abilityTypeMapping[abilityType];
+        SelectedAbilityType = abilityTypeMapping[abilityType];
     }
 
     public Camera MainCamera => mainCamera;
-    public AbilityBase SelectedAbility => abilityDictionary[selectedAbility];
+    public AbilityBase SelectedAbility => abilityDictionary[SelectedAbilityType];
 
     #region Development 
 
@@ -187,7 +200,7 @@ public class Caster : NetworkBehaviour
             AbilityType.Blink => DeveloperDashboard.Instance.GetBulletCooldown(),
             AbilityType.FakeShot => DeveloperDashboard.Instance.GetFakeshotCooldown(),
             AbilityType.Parry =>DeveloperDashboard.Instance.GetParryCooldown(),
-            _ => abilityDictionary[selectedAbility].MaxCooldown,
+            _ => abilityDictionary[SelectedAbilityType].MaxCooldown,
         };
     }
 
