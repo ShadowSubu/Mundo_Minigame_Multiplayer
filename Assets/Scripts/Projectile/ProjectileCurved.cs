@@ -5,10 +5,15 @@ using UnityEngine;
 
 public class ProjectileCurved : ProjectileBase
 {
+    [Header("Curved Projectile Settings")]
     [SerializeField] private LayerMask groundLayer;
     [SerializeField] private float travelDuration = 1f;
     [SerializeField] private float curveStrength = 1f;
+    [SerializeField] private float rotationSpeed = 360f;
+    [SerializeField] private float wobbleAngle = 10f;
+    [SerializeField] private float wobbleSpeed = 8f;
     bool bulletShot = false;
+    Quaternion baseRotation;
 
     private CancellationTokenSource cancellationTokenSource;
 
@@ -21,6 +26,7 @@ public class ProjectileCurved : ProjectileBase
             maxCooldown = DeveloperDashboard.Instance.GetCurveMaxCooldown();
             curveStrength = DeveloperDashboard.Instance.GetCurveStrength();
         }
+        baseRotation = transform.rotation;
     }
 
     internal override void OnTriggerEnterBehaviour(Collider other)
@@ -54,6 +60,16 @@ public class ProjectileCurved : ProjectileBase
                 Debug.Log("Did not hit anything");
             }
         }
+
+        // Base rotation (spin around Y)
+        baseRotation *= Quaternion.Euler(0f, rotationSpeed * Time.deltaTime, 0f);
+
+        // Wobble around forward axis
+        float wobble = Mathf.Sin(Time.time * wobbleSpeed) * wobbleAngle;
+        Quaternion wobbleRot = Quaternion.AngleAxis(wobble, Vector3.forward);
+
+        // Combine
+        transform.rotation = baseRotation * wobbleRot;
     }
 
     public async void MoveCurvedSwingAsync(Vector3 start, Vector3 end, CancellationToken token)
