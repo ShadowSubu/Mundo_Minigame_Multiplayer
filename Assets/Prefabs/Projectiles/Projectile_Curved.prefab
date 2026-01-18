@@ -209,7 +209,7 @@ MonoBehaviour:
     m_Bits: 64
   travelDuration: 1
   curveStrength: 10
-  rotationSpeed: 360
+  rotationSpeed: 720
   wobbleAngle: 10
   wobbleSpeed: 10
 --- !u!54 &3603903159397681386
