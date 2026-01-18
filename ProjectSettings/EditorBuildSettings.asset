@@ -35,6 +35,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Swapnil_Game Solo Testing.unity
     guid: 795ee6f795a03f040ae82de692a33a9f
+  - enabled: 1
+    path: Assets/Scenes/Subhajit_Game Solo Testing.unity
+    guid: f1162a59d63fff04c8d9f78b769b43d1
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   m_UseUCBPForAssetBundles: 0

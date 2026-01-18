@@ -3,9 +3,11 @@ using UnityEngine;
 
 public class ProjectileBoomerang : ProjectileBase
 {
+    [Header("Boomerang Settings")]
     [SerializeField] private float maxDistance = 30f;
     [SerializeField] private float returnMaxDistance = 30f;
     [SerializeField] private float cooldownReduction = 2f;
+    [SerializeField] private float bulletRotationSpeed = 180f;
 
     private Vector3 returnDirection;
     private Vector3 returnStartPosition;
@@ -79,6 +81,7 @@ public class ProjectileBoomerang : ProjectileBase
         {
             MoveBakcward();
         }
+        transform.Rotate(bulletRotationSpeed * Time.deltaTime * Vector3.up);
     }
 
     private void MoveForward()
