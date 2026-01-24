@@ -7,18 +7,18 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: ArenaLines
+    second: {fileID: 2100000, guid: c00b43bca3b7925449bba25d7c8e9fbf, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: Arena_Border_Area
     second: {fileID: 2100000, guid: d479c37360bcc9448a95532643225377, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: Arena_Bottom_Area
-    second: {fileID: 2100000, guid: 1328879bc7d2b7e478c03c3d9367272c, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
       name: Arena_MiddleLine_Border
-    second: {fileID: 2100000, guid: ee8314267b11678438489e20e38172fd, type: 2}
+    second: {fileID: 2100000, guid: 894f18a2ae95b3742ba18255e762a59f, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
@@ -27,18 +27,23 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: Arena_Side_Area
-    second: {fileID: 2100000, guid: 5c85e124b702cce47a1071a9d9c429b5, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Arena_Walking_Area
-    second: {fileID: 2100000, guid: 6d44f532a6a7c724c8277fe5baa4c290, type: 2}
+      name: Central_Zone
+    second: {fileID: 2100000, guid: 48a6366823ff5c245859c4fc6097e801, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: Common_MAT
     second: {fileID: 2100000, guid: c1f9f74958427024cb1b56680b20fdd1, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Middle_Zone
+    second: {fileID: 2100000, guid: 48e473e9994b84a429ba93974ff60913, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Outer_Zone
+    second: {fileID: 2100000, guid: 24aa2f43efa613d4aa7311230496a8e0, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
