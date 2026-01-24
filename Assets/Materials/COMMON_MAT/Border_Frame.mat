@@ -82,7 +82,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: c2257fa5367245548bd13506cdf64e27, type: 3}
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Main_Texture:
@@ -147,10 +147,10 @@ Material:
     - _GlossMapScale: 0
     - _Glossiness: 0
     - _GlossyReflections: 0
-    - _LightAzimuth: 52
-    - _LightElevation: 40.7
+    - _LightAzimuth: 71
+    - _LightElevation: 45.5
     - _Metalic: 0.5
-    - _Metallic: 0
+    - _Metallic: 1
     - _NormalIntensity: 1.2
     - _OcclusionStrength: 1
     - _OutlineWidth: 0.338
@@ -158,13 +158,13 @@ Material:
     - _QueueControl: 0
     - _QueueOffset: 0
     - _ReceiveShadows: 1
-    - _RimOutput: 0.064
+    - _RimOutput: 0.086
     - _RimStep: 0.656
     - _RimStepSmooth: 0.417
-    - _ShadingFalloff: 0.144
+    - _ShadingFalloff: 0.612
     - _ShadowStep: 0.875
     - _ShadowStepSmooth: 0.307
-    - _Smoothness: 0.93
+    - _Smoothness: 0
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SpecularStep: 0
@@ -183,11 +183,11 @@ Material:
     - _WorkflowMode: 1
     - _ZWrite: 1
     m_Colors:
-    - _BaseColor: {r: 0.8018868, g: 0.8018868, b: 0.8018868, a: 1}
-    - _Color: {r: 0.07195608, g: 0.30962923, b: 0.447, a: 1}
+    - _BaseColor: {r: 0.42386082, g: 0.51842296, b: 0.7075472, a: 1}
+    - _Color: {r: 0.4238608, g: 0.5184229, b: 0.7075471, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _OutlineColor: {r: 0, g: 0, b: 0, a: 1}
-    - _RimColor: {r: 0.75, g: 0.75, b: 0.75, a: 1}
+    - _RimColor: {r: 0.745283, g: 0.745283, b: 0.745283, a: 1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
     - _SpecularColor: {r: 1, g: 1, b: 1, a: 1}
     - _VariationColorA: {r: 0, g: 0, b: 0, a: 0}
