@@ -78,12 +78,14 @@ public class LobbyManager : NetworkBehaviour
 
     private void OnEnable()
     {
-        NetworkManager.Singleton.OnClientConnectedCallback += OnClientConnected;
+        if(NetworkManager.Singleton != null)
+            NetworkManager.Singleton.OnClientConnectedCallback += OnClientConnected;
     }
 
     private void OnDisable()
     {
-        NetworkManager.Singleton.OnClientConnectedCallback -= OnClientConnected;
+        if(NetworkManager.Singleton != null)
+            NetworkManager.Singleton.OnClientConnectedCallback -= OnClientConnected;
     }
 
     private void Update()

@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using TMPro;
 using Unity.Services.Lobbies;
 using Unity.Services.Lobbies.Models;
+using UnityEditor.ShaderGraph.Internal;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -31,6 +32,8 @@ public class LobbyUI : MonoBehaviour
     [SerializeField] private GameObject joinLobbyUI;
     [SerializeField] private PublicLobbySingleUI publicLobbyPrefab;
     [SerializeField] private Button refreshPublicLobbiesButton;
+    [SerializeField] private float lobbyAutoRefreshCooldown;
+    private float currentLobbyAutoRefreshCooldown;
     [SerializeField] private TMP_InputField privateLobbyCodeInputField;
     [SerializeField] private Button joinPrivateLobbyButton;
     [SerializeField] private Transform publicLobbiesContainer;
@@ -129,6 +132,13 @@ public class LobbyUI : MonoBehaviour
 
         InitializeProjectileSelectionButtons();
         InitializeAbilitySelectionButtons();
+
+        currentLobbyAutoRefreshCooldown = lobbyAutoRefreshCooldown;
+    }
+
+    private void Update()
+    {
+        AutoRefreshPublicLobbies();   
     }
 
     private void OnDestroy()
@@ -283,7 +293,20 @@ public class LobbyUI : MonoBehaviour
 
     private void RefreshPublicLobbies()
     {
-        LobbyManager.Instance.RefreshLobbyList();
+        if (LobbyManager.Instance.GetCurrentLobby() != null)
+        {
+            LobbyManager.Instance.RefreshLobbyList();
+        }
+    }
+
+    private void AutoRefreshPublicLobbies()
+    {
+        currentLobbyAutoRefreshCooldown -= Time.deltaTime;
+        if (currentLobbyAutoRefreshCooldown < 0f)
+        {
+            currentLobbyAutoRefreshCooldown = lobbyAutoRefreshCooldown;
+            RefreshPublicLobbies();
+        }
     }
 
     private void LeaveJoinLobbyUI()
