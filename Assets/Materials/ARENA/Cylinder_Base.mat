@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &-1017425046751766916
+--- !u!114 &-7744237295597889990
 MonoBehaviour:
   m_ObjectHideFlags: 11
   m_CorrespondingSourceObject: {fileID: 0}
@@ -20,8 +20,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Central_Zone
-  m_Shader: {fileID: -6465566751694194690, guid: 860444d4db87f874fb7c5ae644f8f5f1, type: 3}
+  m_Name: Cylinder_Base
+  m_Shader: {fileID: 4800000, guid: 933532a4fcc9baf4fa0491de14d08ed7, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -30,7 +30,8 @@ Material:
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
-  stringTagMap: {}
+  stringTagMap:
+    RenderType: Opaque
   disabledShaderPasses:
   - MOTIONVECTORS
   m_LockedProperties: 
@@ -38,8 +39,8 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _BaseMap:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
+        m_Texture: {fileID: 2800000, guid: 5a55f6d98facf1243bbde292b501f20c, type: 3}
+        m_Scale: {x: 1, y: 0.94}
         m_Offset: {x: 0, y: 0}
     - _BumpMap:
         m_Texture: {fileID: 0}
@@ -62,8 +63,8 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
+        m_Texture: {fileID: 2800000, guid: 5a55f6d98facf1243bbde292b501f20c, type: 3}
+        m_Scale: {x: 1, y: 0.94}
         m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
         m_Texture: {fileID: 0}
@@ -113,7 +114,7 @@ Material:
     - _GlossMapScale: 1
     - _Glossiness: 0.5
     - _GlossyReflections: 1
-    - _Glow_Size: 0
+    - _Glow_Size: 0.3
     - _Highlight_Intensity: 0.07
     - _Highlight_Size: 0.68
     - _Metallic: 0
@@ -126,7 +127,7 @@ Material:
     - _ReceiveShadows: 1
     - _Shadows_Contrast: 0
     - _Shadows_Size: 0
-    - _Smoothness: 0.5
+    - _Smoothness: 0
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
@@ -137,13 +138,13 @@ Material:
     - _XRMotionVectorsPass: 1
     - _ZWrite: 1
     m_Colors:
-    - _BaseColor: {r: 0.7490196, g: 0.5283085, b: 0.5153255, a: 1}
-    - _Base_Color: {r: 1, g: 0.7028302, b: 0.7028302, a: 0}
-    - _Color: {r: 0.7490196, g: 0.52830845, b: 0.5153254, a: 1}
+    - _BaseColor: {r: 0.19701, g: 0.19104, b: 0.199, a: 1}
+    - _Base_Color: {r: 0.36862743, g: 0.8842483, b: 1, a: 0}
+    - _Color: {r: 0.19700995, g: 0.19103995, b: 0.19899997, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 0}
     - _Highlight_Color: {r: 0, g: 0, b: 0, a: 0}
-    - _Outline_Color: {r: 1, g: 0.525, b: 0.525, a: 1}
-    - _Shadows_Color: {r: 1, g: 0.603, b: 0.603, a: 0}
+    - _Outline_Color: {r: 0.096580386, g: 0.23117651, b: 0.262, a: 1}
+    - _Shadows_Color: {r: 0.15703529, g: 0.37588245, b: 0.426, a: 0}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
