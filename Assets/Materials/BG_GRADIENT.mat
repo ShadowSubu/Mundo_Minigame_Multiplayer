@@ -8,7 +8,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: BG_GRADIENT
-  m_Shader: {fileID: 4800000, guid: d63481289a6ba3749995448d98a2bc5c, type: 3}
+  m_Shader: {fileID: 4800000, guid: 933532a4fcc9baf4fa0491de14d08ed7, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -17,7 +17,8 @@ Material:
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
-  stringTagMap: {}
+  stringTagMap:
+    RenderType: Opaque
   disabledShaderPasses:
   - MOTIONVECTORS
   m_LockedProperties: 
@@ -45,7 +46,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _EmissionMap:
-        m_Texture: {fileID: 2800000, guid: 5a55f6d98facf1243bbde292b501f20c, type: 3}
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _EmissionTex:
@@ -111,20 +112,27 @@ Material:
     - _DstBlendAlpha: 0
     - _EmissionIntensity: 1
     - _EnvironmentReflections: 1
-    - _GlossMapScale: 0
-    - _Glossiness: 0
-    - _GlossyReflections: 0
+    - _GlossMapScale: 1
+    - _Glossiness: 0.5
+    - _GlossyReflections: 1
+    - _Glow_Size: 0.453
+    - _Highlight_Intensity: 0.24
+    - _Highlight_Size: 0.72
     - _LightAzimuth: 46
     - _LightElevation: 90
-    - _Metallic: 0.397
+    - _Metallic: 0
     - _NormalIntensity: 1
     - _OcclusionStrength: 1
-    - _Parallax: 0.005
+    - _Outline_Size: 0.48
+    - _Parallax: 0.02
+    - _QueueControl: 0
     - _QueueOffset: 0
     - _ReceiveShadows: 1
     - _RimOutput: 1
     - _ShadingFalloff: 0.02
-    - _Smoothness: 0
+    - _Shadows_Contrast: 0.25
+    - _Shadows_Size: 0
+    - _Smoothness: 0.051
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
@@ -132,12 +140,17 @@ Material:
     - _Surface: 0
     - _UseEmission: 0
     - _WorkflowMode: 1
+    - _XRMotionVectorsPass: 1
     - _ZWrite: 1
     m_Colors:
-    - _BaseColor: {r: 0, g: 0.98021173, b: 1, a: 1}
-    - _Color: {r: 0.012212002, g: 0.037355535, b: 0.042999983, a: 1}
-    - _EmissionColor: {r: 0.0034504116, g: 0.038024567, b: 0, a: 1}
+    - _BaseColor: {r: 0.411264, g: 0.411264, b: 0.504, a: 1}
+    - _Base_Color: {r: 0.16835998, g: 0.527707, b: 0.61, a: 0}
+    - _Color: {r: 0.41126397, g: 0.41126397, b: 0.504, a: 1}
+    - _EmissionColor: {r: 0, g: 0, b: 0, a: 0}
+    - _Highlight_Color: {r: 0.26, g: 0.26, b: 0.26, a: 0}
+    - _Outline_Color: {r: 0.096580386, g: 0.23117651, b: 0.262, a: 1}
     - _RimColor: {r: 0, g: 0, b: 0, a: 1}
+    - _Shadows_Color: {r: 0.15154754, g: 0.12987, b: 0.39, a: 0}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1

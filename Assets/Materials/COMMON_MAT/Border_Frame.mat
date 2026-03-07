@@ -21,7 +21,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Border_Frame
-  m_Shader: {fileID: 4800000, guid: d63481289a6ba3749995448d98a2bc5c, type: 3}
+  m_Shader: {fileID: -6465566751694194690, guid: 860444d4db87f874fb7c5ae644f8f5f1, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -82,7 +82,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: c2257fa5367245548bd13506cdf64e27, type: 3}
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Main_Texture:
@@ -144,27 +144,33 @@ Material:
     - _DstBlendAlpha: 0
     - _EmissionIntensity: 1
     - _EnvironmentReflections: 1
-    - _GlossMapScale: 0
-    - _Glossiness: 0
-    - _GlossyReflections: 0
-    - _LightAzimuth: 52
-    - _LightElevation: 40.7
+    - _GlossMapScale: 1
+    - _Glossiness: 0.5
+    - _GlossyReflections: 1
+    - _Glow_Size: 0
+    - _Highlight_Intensity: 0
+    - _Highlight_Size: 0.61
+    - _LightAzimuth: 71
+    - _LightElevation: 45.5
     - _Metalic: 0.5
     - _Metallic: 0
     - _NormalIntensity: 1.2
     - _OcclusionStrength: 1
     - _OutlineWidth: 0.338
-    - _Parallax: 0.005
+    - _Outline_Size: 0.38
+    - _Parallax: 0.02
     - _QueueControl: 0
     - _QueueOffset: 0
     - _ReceiveShadows: 1
-    - _RimOutput: 0.064
+    - _RimOutput: 0.086
     - _RimStep: 0.656
     - _RimStepSmooth: 0.417
-    - _ShadingFalloff: 0.144
+    - _ShadingFalloff: 0.612
     - _ShadowStep: 0.875
     - _ShadowStepSmooth: 0.307
-    - _Smoothness: 0.93
+    - _Shadows_Contrast: 0
+    - _Shadows_Size: 0
+    - _Smoothness: 0.5
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SpecularStep: 0
@@ -183,11 +189,15 @@ Material:
     - _WorkflowMode: 1
     - _ZWrite: 1
     m_Colors:
-    - _BaseColor: {r: 0.8018868, g: 0.8018868, b: 0.8018868, a: 1}
-    - _Color: {r: 0.07195608, g: 0.30962923, b: 0.447, a: 1}
-    - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
+    - _BaseColor: {r: 0.7490196, g: 0.5283085, b: 0.5153255, a: 1}
+    - _Base_Color: {r: 0, g: 0.8117647, b: 1, a: 0}
+    - _Color: {r: 0.7490196, g: 0.52830845, b: 0.5153254, a: 1}
+    - _EmissionColor: {r: 0, g: 0, b: 0, a: 0}
+    - _Highlight_Color: {r: 0, g: 0, b: 0, a: 0}
     - _OutlineColor: {r: 0, g: 0, b: 0, a: 1}
-    - _RimColor: {r: 0.75, g: 0.75, b: 0.75, a: 1}
+    - _Outline_Color: {r: 0, g: 0.32810768, b: 0.4056604, a: 1}
+    - _RimColor: {r: 0.745283, g: 0.745283, b: 0.745283, a: 1}
+    - _Shadows_Color: {r: 0.15703529, g: 0.37588245, b: 0.426, a: 0}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
     - _SpecularColor: {r: 1, g: 1, b: 1, a: 1}
     - _VariationColorA: {r: 0, g: 0, b: 0, a: 0}
