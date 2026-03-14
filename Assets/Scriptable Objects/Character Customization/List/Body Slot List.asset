@@ -13,8 +13,5 @@ MonoBehaviour:
   m_Name: Body Slot List
   m_EditorClassIdentifier: Assembly-CSharp::CharacterItemList
   items:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 11400000, guid: bc88b495a44ee584ba32eecd5f0f7ccd, type: 2}
+  - {fileID: 11400000, guid: b2439380367845144b5fe85906d4a3ce, type: 2}

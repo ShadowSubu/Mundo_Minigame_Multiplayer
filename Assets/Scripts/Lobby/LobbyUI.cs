@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Net.NetworkInformation;
 using System.Threading.Tasks;
 using TMPro;
 using Unity.Services.Lobbies;
@@ -55,6 +56,10 @@ public class LobbyUI : MonoBehaviour
     [SerializeField] private Color selectedColor;
     [SerializeField] private Color defaultColor;
 
+    [Header("Character Customization Menu")]
+    [SerializeField] private CharacterCustomizationMenu characterCustomizationMenu;
+    [SerializeField] private Button openCharacterCustomizationButton;
+
     [Header("Loading UI")]
     [SerializeField] private GameObject loadingUI;
     [SerializeField] private TextMeshProUGUI loadingText;
@@ -97,6 +102,7 @@ public class LobbyUI : MonoBehaviour
         oneVoneButton.onClick.AddListener(SelectGameMode1v1);
         twoVtwoButton.onClick.AddListener(SelectGameMode2v2);
         settingButton.onClick.AddListener(OpenSettings);
+        openCharacterCustomizationButton.onClick.AddListener(OpenCharacterCustomization);
     }
 
     private void OnDisable()
@@ -115,6 +121,7 @@ public class LobbyUI : MonoBehaviour
         oneVoneButton.onClick.RemoveAllListeners();
         twoVtwoButton.onClick.RemoveAllListeners();
         settingButton.onClick.RemoveAllListeners();
+        openCharacterCustomizationButton.onClick.RemoveAllListeners();
     }
 
     private void Start()
@@ -378,6 +385,17 @@ public class LobbyUI : MonoBehaviour
             button.GetComponent<Image>().color = defaultColor;
         }
         selectedButton.GetComponent<Image>().color = selectedColor;
+    }
+
+    private void OpenCharacterCustomization()
+    {
+        lobbyPanel.SetActive(false);
+        characterCustomizationMenu.OpenMenu(this);
+    }
+
+    public void CloseCharacterCustomization()
+    {
+        lobbyPanel.SetActive(true);
     }
 
     private void StartGame()

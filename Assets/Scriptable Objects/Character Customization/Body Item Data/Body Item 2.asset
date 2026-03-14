@@ -10,8 +10,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bebcd432294fa5642975859842a27c5f, type: 3}
-  m_Name: NewItemData
+  m_Name: Body Item 2
   m_EditorClassIdentifier: Assembly-CSharp::CharacterItemData
   icon: {fileID: 0}
-  itemName: New Item
+  itemName: Body Item 2
   modelPrefab: {fileID: 0}

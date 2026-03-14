@@ -1,18 +1,23 @@
 using System.Collections.Generic;
+using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.UI;
 
+public enum CharacterCustomizationTab { Head, Body, Color }
+
 public class CharacterCustomizationMenu : MonoBehaviour
 {
-    [Header("Character Reference")]
+    [Header("Character Customization Setup Reference")]
     [Tooltip("The character GameObject whose rig slots will be modified.")]
     [SerializeField] private GameObject characterObject;
+    [SerializeField] private CinemachineCamera previewCamera;
+    [SerializeField] private Canvas menuCanvas;
+    [SerializeField] private Light previewLight;
 
     /// TODO: When implementing equip functionality, retrieve the head and body
     /// rig transforms from characterObject here (e.g. via a component or
     /// by searching child transforms by name/tag).
 
-    private enum CharacterCustomizationTab { Head, Body, Color }
     private CharacterCustomizationTab _activeTab;
 
     [Header("Tab Buttons")]
@@ -24,6 +29,10 @@ public class CharacterCustomizationMenu : MonoBehaviour
     [SerializeField] private GameObject headPanel;
     [SerializeField] private GameObject bodyPanel;
     [SerializeField] private GameObject colorPanel;
+
+    [Header("Menu Buttons")]
+    [SerializeField] private Button saveButton;
+    [SerializeField] private Button closeMenuButton;
 
     // Optional: visuals that distinguish which tab is active
     // e.g. swap sprites, change colours, animate underline, etc.
@@ -80,8 +89,44 @@ public class CharacterCustomizationMenu : MonoBehaviour
         bodyTabButton.onClick.AddListener(() => SelectTab(CharacterCustomizationTab.Body));
         colorTabButton.onClick.AddListener(() => SelectTab(CharacterCustomizationTab.Color));
 
-        // Start on the Head tab
+        ToggleMenuElements(false);
+    }
+
+    private void OnEnable()
+    {
+        saveButton.onClick.AddListener(SaveCustomization);
+    }
+
+    private void OnDisable()
+    {
+        saveButton.onClick.RemoveListener(SaveCustomization);
+    }
+
+    public void OpenMenu(LobbyUI invoker)
+    {
+        closeMenuButton.onClick.AddListener(() => CloseMenu(invoker));
+        ToggleMenuElements(true);
         SelectTab(CharacterCustomizationTab.Head);
+    }
+
+    public void CloseMenu(LobbyUI invoker)
+    {
+        ToggleMenuElements(false);
+        invoker.CloseCharacterCustomization();
+        closeMenuButton.onClick.RemoveListener(() => CloseMenu(invoker));
+    }
+
+    private void ToggleMenuElements(bool value)
+    {
+        characterObject.SetActive(value);
+        previewLight.gameObject.SetActive(value);
+        previewCamera.gameObject.SetActive(value);
+        menuCanvas.gameObject.SetActive(value);
+    }
+
+    public void SaveCustomization()
+    {
+        // TODO : Implement saving logic here. Netcode
     }
 
     private void SelectTab(CharacterCustomizationTab tab)

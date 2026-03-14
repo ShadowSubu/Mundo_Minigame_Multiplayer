@@ -13,8 +13,5 @@ MonoBehaviour:
   m_Name: Head Slot List
   m_EditorClassIdentifier: Assembly-CSharp::CharacterItemList
   items:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 11400000, guid: d0592a7a4329a3842a8c6ebf49d7c2df, type: 2}
+  - {fileID: 11400000, guid: de7954ae18f00604ca1fefcfeb9b3ee0, type: 2}
