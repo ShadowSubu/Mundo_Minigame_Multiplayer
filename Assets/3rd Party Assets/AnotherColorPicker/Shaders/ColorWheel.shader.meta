@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 45759f7e73813024ca3eae8c1b97eea7
+ShaderImporter:
+  externalObjects: {}
+  defaultTextures: []
+  nonModifiableTextures: []
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 123123
+  packageName: Another Color Picker
+  packageVersion: 1.0
+  assetPath: Assets/AnotherColorPicker/Shaders/ColorWheel.shader
+  uploadId: 375805

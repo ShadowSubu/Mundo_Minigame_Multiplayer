@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 2cbf3d3cebf352f40b3d5f7b55302b49
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 123123
+  packageName: Another Color Picker
+  packageVersion: 1.0
+  assetPath: Assets/AnotherColorPicker/Examples/Materials/scene3/ColorWheel_3.mat
+  uploadId: 375805

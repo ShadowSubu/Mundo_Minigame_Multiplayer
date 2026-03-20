@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: db2f3584272377949a1d20d229f0de65
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 123123
+  packageName: Another Color Picker
+  packageVersion: 1.0
+  assetPath: Assets/AnotherColorPicker/ColorPalette.prefab
+  uploadId: 375805

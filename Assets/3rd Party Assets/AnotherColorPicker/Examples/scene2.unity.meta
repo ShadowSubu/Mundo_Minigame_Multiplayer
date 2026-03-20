@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: fae0bf726f8305a45b7f6886059c12c8
+DefaultImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 123123
+  packageName: Another Color Picker
+  packageVersion: 1.0
+  assetPath: Assets/AnotherColorPicker/Examples/scene2.unity
+  uploadId: 375805
