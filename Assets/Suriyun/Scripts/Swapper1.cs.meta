@@ -1,0 +1,19 @@
+fileFormatVersion: 2
+guid: 0e846cabdb1ad6a4da46b71f23223dd6
+timeCreated: 1492341958
+licenseType: Store
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 226721
+  packageName: Pspsps Monkey
+  packageVersion: 3.4
+  assetPath: Assets/Suriyun/Scripts/Swapper1.cs
+  uploadId: 834512

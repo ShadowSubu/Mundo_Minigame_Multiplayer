@@ -8,9 +8,9 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "NewItemData", menuName = "Character Customization/Item Data")]
 public class CharacterItemData : ScriptableObject
 {
-    [Header("Display")]
-    [Tooltip("The icon shown on the selection button in the UI.")]
-    public Sprite icon;
+    //[Header("Display")]
+    //[Tooltip("The icon shown on the selection button in the UI.")]
+    //public Sprite icon;
 
     [Tooltip("Human-readable name shown in the UI.")]
     public string itemName = "New Item";

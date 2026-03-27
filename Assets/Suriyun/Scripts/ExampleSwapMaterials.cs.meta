@@ -1,0 +1,19 @@
+fileFormatVersion: 2
+guid: b750e9fd7aa8f8544b953c5b8f1109c1
+timeCreated: 1492223839
+licenseType: Store
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 226721
+  packageName: Pspsps Monkey
+  packageVersion: 3.4
+  assetPath: Assets/Suriyun/Scripts/ExampleSwapMaterials.cs
+  uploadId: 834512

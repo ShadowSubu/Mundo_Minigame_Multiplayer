@@ -31,10 +31,6 @@ public class CharacterCustomizationItemSelectionButton : MonoBehaviour
         _itemData    = data;
         _onSelected  = onSelected;
 
-        // Populate visuals
-        if (iconImage != null)
-            iconImage.sprite = data.icon;
-
         if (nameLabel != null)
             nameLabel.text = data.itemName;
 
